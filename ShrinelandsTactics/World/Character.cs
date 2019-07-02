@@ -25,6 +25,8 @@ namespace ShrinelandsTactics.World
         public List<Condition> Conditions { get; private set; }
         [JsonProperty]
         public List<Action> Actions { get; private set; }
+        public bool HasBeenActivated = false;
+        public bool HasActed = false;
 
         [JsonIgnore]
         public Stat Vitality { get { return Stats[StatType.Vitality]; } }
@@ -39,6 +41,7 @@ namespace ShrinelandsTactics.World
         [JsonIgnore]
         public Stat Mana { get { return Stats[StatType.Mana]; } }
         
+
         public Character()
         {
             ID = Guid.NewGuid();

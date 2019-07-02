@@ -55,6 +55,7 @@
     <Compile Include="BasicStructureTests.cs" />
     <Compile Include="ActionEffectTests.cs" />
     <Compile Include="CharacterTests.cs" />
+    <Compile Include="OverallGameTests.cs" />
     <Compile Include="TileTests.cs" />
     <Compile Include="BasicSetupTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

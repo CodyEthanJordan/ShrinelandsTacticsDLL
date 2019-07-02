@@ -57,38 +57,87 @@ namespace ShrinelandsTactics
             return sb.ToString();
         }
 
-        public void MoveCharacter(string characterName, IEnumerable<string> directions)
+        public bool IsActiveAndControllable(Character guy)
         {
+            if(activatedCharacter == null || currentSide == null)
+            {
+                return false;
+            }
+            return guy.SideID == currentSide.ID && guy.ID == activatedCharacter.ID;
+        }
+
+        public Outcome Activate(Character guy)
+        {
+            var outcome = new Outcome();
+            if(guy.HasBeenActivated)
+            {
+                outcome.Message.AppendLine(guy.Name + " has already been activated this turn");
+                return outcome;
+            }
+
+            if(guy.SideID != currentSide.ID)
+            {
+                outcome.Message.AppendLine(guy.Name + " does not belong to current side, " + currentSide.Name);
+                return outcome;
+            }
+
+            guy.HasBeenActivated = true;
+            activatedCharacter = guy;
+            outcome.Message.AppendLine("Starting activation for " + guy.Name);
+            return outcome;
+        }
+
+        public Outcome MoveCharacter(string characterName, IEnumerable<string> directions)
+        {
+            var outcome = new Outcome();
             Character guy = Characters.FirstOrDefault(c => c.Name.Equals(characterName, StringComparison.OrdinalIgnoreCase));
             if(guy == null)
             {
-                return; //return error of some kind
+                outcome.Message.AppendLine("No such character as " + characterName);
+                return outcome;
             }
 
             foreach (var dir in directions)
             {
                 Map.Direction direction = Map.ParseDirection(dir);
-                MoveCharacter(guy, direction);
+                var o = MoveCharacter(guy, direction);
+                outcome.Message.AppendLine(o.Message.ToString());
             }
+
+            return outcome;
         }
 
-        public void MoveCharacter(Character guy, Map.Direction dir)
+        public Outcome MoveCharacter(Character guy, Map.Direction dir)
         {
+            var outcome = new Outcome();
+
+            if(!IsActiveAndControllable(guy))
+            {
+                outcome.Message.AppendLine(guy.Name + " cannot act at this time, is not activated");
+                return outcome;
+            }
+
             var destination = guy.Pos + Map.DirectionToPosition[dir];
             if(!IsOpen(destination))
             {
-                return; //blocked TODO: error
+                outcome.Message.AppendLine(guy.Name + " tried to move to " + destination +
+                    " but there is something there already");
+                return outcome; //blocked TODO: error
             }
 
             //has enough movement
             var moveCost = map.GetTile(guy.Pos).MoveCost;
             if(moveCost > guy.Move.Value)
             {
-                return; //TODO: error
+                outcome.Message.AppendLine(guy.Name + " only has " + guy.Move.Value + " movement" +
+                    " remaining, but needs " + moveCost + " to move");
+                return outcome; //TODO: error
             }
 
             guy.Move.Value -= moveCost;
             guy.Pos = destination;
+            outcome.Message.AppendLine(guy.Name + " moved to " + destination);
+            return outcome;
         }
 
         public bool IsOpen(Position pos)

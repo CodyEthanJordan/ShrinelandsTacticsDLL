@@ -28,6 +28,11 @@ namespace ShrinelandsTactics.BasicStructures
             return Math.Abs(x) + Math.Abs(y);
         }
 
+        public override string ToString()
+        {
+            return "(" + x + "," + y + ")";
+        }
+
         public bool Equals(Position other)
         {
             return this.x == other.x && this.y == other.y;
