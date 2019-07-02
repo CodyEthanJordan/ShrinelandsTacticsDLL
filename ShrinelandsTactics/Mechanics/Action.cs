@@ -57,7 +57,7 @@ namespace ShrinelandsTactics.Mechanics
             Deck deck = GetDeckFor(DM, user, posTarget, charTarget);
 
             //draw card
-
+            //special drawing rules?
 
             //inform user and target what card was drawn, possibly for temporary dodge or breaking shields
 
@@ -79,6 +79,7 @@ namespace ShrinelandsTactics.Mechanics
                 {
                     case CardSource.TargetDodge:
                         number = 2; //TODO: actually implement
+                        charTarget.AddDodgeCards(DM, user, deck, card);
                         break;
                     case CardSource.TargetVitality:
                         break;

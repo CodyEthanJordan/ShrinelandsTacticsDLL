@@ -58,5 +58,19 @@ namespace DM_UnitTests
 
             Assert.AreEqual(guy1.Profeciency.Value, deck.Cards.Count(c => c.Name == "Hit"));
         }
+
+        [TestMethod]
+        public void DebugAttackTest()
+        {
+            var DM = DungeonMaster.GetDebugDM(data);
+            var attack = DebugData.GetDebugAttackAction();
+
+            var robby = DM.Characters[0];
+            var zach = DM.Characters[1];
+
+            var deck = attack.GetDeckFor(DM, robby, null, zach);
+
+            Assert.AreEqual(robby.Profeciency.Value, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
+        }
     }
 }

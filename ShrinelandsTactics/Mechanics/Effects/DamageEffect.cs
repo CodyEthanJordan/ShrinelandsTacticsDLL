@@ -14,7 +14,12 @@ namespace ShrinelandsTactics.Mechanics.Effects
         [JsonProperty]
         public int Amount { get; private set; }
 
-        public DamageEffect(DamageType TypeOfDamage, int Amount)
+        public DamageEffect()
+        {
+            TypeOfEffect = EffectType.Damage;
+        }
+
+        public DamageEffect(DamageType TypeOfDamage, int Amount) : this()
         {
             this.TypeOfDamage = TypeOfDamage;
             this.Amount = Amount;

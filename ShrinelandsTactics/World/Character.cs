@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using ShrinelandsTactics.BasicStructures;
 using ShrinelandsTactics.Mechanics;
@@ -18,6 +19,8 @@ namespace ShrinelandsTactics.World
         public string Name { get; private set; }
         [JsonProperty]
         public Dictionary<StatType, Stat> Stats { get; private set; }
+        [JsonProperty]
+        public List<Condition> Conditions { get; private set; }
 
         [JsonIgnore]
         public Stat Vitality { get { return Stats[StatType.Vitality]; } }
@@ -35,8 +38,11 @@ namespace ShrinelandsTactics.World
         public Character()
         {
             ID = Guid.NewGuid();
-            Stats = new Dictionary<StatType, Stat>();
             Name = "";
+            Stats = new Dictionary<StatType, Stat>();
+            Conditions = new List<Condition>();
+            //TODO: remove debug stuff
+            Conditions.Add(new Condition("Dodging", 2));
         }
 
         public Character(string name, int vitality, int move, int stamina, int profeciency, int strength, int mana) : this()
@@ -70,6 +76,19 @@ namespace ShrinelandsTactics.World
             this.SideID = SideID;
             this.Name = name;
             this.Pos = pos;
+        }
+
+        public void AddDodgeCards(DungeonMaster DM, Character attacker, Deck deck, Card baseCard)
+        {
+            //TODO: no magic numbers
+            deck.AddCards(baseCard, 2);
+
+            var dodging = Conditions.FirstOrDefault(c => c.Name == "Dodging");
+            if(dodging != null)
+            {
+                var tempDodge = baseCard.Clone();
+                tempDodge.E
+            }
         }
 
         public enum StatType

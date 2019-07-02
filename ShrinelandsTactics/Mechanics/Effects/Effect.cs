@@ -10,12 +10,13 @@ namespace ShrinelandsTactics.Mechanics.Effects
     public class Effect
     {
         [JsonProperty]
-        public EffectType Type { get; private set; }
+        public EffectType TypeOfEffect { get; protected set; }
 
         public enum EffectType
         {
             Move,
             Damage,
+            Null,
         }
     }
 }

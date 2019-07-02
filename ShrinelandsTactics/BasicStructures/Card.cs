@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ShrinelandsTactics.Mechanics.Effects;
 
 namespace ShrinelandsTactics.BasicStructures
 {
@@ -13,8 +14,15 @@ namespace ShrinelandsTactics.BasicStructures
         public string Name { get; private set; }
         [JsonProperty]
         public CardType TypeOfCard { get; private set; }
+        [JsonProperty]
+        public List<Effect> Effects { get; private set; }
 
-        public Card(string Name, CardType TypeOfCard)
+        private Card()
+        {
+            Effects = new List<Effect>();
+        }
+
+        public Card(string Name, CardType TypeOfCard) : this()
         {
             this.Name = Name;
             this.TypeOfCard = TypeOfCard;

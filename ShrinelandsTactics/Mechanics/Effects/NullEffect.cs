@@ -9,5 +9,9 @@ namespace ShrinelandsTactics.Mechanics.Effects
 {
     public class NullEffect : Effect
     {
+        public NullEffect()
+        {
+            TypeOfEffect = EffectType.Null;
+        }
     }
 }
