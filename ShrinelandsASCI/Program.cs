@@ -33,7 +33,9 @@ namespace ShrinelandsASCI
                 Console.Clear();
                 Console.WriteLine(DM.VisualizeWorld());
                 var result = Parser.Default.ParseArguments<MoveOptions, UseOptions, QuitOptions>(line.Split(' '))
-                    .WithParsed<QuitOptions>(opts => Environment.Exit(0));
+                    .WithParsed<QuitOptions>(opts => Environment.Exit(0))
+                    .WithParsed<MoveOptions>(opts => DM.MoveCharacter(opts.UnitName, opts.Directions));
+
 
                 line = Console.ReadLine();
             }

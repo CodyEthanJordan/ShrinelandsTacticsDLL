@@ -31,9 +31,19 @@ namespace ShrinelandsTactics.World
             }
         }
 
+        public Tile GetTile(Position pos)
+        {
+            return tiles[pos];
+        }
+
         public Tile GetTile(int x, int y)
         {
             return tiles[new Position(x, y)];
+        }
+
+        public bool IsPassable(Position pos)
+        {
+            return tiles[pos].Passable;
         }
 
         public static Map CreateFromText(string description, GameData data)
@@ -64,6 +74,11 @@ namespace ShrinelandsTactics.World
             }
 
             return map;
+        }
+
+        public static Direction ParseDirection(string dir)
+        {
+            return (Direction)Enum.Parse(typeof(Direction), dir.ToUpper());
         }
 
         public static bool IsValidMapDescription(string description)

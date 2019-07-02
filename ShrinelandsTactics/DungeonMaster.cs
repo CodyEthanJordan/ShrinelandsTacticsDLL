@@ -57,6 +57,50 @@ namespace ShrinelandsTactics
             return sb.ToString();
         }
 
+        public void MoveCharacter(string characterName, IEnumerable<string> directions)
+        {
+            Character guy = Characters.FirstOrDefault(c => c.Name.Equals(characterName, StringComparison.OrdinalIgnoreCase));
+            if(guy == null)
+            {
+                return; //return error of some kind
+            }
+
+            foreach (var dir in directions)
+            {
+                Map.Direction direction = Map.ParseDirection(dir);
+                MoveCharacter(guy, direction);
+            }
+        }
+
+        public void MoveCharacter(Character guy, Map.Direction dir)
+        {
+            var destination = guy.Pos + Map.DirectionToPosition[dir];
+            if(!IsOpen(destination))
+            {
+                return; //blocked TODO: error
+            }
+
+            //has enough movement
+            var moveCost = map.GetTile(guy.Pos).MoveCost;
+            if(moveCost > guy.Move.Value)
+            {
+                return; //TODO: error
+            }
+
+            guy.Move.Value -= moveCost;
+            guy.Pos = destination;
+        }
+
+        public bool IsOpen(Position pos)
+        {
+            if(Characters.Any(c => c.Pos == pos))
+            {
+                return false;
+            }
+
+            return map.IsPassable(pos);
+        }
+
         public static DungeonMaster GetDebugDM(GameData data)
         {
             var DM = new DungeonMaster(data);
