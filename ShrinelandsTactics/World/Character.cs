@@ -42,8 +42,6 @@ namespace ShrinelandsTactics.World
             Name = "";
             Stats = new Dictionary<StatType, Stat>();
             Conditions = new List<Condition>();
-            //TODO: remove debug stuff
-            Conditions.Add(new Condition("Dodging", 2));
         }
 
         public Character(string name, int vitality, int move, int stamina, int profeciency, int strength, int mana) : this()
@@ -55,6 +53,11 @@ namespace ShrinelandsTactics.World
             Stats.Add(StatType.Profeciency, new Stat(profeciency));
             Stats.Add(StatType.Strength, new Stat(strength));
             Stats.Add(StatType.Mana, new Stat(mana));
+        }
+
+        internal void TakeDamage(DamageEffect.DamageType typeOfDamage, int amount)
+        {
+            Stats[StatType.Vitality].Value -= amount; //TODO: check for 0?
         }
 
         public bool CanPay(Mechanics.Action action)
@@ -104,6 +107,7 @@ namespace ShrinelandsTactics.World
                 var tempDodge = baseCard.Clone() as Card;
                 var reduceDodge = new ModifyConditionEffect("Dodging", -1, this);
                 tempDodge.Effects.Add(reduceDodge);
+                deck.AddCards(tempDodge, dodging.Value);
             }
         }
 

@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using ShrinelandsTactics;
 using ShrinelandsTactics.BasicStructures;
+using ShrinelandsTactics.Mechanics.Effects;
 using ShrinelandsTactics.World;
 
 namespace DM_UnitTests
@@ -30,8 +31,9 @@ namespace DM_UnitTests
         public void TestCombiningCards()
         {
             Deck deck = new Deck();
-            Card hit = new Card("Hit", Card.CardType.Hit, null);
-            Card armor = Card.CreateReplacementCard("Glacing Blow", Card.CardType.Armor, null, hit);
+            Effect n = new NullEffect();
+            Card hit = new Card("Hit", Card.CardType.Hit, n);
+            Card armor = Card.CreateReplacementCard("Glacing Blow", Card.CardType.Armor, n, hit);
 
             int numHits = 5;
             int armorCoverage = 3;

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ShrinelandsTactics.BasicStructures;
+using ShrinelandsTactics.World;
 
 namespace ShrinelandsTactics.Mechanics.Effects
 {
@@ -14,7 +16,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
         [JsonProperty]
         public int Amount { get; set; }
 
-        public DamageEffect()
+        private DamageEffect()
         {
             TypeOfEffect = EffectType.Damage;
         }
@@ -23,6 +25,12 @@ namespace ShrinelandsTactics.Mechanics.Effects
         {
             this.TypeOfDamage = TypeOfDamage;
             this.Amount = Amount;
+        }
+
+        public override void Apply(DungeonMaster DM, Character user, Position posTarget, 
+            Character charTarget, string optionalFeatures)
+        {
+            charTarget.TakeDamage(TypeOfDamage, Amount);
         }
 
         public enum DamageType

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ShrinelandsTactics.Mechanics.Effects;
+using ShrinelandsTactics.World;
 
 namespace ShrinelandsTactics.BasicStructures
 {
@@ -55,6 +56,15 @@ namespace ShrinelandsTactics.BasicStructures
             Miss,
             Block,
             Armor,
+        }
+
+        public void ApplyEffects(DungeonMaster DM, Character user, Position posTarget, 
+            Character charTarget, string optionalFeatures)
+        {
+            foreach (var effect in Effects)
+            {
+                effect.Apply(DM, user, posTarget, charTarget, optionalFeatures);
+            }
         }
     }
 }

@@ -38,7 +38,7 @@ namespace ShrinelandsTactics.Mechanics
         }
 
         public void ResolveAction(DungeonMaster DM, Character user, Position posTarget,
-            Character charTarget, string optionalFeatures)
+            Character charTarget, string optionalFeatures, int? fated_roll=null)
         {
             if(!user.CanPay(this))
             {
@@ -50,10 +50,12 @@ namespace ShrinelandsTactics.Mechanics
 
             //draw card
             //special drawing rules?
+            Card card = deck.Draw(fated_roll);
 
-            //inform user and target what card was drawn, possibly for temporary dodge or breaking shields
+            //TODO: inform user and target what card was drawn, possibly for temporary dodge or breaking shields
 
             //apply relevant effects
+            card.ApplyEffects(DM, user, posTarget, charTarget, optionalFeatures);
         }
 
         public Deck GetDeckFor(DungeonMaster DM, Character user, Position posTarget,
@@ -80,7 +82,7 @@ namespace ShrinelandsTactics.Mechanics
                         charTarget.AddArmorCards(DM, user, deck, card);
                         break;
                     case CardSource.UserProfeciency:
-                        number = user.Profeciency.Value; //TODO: check for other effects?
+                        deck.AddCards(card, user.Profeciency.Value);
                         //TODO: maybe pass effect and cardsource to character and have it figure the number
                         break;
                     default:

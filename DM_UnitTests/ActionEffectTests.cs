@@ -25,6 +25,20 @@ namespace DM_UnitTests
         }
 
         [TestMethod]
+        public void EffectSerializationTest()
+        {
+            int damageAmount = 5;
+            DamageEffect.DamageType typeOfDamage = DamageEffect.DamageType.Bludgeoning;
+            Effect damage1 = new DamageEffect(typeOfDamage, damageAmount);
+            string json = JsonConvert.SerializeObject(damage1);
+            Effect returnedEffect = JsonConvert.DeserializeObject<Effect>(json);
+            DamageEffect damage2 = returnedEffect as DamageEffect;
+            Assert.AreEqual(damageAmount, damage2.Amount);
+            Assert.AreEqual(typeOfDamage, damage2.TypeOfDamage);
+            Assert.AreEqual(Effect.EffectType.Damage, damage2.TypeOfEffect);
+        }
+
+        [TestMethod]
         public void CanPayTest()
         {
             var guy = DebugData.GetDebugCharacter();
@@ -60,7 +74,7 @@ namespace DM_UnitTests
         }
 
         [TestMethod]
-        public void DebugAttackTest()
+        public void DebugAttackDeckTest()
         {
             var DM = DungeonMaster.GetDebugDM(data);
             var attack = DebugData.GetDebugAttackAction();
@@ -72,7 +86,42 @@ namespace DM_UnitTests
 
             Assert.AreEqual(robby.Profeciency.Value - 2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
             Assert.AreEqual(2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
-            Assert.AreEqual(4, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Miss));
+            Assert.AreEqual(2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Miss));
+
+            zach.Conditions.Add(new Condition("Dodging", 3));
+
+            deck = attack.GetDeckFor(DM, robby, null, zach);
+
+            Assert.AreEqual(robby.Profeciency.Value - 2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
+            Assert.AreEqual(2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
+            Assert.AreEqual(5, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Miss));
+
+            var glacingBlow = deck.Cards.FirstOrDefault(c => c.TypeOfCard == Card.CardType.Armor);
+            DamageEffect armorDamage = glacingBlow.Effects[0] as DamageEffect;
+            var hit = deck.Cards.FirstOrDefault(c => c.TypeOfCard == Card.CardType.Hit);
+            DamageEffect hitDamage = hit.Effects[0] as DamageEffect;
+
+            Assert.IsTrue(armorDamage.Amount < hitDamage.Amount);
+
+        }
+
+        [TestMethod]
+        public void DebugAttackOutcomeTest()
+        {
+            var DM = DungeonMaster.GetDebugDM(data);
+            var attack = DebugData.GetDebugAttackAction();
+
+            var robby = DM.Characters[0];
+            var zach = DM.Characters[1];
+            zach.Conditions.Add(new Condition("Dodging", 3));
+
+            var deck = attack.GetDeckFor(DM, robby, null, zach);
+            int hitIndex = deck.Cards.IndexOf(deck.Cards.First(c => c.TypeOfCard == Card.CardType.Hit));
+
+            attack.ResolveAction(DM, robby, null, zach, "", hitIndex);
+            //guaranteed to hit
+            Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
+
         }
     }
 }

@@ -10,9 +10,9 @@ namespace ShrinelandsTactics.BasicStructures
     public class Stat
     {
         [JsonProperty]
-        public int Value { get; private set; }
+        public int Value { get; set; }
         [JsonProperty]
-        public int Max { get; private set; }
+        public int Max { get; set; }
 
         public Stat()
         {

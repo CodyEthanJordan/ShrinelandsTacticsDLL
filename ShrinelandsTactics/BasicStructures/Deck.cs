@@ -19,6 +19,20 @@ namespace ShrinelandsTactics.BasicStructures
             }
         }
 
+        public Card Draw(int? fatedRoll = null)
+        {
+            int i = rand.Next(Cards.Count);
+
+            if(fatedRoll.HasValue)
+            {
+                i = fatedRoll.Value;
+            }
+
+            Card card = Cards[i];
+            Cards.RemoveAt(i);
+            return card;
+        }
+
         public void Consolidate()
         {
             //combine all replacing cards
@@ -38,5 +52,7 @@ namespace ShrinelandsTactics.BasicStructures
                 }
             }
         }
+
+        public static readonly Random rand = new Random();
     }
 }
