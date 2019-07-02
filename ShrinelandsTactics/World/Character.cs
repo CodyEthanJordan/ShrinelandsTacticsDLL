@@ -4,10 +4,14 @@ using ShrinelandsTactics.BasicStructures;
 
 namespace ShrinelandsTactics.World
 {
-    public class Character
+    public class Character : ICloneable
     {
         [JsonProperty]
         public readonly Guid ID;
+        [JsonProperty]
+        public Guid SideID { get; private set; }
+        [JsonProperty]
+        public Position Pos { get; private set; }
         [JsonProperty]
         public string Name { get; private set; }
         [JsonProperty]
@@ -36,6 +40,12 @@ namespace ShrinelandsTactics.World
             this.Stamina = new Stat(stamina);
             this.Profeciency = new Stat(profeciency);
             this.Strength = new Stat(strength);
+        }
+
+        public object Clone()
+        {
+            string json = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject(json);
         }
     }
 }
