@@ -37,7 +37,7 @@ namespace DM_UnitTests
 
             startingPos = zach.Pos;
             DM.MoveCharacter(zach, Map.Direction.S);
-            Assert.AreEqual(startingPos, zach.Pos); //shouldn't move since its not his turn
+            Assert.AreEqual(startingPos, zach.Pos); //shouldn't move since its not his turnbash 
         }
     }
 }

@@ -57,6 +57,31 @@ namespace ShrinelandsTactics
             return sb.ToString();
         }
 
+        public Outcome ImplicitActivation(string unitName)
+        {
+            //implicit version of activate unit for convenience
+            var outcome = new Outcome();
+            var guy = Characters.FirstOrDefault(c => c.Name.Equals(unitName, StringComparison.OrdinalIgnoreCase));
+
+            if(guy == null)
+            {
+                outcome.Message.AppendLine("No such character as " + unitName);
+                return outcome;
+            }
+
+            if (activatedCharacter != null)
+            {
+                if(activatedCharacter.ID == guy.ID)
+                {
+                    return outcome; //already active, do nothing
+                }
+                outcome.Message.AppendLine("Currently " + activatedCharacter.Name + "'s activation, needs to end first");
+                return outcome;
+            }
+
+            return Activate(guy);
+        }
+
         public bool IsActiveAndControllable(Character guy)
         {
             if(activatedCharacter == null || currentSide == null)

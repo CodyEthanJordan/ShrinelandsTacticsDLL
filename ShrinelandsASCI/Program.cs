@@ -12,12 +12,12 @@ namespace ShrinelandsASCI
     {
         static DungeonMaster DM;
         static bool gameRunning = true;
+        static StringBuilder output = new StringBuilder();
 
         static void Main(string[] args)
         {
             Console.WriteLine("Shrinelands");
             Console.WriteLine("Press Any Key to Start");
-            Console.ReadKey();
 
             var data = GameData.ReadDatafilesInDirectory("GameData");
             DM = DungeonMaster.GetDebugDM(data);
@@ -27,18 +27,27 @@ namespace ShrinelandsASCI
 
         static void GameLoop()
         {
-            string line = "";
+            string line = "help";
             while(gameRunning)
             {
+                Console.Clear();
+                output.Clear();
                 var result = Parser.Default.ParseArguments<MoveOptions, UseOptions, QuitOptions>(line.Split(' '))
                     .WithParsed<QuitOptions>(opts => Environment.Exit(0))
-                    .WithParsed<MoveOptions>(opts => DM.MoveCharacter(opts.UnitName, opts.Directions));
-
-
+                    .WithParsed<MoveOptions>(Move);
                 Console.WriteLine(DM.VisualizeWorld());
+                Console.WriteLine(output.ToString());
                 line = Console.ReadLine();
-                Console.Clear();
+
             }
+        }
+
+        static void Move(MoveOptions opt)
+        {
+            var outcome = DM.ImplicitActivation(opt.UnitName);
+            output.Append(outcome.Message.ToString());
+            outcome = DM.MoveCharacter(opt.UnitName, opt.Directions);
+            output.Append(outcome.Message.ToString());
         }
     }
 
