@@ -7,15 +7,8 @@ using Newtonsoft.Json;
 
 namespace ShrinelandsTactics.Mechanics.Effects
 {
-    public class Effect
+    public class MoveEffect : Effect
     {
-        [JsonProperty]
-        public EffectType Type { get; private set; }
 
-        public enum EffectType
-        {
-            Move,
-            Damage,
-        }
     }
 }

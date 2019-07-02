@@ -1,7 +1,9 @@
 {
   "characterData": [
-      {
-        "HP": {
+    {
+      "Name": "Debug Guy",
+      "Stats": {
+        "Vitality": {
           "Value": 10,
           "Max": 10
         },
@@ -10,8 +12,8 @@
           "Max": 5
         },
         "Stamina": {
-          "Value": 3,
-          "Max": 3
+          "Value": 4,
+          "Max": 4
         },
         "Profeciency": {
           "Value": 3,
@@ -21,7 +23,11 @@
           "Value": 3,
           "Max": 3
         },
-        "Name": "Debug Guy"
+        "Mana": {
+          "Value": 0,
+          "Max": 0
+        }
       }
+    }
   ]
 }

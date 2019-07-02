@@ -12,7 +12,7 @@ namespace DM_UnitTests
     [TestClass]
     public class CharcterTests
     {
-        private static GameData data;
+        private static GameData data = null;
 
         [ClassInitialize]
         public static void ReadGameData(TestContext context)
@@ -24,7 +24,7 @@ namespace DM_UnitTests
         public void TestDebugJsonCharacter()
         {
             var debugGuy = data.Characters.FirstOrDefault(c => c.Name == "Debug Guy");
-            Assert.AreEqual(10, debugGuy.HP.Value);
+            Assert.AreEqual(10, debugGuy.Vitality.Value);
         }
       
 
@@ -38,7 +38,7 @@ namespace DM_UnitTests
             var char2 = JsonConvert.DeserializeObject<Character>(json);
 
             Assert.AreEqual(char1.Name, char2.Name);
-            //Assert.AreEqual(char1.HP.Value, char2.HP.Value);
+            Assert.AreEqual(char1.Vitality.Value, char2.Vitality.Value);
         }
     }
 }
