@@ -43,5 +43,10 @@ namespace ShrinelandsTactics.World
             var properties = new List<Tile.TileProperties>() { Tile.TileProperties.DebugProperty };
             return new Tile("DebugEmpty", true, 1, 'e', properties);
         }
+
+        public static Character GetDebugCharacter()
+        {
+            return new Character("Debug Guy", 10);
+        }
     }
 }

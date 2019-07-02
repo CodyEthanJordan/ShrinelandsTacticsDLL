@@ -10,6 +10,9 @@ namespace ShrinelandsTactics
     public class DungeonMaster
     {
         public Map map;
+
+
+
         public DungeonMaster(GameData data)
         {
             map = DebugData.GetFlatlandMap(data);

@@ -1,0 +1,38 @@
+﻿using System;
+using System.IO;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using ShrinelandsTactics;
+using ShrinelandsTactics.BasicStructures;
+using ShrinelandsTactics.World;
+
+namespace DM_UnitTests
+{
+    [TestClass]
+    public class CharcterTests
+    {
+        private static GameData data;
+
+        [ClassInitialize]
+        public static void ReadGameData(TestContext context)
+        {
+            data = GameData.ReadDatafilesInDirectory("GameData");
+        }
+
+      
+
+        [TestMethod]
+        public void RoundTripSerializationTest()
+        {
+            var char1 = DebugData.GetDebugCharacter();
+
+            string json = JsonConvert.SerializeObject(char1);
+
+            var char2 = JsonConvert.DeserializeObject<Character>(json);
+
+            Assert.AreEqual(char1.Name, char2.Name);
+            //Assert.AreEqual(char1.HP.Value, char2.HP.Value);
+        }
+    }
+}
