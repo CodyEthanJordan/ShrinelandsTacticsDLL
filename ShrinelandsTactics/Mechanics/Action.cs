@@ -67,7 +67,6 @@ namespace ShrinelandsTactics.Mechanics
             {
                 var source = ingredient.Key;
                 var card = ingredient.Value;
-                int number = 0;
 
                 switch (source)
                 {
@@ -75,8 +74,10 @@ namespace ShrinelandsTactics.Mechanics
                         charTarget.AddDodgeCards(DM, user, deck, card);
                         break;
                     case CardSource.TargetVitality:
+                        deck.AddCards(card, charTarget.Vitality.Value);
                         break;
                     case CardSource.TargetStamina:
+                        deck.AddCards(card, charTarget.Stamina.Value);
                         break;
                     case CardSource.TargetArmorCoverage:
                         charTarget.AddArmorCards(DM, user, deck, card);

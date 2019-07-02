@@ -85,6 +85,27 @@ namespace DM_UnitTests
         }
 
         [TestMethod]
+        public void TestDrainVitality()
+        {
+            var DM = DungeonMaster.GetDebugDM(data);
+            var drain = data.Actions.FirstOrDefault(a => a.Name == "Drain Vitality");
+            var robby = DM.Characters[0];
+            robby.Mana.Value = 0;
+            var zach = DM.Characters[1];
+            zach.Mana.Value = 0;
+
+            var deck = drain.GetDeckFor(DM, robby, null, zach);
+            var hitIndex = deck.Cards.IndexOf(deck.Cards.Find(c => c.TypeOfCard == Card.CardType.Hit));
+
+            drain.ResolveAction(DM, robby, null, zach, "", hitIndex);
+
+            Assert.IsTrue(robby.Mana.Value > 0);
+            Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
+            Assert.IsTrue(robby.Vitality.Value == robby.Vitality.Max);
+            Assert.IsTrue(zach.Mana.Value == 0);
+        }
+
+        [TestMethod]
         public void DebugAttackDeckTest()
         {
             var DM = DungeonMaster.GetDebugDM(data);

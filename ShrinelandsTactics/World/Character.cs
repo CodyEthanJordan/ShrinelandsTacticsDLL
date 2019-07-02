@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using ShrinelandsTactics.BasicStructures;
 using ShrinelandsTactics.Mechanics;
 using ShrinelandsTactics.Mechanics.Effects;
+using Action = ShrinelandsTactics.Mechanics.Action;
 
 namespace ShrinelandsTactics.World
 {
@@ -22,6 +23,8 @@ namespace ShrinelandsTactics.World
         public Dictionary<StatType, Stat> Stats { get; private set; }
         [JsonProperty]
         public List<Condition> Conditions { get; private set; }
+        [JsonProperty]
+        public List<Action> Actions { get; private set; }
 
         [JsonIgnore]
         public Stat Vitality { get { return Stats[StatType.Vitality]; } }

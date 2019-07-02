@@ -10,39 +10,30 @@ using ShrinelandsTactics.World;
 
 namespace ShrinelandsTactics.Mechanics.Effects
 {
-    public class DamageEffect : Effect
+    public class RegainStatEffect : Effect
     {
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
-        public DamageType TypeOfDamage { get; private set; }
+        public Character.StatType StatAffected;
         [JsonProperty]
-        public int Amount { get; set; }
+        public int Amount;
 
-        private DamageEffect()
+        private RegainStatEffect()
         {
-            TypeOfEffect = EffectType.Damage;
+            TypeOfEffect = EffectType.RegainStat;
         }
 
-        public DamageEffect(DamageType TypeOfDamage, int Amount) : this()
+        public RegainStatEffect(Character.StatType stat, int amount) : this()
         {
-            this.TypeOfDamage = TypeOfDamage;
-            this.Amount = Amount;
+            this.StatAffected = stat;
+            this.Amount = amount;
         }
 
         public override void Apply(DungeonMaster DM, Character user, Position posTarget, 
             Character charTarget, string optionalFeatures)
         {
             var affected = AffectCaster ? user: charTarget;
-            affected.TakeDamage(TypeOfDamage, Amount);
-        }
-
-        public enum DamageType
-        {
-            Slashing,
-            Piercing,
-            Bludgeoning,
-            Fire,
-            Magic,
+            affected.Stats[StatAffected].Regain(Amount);
         }
     }
 }

@@ -30,5 +30,10 @@ namespace ShrinelandsTactics.BasicStructures
             this.Value = value;
             this.Max = max;
         }
+
+        public void Regain(int amount)
+        {
+            Value = Math.Max(Value + amount, Max);
+        }
     }
 }

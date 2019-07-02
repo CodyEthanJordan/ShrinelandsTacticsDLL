@@ -18,8 +18,10 @@ namespace ShrinelandsTactics.Mechanics.Effects
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public EffectType TypeOfEffect { get; protected set; }
+        [JsonProperty]
+        public bool AffectCaster = false;
 
-        public abstract void Apply(DungeonMaster dM, Character user, Position posTarget,
+        public abstract void Apply(DungeonMaster DM, Character user, Position posTarget,
             Character charTarget, string optionalFeatures);
 
         public enum EffectType
@@ -28,6 +30,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
             Damage,
             Null,
             ModifyCondition,
+            RegainStat,
         }
     }
 
@@ -63,6 +66,8 @@ namespace ShrinelandsTactics.Mechanics.Effects
                     return JsonConvert.DeserializeObject<NullEffect>(jo.ToString(), SpecifiedSubclassConversion);
                 case Effect.EffectType.Move:
                     return JsonConvert.DeserializeObject<MoveEffect>(jo.ToString(), SpecifiedSubclassConversion);
+                case Effect.EffectType.RegainStat:
+                    return JsonConvert.DeserializeObject<RegainStatEffect>(jo.ToString(), SpecifiedSubclassConversion);
                 default:
                     throw new Exception("Unkown effect type to deserialize");
             }

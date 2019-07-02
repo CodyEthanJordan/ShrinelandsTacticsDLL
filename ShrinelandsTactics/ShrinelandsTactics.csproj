@@ -54,6 +54,7 @@
     <Compile Include="Mechanics\Action.cs" />
     <Compile Include="Mechanics\Effects\DamageEffect.cs" />
     <Compile Include="Mechanics\Effects\ModifyConditionEffect.cs" />
+    <Compile Include="Mechanics\Effects\RegainStatEffect.cs" />
     <Compile Include="Mechanics\Effects\NullEffect.cs" />
     <Compile Include="Mechanics\Effects\MoveEffect.cs" />
     <Compile Include="Mechanics\Effects\Effect.cs" />

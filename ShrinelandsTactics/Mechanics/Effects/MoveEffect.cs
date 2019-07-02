@@ -16,6 +16,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
             Character charTarget, string optionalFeatures)
         {
             throw new NotImplementedException();
+            var affected = AffectCaster ? user: charTarget;
         }
     }
 }
