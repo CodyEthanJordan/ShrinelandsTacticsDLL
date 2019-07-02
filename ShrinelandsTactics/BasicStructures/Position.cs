@@ -38,5 +38,22 @@ namespace ShrinelandsTactics.BasicStructures
             return new Position(a.x + b.y,
                                 a.y + b.y);
         }
+
+        public static bool operator ==(Position a, Position b)
+        {
+            if (((object)a) == null || ((object)b) == null)
+                return Object.Equals(a, b);
+
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(Position a, Position b)
+        {
+            if (((object)a) == null || ((object)b) == null)
+                return !Object.Equals(a, b);
+
+            return !(a.Equals(b));
+        }
+
     }
 }

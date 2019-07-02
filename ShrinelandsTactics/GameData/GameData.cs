@@ -4,6 +4,7 @@ using ShrinelandsTactics.World;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 
 
@@ -16,6 +17,17 @@ public class GameData
     public GameData()
     {
 
+    }
+
+    public Character GetCharacterByName(string name)
+    {
+        var charTemplate = Characters.FirstOrDefault(c => c.Name == name);
+        if(charTemplate == null)
+        {
+            throw new ArgumentException("No such character as " + name);
+        }
+
+        return charTemplate.Clone() as Character;
     }
 
     public static GameData CreateFromJson(string tileJson, string characterJson)

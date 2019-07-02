@@ -44,6 +44,16 @@ namespace DM_UnitTests
             Assert.AreEqual(false, wallTile.Passable);
         }
 
+        [TestMethod]
+        public void DMVisualizationTest()
+        {
+            var DM = DungeonMaster.GetDebugDM(data);
+
+            string vis = DM.VisualizeWorld();
+
+            Assert.IsNotNull(vis);
+        }
+
 
     }
 }

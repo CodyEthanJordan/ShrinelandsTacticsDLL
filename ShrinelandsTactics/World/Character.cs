@@ -7,7 +7,7 @@ namespace ShrinelandsTactics.World
     public class Character : ICloneable
     {
         [JsonProperty]
-        public readonly Guid ID;
+        public Guid ID { get; private set; }
         [JsonProperty]
         public Guid SideID { get; private set; }
         [JsonProperty]
@@ -42,10 +42,18 @@ namespace ShrinelandsTactics.World
             this.Strength = new Stat(strength);
         }
 
+        public void InitializeIndividual(string name, Position pos, Guid SideID)
+        {
+            this.ID = Guid.NewGuid();
+            this.SideID = SideID;
+            this.Name = name;
+            this.Pos = pos;
+        }
+
         public object Clone()
         {
             string json = JsonConvert.SerializeObject(this);
-            return JsonConvert.DeserializeObject(json);
+            return JsonConvert.DeserializeObject<Character>(json);
         }
     }
 }
