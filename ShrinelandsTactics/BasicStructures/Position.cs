@@ -47,13 +47,13 @@ namespace ShrinelandsTactics.BasicStructures
         public static Position operator + (Position a, Position b)
         {
             return new Position(a.x + b.y,
-                                a.y + b.y);
+                                a.x + b.y);
         }
 
         public static Position operator -(Position a, Position b)
         {
             return new Position(a.x - b.y,
-                                a.y - b.y);
+                                a.x - b.y);
         }
 
         public static bool operator ==(Position a, Position b)
