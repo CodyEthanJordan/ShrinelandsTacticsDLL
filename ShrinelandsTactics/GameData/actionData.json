@@ -1,0 +1,55 @@
+{
+  "actionData": [
+    {
+      "Cost": { "Stamina": 1 },
+      "DeckRecipie": {
+        "UserProfeciency": {
+          "Name": "Hit",
+          "TypeOfCard": 0,
+          "Effects": [
+            {
+              "TypeOfDamage": 0,
+              "Amount": 5,
+              "TypeOfEffect": "Damage"
+            }
+          ],
+          "ReplacingCard": false,
+          "CardToReplace": null
+        },
+        "TargetDodge": {
+          "Name": "Dodge",
+          "TypeOfCard": 1,
+          "Effects": [ { "TypeOfEffect": "Null" } ],
+          "ReplacingCard": false,
+          "CardToReplace": null
+        },
+        "TargetArmorCoverage": {
+          "Name": "Glancing Blow",
+          "TypeOfCard": 3,
+          "Effects": [
+            {
+              "TypeOfDamage": 0,
+              "Amount": 5,
+              "TypeOfEffect": "Damage"
+            }
+          ],
+          "ReplacingCard": true,
+          "CardToReplace": {
+            "Name": "Hit",
+            "TypeOfCard": 0,
+            "Effects": [
+              {
+                "TypeOfDamage": 0,
+                "Amount": 5,
+                "TypeOfEffect": "Damage"
+              }
+            ],
+            "ReplacingCard": false,
+            "CardToReplace": null
+          }
+        }
+      },
+      "Name": "Attack"
+    }
+  ]
+}

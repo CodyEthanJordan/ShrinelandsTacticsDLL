@@ -12,12 +12,7 @@ public class GameData
 {
     public Dictionary<string, Tile> Tiles = new Dictionary<string, Tile>();
     public List<Character> Characters = new List<Character>();
-
-
-    public GameData()
-    {
-
-    }
+    public List<Action> Actions = new List<Action>();
 
     public Character GetCharacterByName(string name)
     {
@@ -30,7 +25,8 @@ public class GameData
         return charTemplate.Clone() as Character;
     }
 
-    public static GameData CreateFromJson(string tileJson, string characterJson)
+    public static GameData CreateFromJson(string tileJson, string characterJson,
+        string actionJson)
     {
         var data = new GameData();
 
@@ -47,6 +43,12 @@ public class GameData
             data.Characters.Add(charEntry.ToObject<Character>());
         }
 
+        j = JObject.Parse(actionJson);
+        foreach (var actionEntry in j["actionData"])
+        {
+            data.Actions.Add(actionEntry.ToObject<Action>());
+        }
+
         return data;
     }
 
@@ -55,6 +57,7 @@ public class GameData
         var data = new GameData();
         string tileJson = null;
         string charJson = null;
+        string actionJson = null;
 
         foreach (var filePath in Directory.GetFiles(path, "*.json"))
         {
@@ -68,18 +71,24 @@ public class GameData
                         tileJson = r.ReadToEnd();
                     }
                     break;
-                case "characterData":using (StreamReader r = new StreamReader(filePath))
+                case "characterData":
+                    using (StreamReader r = new StreamReader(filePath))
                     {
                         charJson = r.ReadToEnd();
                     }
                     break;
-
+                case "actionData":
+                    using (StreamReader r = new StreamReader(filePath))
+                    {
+                        actionJson = r.ReadToEnd();
+                    }
+                    break;
                 default:
                     break;
             }
         }
 
-        data = GameData.CreateFromJson(tileJson, charJson);
+        data = GameData.CreateFromJson(tileJson, charJson, actionJson);
 
         return data;
     }

@@ -17,7 +17,7 @@ namespace ShrinelandsTactics.Mechanics
         [JsonProperty]
         public Dictionary<Character.StatType, int> Cost = new Dictionary<Character.StatType, int>();
         [JsonProperty]
-        Dictionary<CardSource, Card> DeckRecipie = new Dictionary<CardSource, Card>();
+        public Dictionary<CardSource, Card> DeckRecipie = new Dictionary<CardSource, Card>();
 
         public Action(string Name, Dictionary<Character.StatType, int> Cost,
             Dictionary<CardSource, Card> DeckRecipie)

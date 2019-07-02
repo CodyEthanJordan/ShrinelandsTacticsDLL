@@ -39,6 +39,17 @@ namespace DM_UnitTests
         }
 
         [TestMethod]
+        public void ActionSerializationTest()
+        {
+            var action = DebugData.GetDebugAttackAction();
+            string json = JsonConvert.SerializeObject(action);
+            var action2 = JsonConvert.DeserializeObject<Action>(json);
+            Assert.AreEqual(action.Name, action2.Name);
+            Assert.AreEqual(action.Cost.Count, action2.Cost.Count);
+            Assert.AreEqual(action.DeckRecipie.Count, action2.DeckRecipie.Count);
+        }
+
+        [TestMethod]
         public void CanPayTest()
         {
             var guy = DebugData.GetDebugCharacter();

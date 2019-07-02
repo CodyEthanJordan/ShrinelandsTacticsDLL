@@ -68,6 +68,9 @@
     <None Include="GameData\characterData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="GameData\actionData.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="GameData\tileData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
