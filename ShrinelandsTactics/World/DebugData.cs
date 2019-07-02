@@ -58,28 +58,21 @@ namespace ShrinelandsTactics.World
             string Name = "DebugAttack";
             Dictionary<Character.StatType, int> Cost = new Dictionary<Character.StatType, int>()
             { {Character.StatType.Stamina, 1 } };
+            Effect dealDamage = new DamageEffect(DamageEffect.DamageType.Slashing, 5);
+            Effect none = new NullEffect();
 
-            Card hit = new Card("Hit", Card.CardType.Hit);
-            Card armor = new Card("Glancing Blow", Card.CardType.Armor);
-            Card miss = new Card("Dodge", Card.CardType.Miss);
+            Card hit = new Card("Hit", Card.CardType.Hit, dealDamage);
+            Card armor = Card.CreateReplacementCard("Glancing Blow", Card.CardType.Armor, dealDamage, hit);
+            Card miss = new Card("Dodge", Card.CardType.Miss, none);
 
             Dictionary<Action.CardSource, Card> DeckRecipie = new Dictionary<Mechanics.Action.CardSource, Card>()
             {
                 {Action.CardSource.UserProfeciency, hit },
                 {Action.CardSource.TargetDodge, miss },
+                {Action.CardSource.TargetArmorCoverage, armor }
             };
 
-            Effect dealDamage = new DamageEffect(DamageEffect.DamageType.Slashing, 5);
-            Effect none = new NullEffect();
-
-            Dictionary<Card, Effect> Effects = new Dictionary<Card, Effect>()
-            {
-                {hit, dealDamage },
-                {miss, none },
-            };
-
-
-            var action = new Action(Name, Cost, Effects, DeckRecipie);
+            var action = new Action(Name, Cost, DeckRecipie);
             return action;
         }
 

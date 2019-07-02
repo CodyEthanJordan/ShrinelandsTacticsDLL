@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using ShrinelandsTactics;
@@ -23,6 +24,38 @@ namespace DM_UnitTests
             Assert.AreEqual(pos2.GetHashCode(), pos3.GetHashCode());
             Assert.IsTrue(pos2 == pos3);
             Assert.AreEqual(pos2, pos2);
+        }
+
+        [TestMethod]
+        public void TestCombiningCards()
+        {
+            Deck deck = new Deck();
+            Card hit = new Card("Hit", Card.CardType.Hit, null);
+            Card armor = Card.CreateReplacementCard("Glacing Blow", Card.CardType.Armor, null, hit);
+
+            int numHits = 5;
+            int armorCoverage = 3;
+
+            deck.AddCards(hit, numHits);
+            deck.AddCards(armor, armorCoverage);
+            deck.Consolidate();
+
+            Assert.AreEqual(numHits, deck.Cards.Count);
+            Assert.AreEqual(armorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
+            Assert.AreEqual(numHits - armorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
+
+            numHits = 3;
+            armorCoverage = 10;
+            deck = new Deck();
+
+            deck.AddCards(hit, numHits);
+            deck.AddCards(armor, armorCoverage);
+            deck.Consolidate();
+
+            Assert.AreEqual(numHits, deck.Cards.Count);
+            Assert.AreEqual(numHits, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
+            Assert.AreEqual(0, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
+
 
         }
 

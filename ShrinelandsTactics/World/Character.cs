@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using ShrinelandsTactics.BasicStructures;
 using ShrinelandsTactics.Mechanics;
+using ShrinelandsTactics.Mechanics.Effects;
 
 namespace ShrinelandsTactics.World
 {
@@ -78,6 +79,20 @@ namespace ShrinelandsTactics.World
             this.Pos = pos;
         }
 
+        public void AddArmorCards(DungeonMaster DM, Character attacker, Deck deck, Card card)
+        {
+            //reduce damage by 2 TODO: no hardcode
+            //TODO: does null break this?
+            DamageEffect damage = card.Effects.FirstOrDefault(e => e.TypeOfEffect == Effect.EffectType.Damage) as DamageEffect;
+            if(damage != null)
+            {
+                damage.Amount -= 2; //TODO: don't go negative
+            }
+
+            deck.AddCards(card, 2); //TODO: check actual items
+
+        }
+
         public void AddDodgeCards(DungeonMaster DM, Character attacker, Deck deck, Card baseCard)
         {
             //TODO: no magic numbers
@@ -86,8 +101,9 @@ namespace ShrinelandsTactics.World
             var dodging = Conditions.FirstOrDefault(c => c.Name == "Dodging");
             if(dodging != null)
             {
-                var tempDodge = baseCard.Clone();
-                tempDodge.E
+                var tempDodge = baseCard.Clone() as Card;
+                var reduceDodge = new ModifyConditionEffect("Dodging", -1, this);
+                tempDodge.Effects.Add(reduceDodge);
             }
         }
 

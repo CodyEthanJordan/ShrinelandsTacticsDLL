@@ -17,6 +17,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
             Move,
             Damage,
             Null,
+            ModifyCondition,
         }
     }
 }

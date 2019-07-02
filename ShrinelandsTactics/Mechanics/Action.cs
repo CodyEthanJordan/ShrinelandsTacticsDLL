@@ -17,11 +17,9 @@ namespace ShrinelandsTactics.Mechanics
         [JsonProperty]
         public Dictionary<Character.StatType, int> Cost = new Dictionary<Character.StatType, int>();
         [JsonProperty]
-        Dictionary<Card, Effect> Effects = new Dictionary<Card, Effect>();
-        [JsonProperty]
         Dictionary<CardSource, Card> DeckRecipie = new Dictionary<CardSource, Card>();
 
-        public Action(string Name, Dictionary<Character.StatType, int> Cost, Dictionary<Card,Effect> Effects,
+        public Action(string Name, Dictionary<Character.StatType, int> Cost,
             Dictionary<CardSource, Card> DeckRecipie)
         {
             this.Name = Name;
@@ -30,12 +28,6 @@ namespace ShrinelandsTactics.Mechanics
             foreach (var kvp in Cost)
             {
                 this.Cost.Add(kvp.Key, kvp.Value);
-            }
-
-            this.Effects.Clear();
-            foreach (var kvp in Effects)
-            {
-                this.Effects.Add(kvp.Key, kvp.Value);
             }
 
             this.DeckRecipie.Clear();
@@ -78,12 +70,14 @@ namespace ShrinelandsTactics.Mechanics
                 switch (source)
                 {
                     case CardSource.TargetDodge:
-                        number = 2; //TODO: actually implement
                         charTarget.AddDodgeCards(DM, user, deck, card);
                         break;
                     case CardSource.TargetVitality:
                         break;
                     case CardSource.TargetStamina:
+                        break;
+                    case CardSource.TargetArmorCoverage:
+                        charTarget.AddArmorCards(DM, user, deck, card);
                         break;
                     case CardSource.UserProfeciency:
                         number = user.Profeciency.Value; //TODO: check for other effects?
@@ -92,9 +86,9 @@ namespace ShrinelandsTactics.Mechanics
                     default:
                         break;
                 }
-                deck.AddCards(card, number);
             }
 
+            deck.Consolidate();
             return deck;
         }
 
@@ -103,6 +97,7 @@ namespace ShrinelandsTactics.Mechanics
             TargetDodge,
             TargetVitality,
             TargetStamina,
+            TargetArmorCoverage,
             UserProfeciency,
         }
 
