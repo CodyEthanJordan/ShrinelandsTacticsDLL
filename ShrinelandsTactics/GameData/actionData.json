@@ -5,10 +5,10 @@
       "DeckRecipie": {
         "UserProfeciency": {
           "Name": "Hit",
-          "TypeOfCard": 0,
+          "TypeOfCard": "Hit",
           "Effects": [
             {
-              "TypeOfDamage": 0,
+              "TypeOfDamage": "Slashing",
               "Amount": 5,
               "TypeOfEffect": "Damage"
             }
@@ -18,17 +18,17 @@
         },
         "TargetDodge": {
           "Name": "Dodge",
-          "TypeOfCard": 1,
+          "TypeOfCard": "Miss",
           "Effects": [ { "TypeOfEffect": "Null" } ],
           "ReplacingCard": false,
           "CardToReplace": null
         },
         "TargetArmorCoverage": {
           "Name": "Glancing Blow",
-          "TypeOfCard": 3,
+          "TypeOfCard": "Armor",
           "Effects": [
             {
-              "TypeOfDamage": 0,
+              "TypeOfDamage": "Slashing",
               "Amount": 5,
               "TypeOfEffect": "Damage"
             }
@@ -36,10 +36,10 @@
           "ReplacingCard": true,
           "CardToReplace": {
             "Name": "Hit",
-            "TypeOfCard": 0,
+            "TypeOfCard": "Hit",
             "Effects": [
               {
-                "TypeOfDamage": 0,
+                "TypeOfDamage": "Slashing",
                 "Amount": 5,
                 "TypeOfEffect": "Damage"
               }
@@ -49,7 +49,7 @@
           }
         }
       },
-      "Name": "Attack"
+      "Name": "DebugAttack"
     }
   ]
 }

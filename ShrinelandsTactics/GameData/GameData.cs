@@ -5,8 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
-
+using ShrinelandsTactics.Mechanics;
+using Action = ShrinelandsTactics.Mechanics.Action;
 
 public class GameData 
 {

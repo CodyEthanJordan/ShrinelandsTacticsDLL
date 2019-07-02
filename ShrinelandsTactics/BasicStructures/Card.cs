@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using ShrinelandsTactics.Mechanics.Effects;
 using ShrinelandsTactics.World;
 
@@ -13,6 +14,7 @@ namespace ShrinelandsTactics.BasicStructures
     {
         [JsonProperty]
         public string Name { get; private set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public CardType TypeOfCard { get; private set; }
         [JsonProperty]

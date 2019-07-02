@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using ShrinelandsTactics.BasicStructures;
 using ShrinelandsTactics.World;
 
@@ -11,6 +12,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
 {
     public class DamageEffect : Effect
     {
+        [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public DamageType TypeOfDamage { get; private set; }
         [JsonProperty]
