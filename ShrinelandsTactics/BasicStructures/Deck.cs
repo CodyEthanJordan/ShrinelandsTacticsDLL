@@ -10,5 +10,14 @@ namespace ShrinelandsTactics.BasicStructures
     public class Deck
     {
 
+        public List<Card> Cards = new List<Card>();
+
+        public void AddCards(Card card, int number)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                Cards.Add(card.Clone() as Card);
+            }
+        }
     }
 }

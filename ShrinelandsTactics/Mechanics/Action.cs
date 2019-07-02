@@ -54,13 +54,47 @@ namespace ShrinelandsTactics.Mechanics
             }
 
             //generate outcome deck or mark as uncontested
-
+            Deck deck = GetDeckFor(DM, user, posTarget, charTarget);
 
             //draw card
+
 
             //inform user and target what card was drawn, possibly for temporary dodge or breaking shields
 
             //apply relevant effects
+        }
+
+        public Deck GetDeckFor(DungeonMaster DM, Character user, Position posTarget,
+            Character charTarget)
+        {
+            Deck deck = new Deck();
+
+            foreach (var ingredient in DeckRecipie)
+            {
+                var source = ingredient.Key;
+                var card = ingredient.Value;
+                int number = 0;
+
+                switch (source)
+                {
+                    case CardSource.TargetDodge:
+                        number = 2; //TODO: actually implement
+                        break;
+                    case CardSource.TargetVitality:
+                        break;
+                    case CardSource.TargetStamina:
+                        break;
+                    case CardSource.UserProfeciency:
+                        number = user.Profeciency.Value; //TODO: check for other effects?
+                        //TODO: maybe pass effect and cardsource to character and have it figure the number
+                        break;
+                    default:
+                        break;
+                }
+                deck.AddCards(card, number);
+            }
+
+            return deck;
         }
 
         public enum CardSource
