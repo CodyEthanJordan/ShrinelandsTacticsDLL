@@ -72,7 +72,8 @@ namespace ShrinelandsTactics.World
                 {Action.CardSource.TargetArmorCoverage, armor }
             };
 
-            var action = new Action(Name, Cost, DeckRecipie);
+            var action = new Action(Name, Cost, DeckRecipie,
+                Mechanics.Action.RangeType.Melee, 1);
             return action;
         }
 

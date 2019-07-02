@@ -16,7 +16,7 @@ namespace ShrinelandsTactics.World
         [JsonProperty]
         public Guid SideID { get; private set; }
         [JsonProperty]
-        public Position Pos { get; private set; }
+        public Position Pos { get; set; } //TODO: maybe should be private, use method?
         [JsonProperty]
         public string Name { get; private set; }
         [JsonProperty]

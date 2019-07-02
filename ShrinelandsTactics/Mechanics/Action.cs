@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using ShrinelandsTactics.BasicStructures;
 using ShrinelandsTactics.Mechanics.Effects;
 using ShrinelandsTactics.World;
@@ -18,11 +19,29 @@ namespace ShrinelandsTactics.Mechanics
         public Dictionary<Character.StatType, int> Cost = new Dictionary<Character.StatType, int>();
         [JsonProperty]
         public Dictionary<CardSource, Card> DeckRecipie = new Dictionary<CardSource, Card>();
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public RangeType TypeOfRange;
+        [JsonProperty]
+        public int Range;
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public ActionType TypeOfAction = ActionType.Major;
+        [JsonProperty]
+        public bool Repeatable = false;
+
+        private int timesUsed = 0;
+
 
         public Action(string Name, Dictionary<Character.StatType, int> Cost,
-            Dictionary<CardSource, Card> DeckRecipie)
+            Dictionary<CardSource, Card> DeckRecipie, RangeType TypeOfRange, int Range,
+            ActionType TypeOfAction = ActionType.Major, bool Repeatable = false)
         {
             this.Name = Name;
+            this.TypeOfRange = TypeOfRange;
+            this.Range = Range;
+            this.TypeOfAction = TypeOfAction;
+            this.Repeatable = Repeatable;
 
             this.Cost.Clear();
             foreach (var kvp in Cost)
@@ -37,10 +56,40 @@ namespace ShrinelandsTactics.Mechanics
             }
         }
 
+        public bool IsValidToDo(DungeonMaster DM, Character user, Position posTarget,
+            Character charTarget, string optionalFeatures)
+        {
+            if(!user.CanPay(this))
+            {
+                return false;
+            }
+
+            Position target;
+            if(posTarget != null)
+            {
+                target = posTarget;
+            }
+            else
+            {
+                target = charTarget.Pos;
+            }
+
+            int dist = user.Pos.Distance(target);
+
+            if(dist <= Range)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void ResolveAction(DungeonMaster DM, Character user, Position posTarget,
             Character charTarget, string optionalFeatures, int? fated_roll=null)
         {
-            if(!user.CanPay(this))
+            if(!IsValidToDo(DM, user, posTarget, charTarget, optionalFeatures))
             {
                 return; //TODO: generate error or raise event?
             }
@@ -102,6 +151,18 @@ namespace ShrinelandsTactics.Mechanics
             TargetStamina,
             TargetArmorCoverage,
             UserProfeciency,
+        }
+
+        public enum RangeType
+        {
+            Melee,
+            Ranged,
+        }
+
+        public enum ActionType
+        {
+            Major,
+            Minor,
         }
 
     }

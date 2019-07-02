@@ -56,9 +56,11 @@ namespace DM_UnitTests
             var cost = new Dictionary<Character.StatType, int>() { { Character.StatType.Stamina,1} };
             var effects = new Dictionary<Card, Effect>();
             var recipie = new Dictionary<Action.CardSource, Card>();
-            var cheapAction = new Action("test", cost, recipie);
+            var cheapAction = new Action("test", cost, recipie, ShrinelandsTactics.Mechanics.Action.RangeType.Melee,
+                1);
             cost[Character.StatType.Stamina] = 9999;
-            var expensiveAction = new Action("test", cost, recipie);
+            var expensiveAction = new Action("test", cost, recipie, ShrinelandsTactics.Mechanics.Action.RangeType.Melee,
+                1);
 
             Assert.IsTrue(guy.CanPay(cheapAction));
             Assert.IsFalse(guy.CanPay(expensiveAction));
@@ -78,7 +80,7 @@ namespace DM_UnitTests
                 { Action.CardSource.UserProfeciency, new Card("Hit", Card.CardType.Hit, nullEffect) },
             };
 
-            var action = new Action("test", cost, recipie);
+            var action = new Action("test", cost, recipie, ShrinelandsTactics.Mechanics.Action.RangeType.Melee, 1);
             Deck deck = action.GetDeckFor(DM, guy1, null, guy2);
 
             Assert.AreEqual(guy1.Profeciency.Value, deck.Cards.Count(c => c.Name == "Hit"));
@@ -151,9 +153,12 @@ namespace DM_UnitTests
             int hitIndex = deck.Cards.IndexOf(deck.Cards.First(c => c.TypeOfCard == Card.CardType.Hit));
 
             attack.ResolveAction(DM, robby, null, zach, "", hitIndex);
-            //guaranteed to hit
-            Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
+            //not adjacent so nothing happens
+            Assert.IsTrue(zach.Vitality.Value == zach.Vitality.Max);
 
+            zach.Pos = robby.Pos + new Position(1, 0);
+            attack.ResolveAction(DM, robby, null, zach, "", hitIndex);
+            Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
         }
     }
 }

@@ -2,6 +2,8 @@
   "actionData": [
     {
       "Cost": { "Stamina": 1 },
+      "Range": 7,
+      "TypeOfRange": "Ranged",
       "DeckRecipie": {
         "TargetVitality": {
           "Name": "Drain",

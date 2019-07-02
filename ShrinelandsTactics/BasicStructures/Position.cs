@@ -17,6 +17,17 @@ namespace ShrinelandsTactics.BasicStructures
             this.y = y;
         }
 
+        public int Distance(Position x)
+        {
+            var diff = this - x;
+            return diff.ManhattanMagnitude();
+        }
+
+        public int ManhattanMagnitude()
+        {
+            return Math.Abs(x) + Math.Abs(y);
+        }
+
         public bool Equals(Position other)
         {
             return this.x == other.x && this.y == other.y;
@@ -39,6 +50,12 @@ namespace ShrinelandsTactics.BasicStructures
                                 a.y + b.y);
         }
 
+        public static Position operator -(Position a, Position b)
+        {
+            return new Position(a.x - b.y,
+                                a.y - b.y);
+        }
+
         public static bool operator ==(Position a, Position b)
         {
             if (((object)a) == null || ((object)b) == null)
@@ -54,6 +71,5 @@ namespace ShrinelandsTactics.BasicStructures
 
             return !(a.Equals(b));
         }
-
     }
 }
