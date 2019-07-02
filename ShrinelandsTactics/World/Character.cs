@@ -24,6 +24,7 @@ namespace ShrinelandsTactics.World
         public readonly Stat Profeciency;
         [JsonProperty]
         public readonly Stat Strength;
+        //TODO: replace stats with Dictionary?
 
         public Character()
         {
@@ -48,6 +49,12 @@ namespace ShrinelandsTactics.World
             this.SideID = SideID;
             this.Name = name;
             this.Pos = pos;
+        }
+
+        public enum Stats
+        {
+            Vitality,
+            Stamina
         }
 
         public object Clone()

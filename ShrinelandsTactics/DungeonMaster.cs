@@ -15,12 +15,20 @@ namespace ShrinelandsTactics
         public List<Character> Characters = new List<Character>();
 
         private GameData data;
-
+        public Side currentSide { get; private set; }
+        private Character activatedCharacter = null;
 
         public DungeonMaster(GameData data)
         {
             this.data = data;
         }
+
+        public void ResolveAction()
+        {
+             
+            // validate action
+        }
+
 
         public string VisualizeWorld()
         {
@@ -57,6 +65,7 @@ namespace ShrinelandsTactics
 
             DM.Sides.Add(new Side("Heros"));
             DM.Sides.Add(new Side("The Foe"));
+            DM.currentSide = DM.Sides[0];
 
             var robby = data.GetCharacterByName("Debug Guy");
             robby.InitializeIndividual("Robby", new Position(1, 1), DM.Sides[0].ID);
