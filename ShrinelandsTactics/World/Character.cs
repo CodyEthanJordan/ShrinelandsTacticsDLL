@@ -117,6 +117,12 @@ namespace ShrinelandsTactics.World
             }
         }
 
+        public string OneLineStatus()
+        {
+            return Name + " Vit:" + Vitality + " Sta:" + Stamina + 
+                " Move:" + Move + " Pos:" + Pos;
+        }
+
         public enum StatType
         {
             Vitality,

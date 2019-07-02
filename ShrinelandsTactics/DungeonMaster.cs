@@ -13,6 +13,7 @@ namespace ShrinelandsTactics
         public Map map;
         public List<Side> Sides = new List<Side>();
         public List<Character> Characters = new List<Character>();
+        public int TurnCount = 0;
 
         private GameData data;
         public Side currentSide { get; private set; }
@@ -33,7 +34,17 @@ namespace ShrinelandsTactics
         public string VisualizeWorld()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Turn 0");
+            sb.AppendLine("Current Side: " + currentSide.Name);
+            if(activatedCharacter == null)
+            {
+                sb.AppendLine("No Active Character");
+            }
+            else
+            {
+                sb.AppendLine("Active Character: " + activatedCharacter.Name);
+            }
+
+            sb.AppendLine("Turn: " + TurnCount);
 
             for (int y = 0; y < map.Height; y++)
             {
@@ -124,9 +135,17 @@ namespace ShrinelandsTactics
 
             foreach (var dir in directions)
             {
-                Map.Direction direction = Map.ParseDirection(dir);
-                var o = MoveCharacter(guy, direction);
-                outcome.Message.AppendLine(o.Message.ToString());
+                Map.Direction direction;
+                try
+                {
+                    direction = Map.ParseDirection(dir);
+                    var o = MoveCharacter(guy, direction);
+                    outcome.Message.AppendLine(o.Message.ToString());
+                }
+                catch
+                {
+                    outcome.Message.AppendLine(dir + " is not a real direction, try N S E W NE NW SE SW");
+                }
             }
 
             return outcome;

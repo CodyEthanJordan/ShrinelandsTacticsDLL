@@ -32,14 +32,23 @@ namespace ShrinelandsASCI
             {
                 Console.Clear();
                 output.Clear();
-                var result = Parser.Default.ParseArguments<MoveOptions, UseOptions, QuitOptions>(line.Split(' '))
-                    .WithParsed<QuitOptions>(opts => Environment.Exit(0))
-                    .WithParsed<MoveOptions>(Move);
+                var result = Parser.Default.ParseArguments<
+                    MoveOptions, UseOptions, QuitOptions, StatusOptions
+                    >(line.Split(' '))
+                    .WithParsed<MoveOptions>(Move)
+                    .WithParsed<UseOptions>(Use)
+                    .WithParsed<QuitOptions>(opts => Environment.Exit(0)).
+                    WithParsed<StatusOptions>(ShowStatus);
                 Console.WriteLine(DM.VisualizeWorld());
                 Console.WriteLine(output.ToString());
                 line = Console.ReadLine();
 
             }
+        }
+
+        static void Use(UseOptions opt)
+        {
+            throw new NotImplementedException();
         }
 
         static void Move(MoveOptions opt)
@@ -49,9 +58,25 @@ namespace ShrinelandsASCI
             outcome = DM.MoveCharacter(opt.UnitName, opt.Directions);
             output.Append(outcome.Message.ToString());
         }
+
+        static void ShowStatus(StatusOptions opt)
+        {
+            foreach (var side in DM.Sides)
+            {
+                output.AppendLine(side.Name);
+                foreach (var guy in DM.Characters.FindAll(c => c.SideID == side.ID))
+                {
+                    output.AppendLine("   " + guy.OneLineStatus());
+                }
+            }
+        }
     }
 
-    [Verb("move", HelpText = "move unit direction")]
+    //TODO: think verb to see deck for ability?
+    //TODO: "status" verb to show sides, units, and general status
+
+    //TODO: why rquire unit name if it has to be activated anyway
+    [Verb("move", HelpText = "move unitName s ne n")]
     class MoveOptions
     {
         [Value(0)]
@@ -60,10 +85,16 @@ namespace ShrinelandsASCI
         public IEnumerable<string> Directions { get; set; }
     }
 
-    [Verb("use", HelpText = "use ability")]
+    [Verb("use", HelpText = "use AbilityName ")]
     class UseOptions
     {
 
+    }
+
+    [Verb("status", HelpText="show game status summary")]
+    class StatusOptions
+    {
+        //TODO: option for detailed status on specific unit
     }
 
     [Verb("quit", HelpText = "exit the program")]

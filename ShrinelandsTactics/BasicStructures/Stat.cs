@@ -35,5 +35,10 @@ namespace ShrinelandsTactics.BasicStructures
         {
             Value = Math.Max(Value + amount, Max);
         }
+
+        public override string ToString()
+        {
+            return Value + "/" + Max;
+        }
     }
 }
