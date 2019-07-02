@@ -1,0 +1,40 @@
+{
+  "tileData": [
+    {
+      "Name": "DebugWall",
+      "MoveCost": 1,
+      "Passable": false,
+      "Icon": "D",
+      "Properties": [ "DebugProperty" ]
+    },
+    {
+      "Name": "Wall",
+      "MoveCost": 1,
+      "Passable": false,
+      "Icon": "#",
+      "Properties": []
+    },
+    {
+      "Name": "Floor",
+      "MoveCost": 1,
+      "Passable": true,
+      "Icon": ".",
+      "Properties": []
+    },
+    {
+      "Name": "Fire",
+      "MoveCost": 1,
+      "Passable": true,
+      "Icon": "*",
+      "Properties": [ "OnFire" ]
+    },
+    {
+      "Name": "Shallow Pool",
+      "MoveCost": 2,
+      "Passable": true,
+      "Icon": "w",
+      "Properties": []
+    }
+
+  ]
+}
