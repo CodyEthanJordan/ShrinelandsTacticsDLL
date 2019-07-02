@@ -55,8 +55,11 @@
     <Compile Include="World\Tile.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GameData\characterData.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="GameData\tileData.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

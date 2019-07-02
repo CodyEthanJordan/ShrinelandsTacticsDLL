@@ -20,6 +20,12 @@ namespace DM_UnitTests
             data = GameData.ReadDatafilesInDirectory("GameData");
         }
 
+        [TestMethod]
+        public void TestDebugJsonCharacter()
+        {
+            var debugGuy = data.Characters.FirstOrDefault(c => c.Name == "Debug Guy");
+            Assert.AreEqual(10, debugGuy.HP.Value);
+        }
       
 
         [TestMethod]

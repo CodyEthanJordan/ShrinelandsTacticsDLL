@@ -46,7 +46,7 @@ namespace ShrinelandsTactics.World
 
         public static Character GetDebugCharacter()
         {
-            return new Character("Debug Guy", 10);
+            return new Character("Debug Guy", 10, 5, 4, 3, 3);
         }
     }
 }

@@ -10,6 +10,7 @@ using System.IO;
 public class GameData 
 {
     public Dictionary<string, Tile> Tiles = new Dictionary<string, Tile>();
+    public List<Character> Characters = new List<Character>();
 
 
     public GameData()
@@ -17,7 +18,7 @@ public class GameData
 
     }
 
-    public static GameData CreateFromJson(string tileJson)
+    public static GameData CreateFromJson(string tileJson, string characterJson)
     {
         var data = new GameData();
 
@@ -28,6 +29,12 @@ public class GameData
             data.Tiles.Add(t.Name, t);
         }
 
+        j = JObject.Parse(characterJson);
+        foreach (var charEntry in j["characterData"])
+        {
+            data.Characters.Add(charEntry.ToObject<Character>());
+        }
+
         return data;
     }
 
@@ -35,6 +42,7 @@ public class GameData
     {
         var data = new GameData();
         string tileJson = null;
+        string charJson = null;
 
         foreach (var filePath in Directory.GetFiles(path, "*.json"))
         {
@@ -48,12 +56,18 @@ public class GameData
                         tileJson = r.ReadToEnd();
                     }
                     break;
+                case "characterData":using (StreamReader r = new StreamReader(filePath))
+                    {
+                        charJson = r.ReadToEnd();
+                    }
+                    break;
+
                 default:
                     break;
             }
         }
 
-        data = GameData.CreateFromJson(tileJson);
+        data = GameData.CreateFromJson(tileJson, charJson);
 
         return data;
     }
