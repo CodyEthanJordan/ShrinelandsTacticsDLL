@@ -9,6 +9,7 @@ using ShrinelandsTactics.World;
 using ShrinelandsTactics.Mechanics;
 using System.Collections.Generic;
 using ShrinelandsTactics.Mechanics.Effects;
+using Action = ShrinelandsTactics.Mechanics.Action;
 
 namespace DM_UnitTests
 {
@@ -28,10 +29,11 @@ namespace DM_UnitTests
         {
             var guy = DebugData.GetDebugCharacter();
             var cost = new Dictionary<Character.StatType, int>() { { Character.StatType.Stamina,1} };
-            var effects = new List<Effect>();
-            var cheapAction = new ShrinelandsTactics.Mechanics.Action("test", cost, effects);
+            var effects = new Dictionary<Card, Effect>();
+            var recipie = new Dictionary<Action.CardSource, Card>();
+            var cheapAction = new Action("test", cost, effects, recipie);
             cost[Character.StatType.Stamina] = 9999;
-            var expensiveAction = new ShrinelandsTactics.Mechanics.Action("test", cost, effects);
+            var expensiveAction = new Action("test", cost, effects, recipie);
 
             Assert.IsTrue(guy.CanPay(cheapAction));
             Assert.IsFalse(guy.CanPay(expensiveAction));

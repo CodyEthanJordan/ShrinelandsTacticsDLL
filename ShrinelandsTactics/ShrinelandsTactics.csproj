@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicStructures\Card.cs" />
+    <Compile Include="BasicStructures\Deck.cs" />
     <Compile Include="BasicStructures\Stat.cs" />
     <Compile Include="BasicStructures\Position.cs" />
     <Compile Include="DungeonMaster.cs" />

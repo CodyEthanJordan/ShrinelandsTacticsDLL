@@ -17,11 +17,12 @@ namespace ShrinelandsTactics.Mechanics
         [JsonProperty]
         public Dictionary<Character.StatType, int> Cost = new Dictionary<Character.StatType, int>();
         [JsonProperty]
-        List<Effect> Effects = new List<Effect>();
+        Dictionary<Card, Effect> Effects = new Dictionary<Card, Effect>();
+        [JsonProperty]
+        Dictionary<CardSource, Card> DeckRecipie = new Dictionary<CardSource, Card>();
 
-
-
-        public Action(string Name, Dictionary<Character.StatType, int> Cost, List<Effect> Effects)
+        public Action(string Name, Dictionary<Character.StatType, int> Cost, Dictionary<Card,Effect> Effects,
+            Dictionary<CardSource, Card> DeckRecipie)
         {
             this.Name = Name;
 
@@ -32,9 +33,15 @@ namespace ShrinelandsTactics.Mechanics
             }
 
             this.Effects.Clear();
-            foreach (var effect in Effects)
+            foreach (var kvp in Effects)
             {
-                this.Effects.Add(effect);
+                this.Effects.Add(kvp.Key, kvp.Value);
+            }
+
+            this.DeckRecipie.Clear();
+            foreach (var kvp in DeckRecipie)
+            {
+                this.DeckRecipie.Add(kvp.Key, kvp.Value);
             }
         }
 
@@ -45,6 +52,23 @@ namespace ShrinelandsTactics.Mechanics
             {
                 return; //TODO: generate error or raise event?
             }
+
+            //generate outcome deck or mark as uncontested
+
+
+            //draw card
+
+            //inform user and target what card was drawn, possibly for temporary dodge or breaking shields
+
+            //apply relevant effects
+        }
+
+        public enum CardSource
+        {
+            TargetDodge,
+            TargetVitality,
+            TargetStamina,
+            UserProfeciency,
         }
 
     }
