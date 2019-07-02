@@ -70,5 +70,23 @@ namespace ShrinelandsTactics.World
         {
             return true; //TODO: implement map validation
         }
+
+        public enum Direction
+        {
+            N, S, E, W, NE, NW, SW, SE
+        }
+
+        public static readonly Dictionary<Direction, Position> DirectionToPosition =
+            new Dictionary<Direction, Position>()
+            {
+                { Direction.N, new Position(0, -1) },
+                { Direction.S, new Position(0, 1) },
+                { Direction.E, new Position(1, 0) },
+                { Direction.W, new Position(-1, 0) },
+                { Direction.NW, new Position(-1, -1) },
+                { Direction.SW, new Position(-1, 1) },
+                { Direction.NE, new Position(1, -1) },
+                { Direction.SE, new Position(1, 1) },
+            };
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommandLine;
 
 namespace ShrinelandsASCI
 {
@@ -26,12 +27,37 @@ namespace ShrinelandsASCI
 
         static void GameLoop()
         {
+            string line = "";
             while(gameRunning)
             {
+                Console.Clear();
                 Console.WriteLine(DM.VisualizeWorld());
-                var line = Console.ReadLine();
+                var result = Parser.Default.ParseArguments<MoveOptions, UseOptions, QuitOptions>(line.Split(' '))
+                    .WithParsed<QuitOptions>(opts => Environment.Exit(0));
 
+                line = Console.ReadLine();
             }
         }
+    }
+
+    [Verb("move", HelpText = "move unit direction")]
+    class MoveOptions
+    {
+        [Value(0)]
+        public string UnitName { get; set; }
+        [Value(1)]
+        public IEnumerable<string> Directions { get; set; }
+    }
+
+    [Verb("use", HelpText = "use ability")]
+    class UseOptions
+    {
+
+    }
+
+    [Verb("quit", HelpText = "exit the program")]
+    class QuitOptions
+    {
+
     }
 }
