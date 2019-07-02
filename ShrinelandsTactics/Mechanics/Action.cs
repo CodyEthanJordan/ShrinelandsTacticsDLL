@@ -15,9 +15,28 @@ namespace ShrinelandsTactics.Mechanics
         [JsonProperty]
         public string Name { get; private set; }
         [JsonProperty]
-        public Dictionary<Character.StatType, int> cost = new Dictionary<Character.StatType, int>();
+        public Dictionary<Character.StatType, int> Cost = new Dictionary<Character.StatType, int>();
         [JsonProperty]
         List<Effect> Effects = new List<Effect>();
+
+
+
+        public Action(string Name, Dictionary<Character.StatType, int> Cost, List<Effect> Effects)
+        {
+            this.Name = Name;
+
+            this.Cost.Clear();
+            foreach (var kvp in Cost)
+            {
+                this.Cost.Add(kvp.Key, kvp.Value);
+            }
+
+            this.Effects.Clear();
+            foreach (var effect in Effects)
+            {
+                this.Effects.Add(effect);
+            }
+        }
 
         public void ResolveAction(DungeonMaster DM, Character user, Position posTarget,
             Character charTarget, string optionalFeatures)

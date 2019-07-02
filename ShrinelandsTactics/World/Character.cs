@@ -52,7 +52,16 @@ namespace ShrinelandsTactics.World
 
         public bool CanPay(Mechanics.Action action)
         {
-            return true; //TODO: do actual check
+            //TODO: factor in complicated qualities
+            foreach (var kvp in action.Cost)
+            {
+                if(Stats[kvp.Key].Value < kvp.Value)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void InitializeIndividual(string name, Position pos, Guid SideID)
