@@ -63,6 +63,11 @@ namespace ShrinelandsTactics.World
             Stats.Add(StatType.Mana, new Stat(mana));
         }
 
+        public void NewTurn()
+        {
+            HasBeenActivated = false;
+        }
+
         public void Activate()
         {
             //TODO: return an Outcome?

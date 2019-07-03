@@ -118,6 +118,11 @@ namespace ShrinelandsTactics
             i = (i + 1) % Sides.Count;
             currentSide = Sides[i];
 
+            foreach (var guy in Characters.FindAll(c => c.SideID == currentSide.ID))
+            {
+                guy.NewTurn();
+            }
+
             return outcome;
         }
 

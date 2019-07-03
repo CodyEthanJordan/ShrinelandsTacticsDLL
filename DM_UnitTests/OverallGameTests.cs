@@ -37,13 +37,42 @@ namespace DM_UnitTests
 
             startingPos = zach.Pos;
             DM.MoveCharacter(zach, Map.Direction.S);
-            Assert.AreEqual(startingPos, zach.Pos); //shouldn't move since its not his turnbash 
+            Assert.AreEqual(startingPos, zach.Pos); //shouldn't move since its not his side's turn
         }
 
         [TestMethod]
         public void TurnPassingTest()
         {
+            var DM = DungeonMaster.GetDebugDM(data);
+            var robby = DM.Characters[0];
+            var zach = DM.Characters[1];
 
+            Assert.IsTrue(DM.currentSide.ID == robby.SideID);
+
+            DM.Activate(robby);
+            DM.MoveCharacter(robby, Map.Direction.S);
+            robby.HasActed = true;
+            DM.EndTurn();
+
+            Assert.IsTrue(DM.currentSide.ID == zach.SideID);
+            Assert.AreEqual(0, DM.TurnCount);
+            Assert.IsFalse(zach.HasBeenActivated);
+            Assert.IsFalse(zach.HasActed);
+            Assert.IsTrue(robby.HasActed);
+
+            DM.EndTurn();
+
+            Assert.IsTrue(zach.HasBeenActivated);
+            Assert.IsTrue(robby.HasActed);
+            Assert.IsFalse(robby.HasBeenActivated);
+            Assert.IsTrue(robby.Move.Value < robby.Move.Max);
+            Assert.AreEqual(1, DM.TurnCount);
+
+            DM.Activate(robby);
+
+            Assert.IsTrue(robby.HasBeenActivated);
+            Assert.AreEqual(robby.Move.Max, robby.Move.Value);
+           
         }
     }
 }
