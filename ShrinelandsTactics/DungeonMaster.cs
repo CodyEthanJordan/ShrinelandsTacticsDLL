@@ -146,6 +146,7 @@ namespace ShrinelandsTactics
             }
 
             guy.Activate();
+            activatedCharacter = guy;
             outcome.Message.AppendLine("Starting activation for " + guy.Name);
             return outcome;
         }

@@ -39,5 +39,11 @@ namespace DM_UnitTests
             DM.MoveCharacter(zach, Map.Direction.S);
             Assert.AreEqual(startingPos, zach.Pos); //shouldn't move since its not his turnbash 
         }
+
+        [TestMethod]
+        public void TurnPassingTest()
+        {
+
+        }
     }
 }

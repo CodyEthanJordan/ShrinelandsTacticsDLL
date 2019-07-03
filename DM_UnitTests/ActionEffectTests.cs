@@ -58,8 +58,8 @@ namespace DM_UnitTests
             var recipie = new Dictionary<Action.CardSource, Card>();
             var cheapAction = new Action("test", cost, recipie, ShrinelandsTactics.Mechanics.Action.RangeType.Melee,
                 1);
-            cost[Character.StatType.Stamina] = 9999;
-            var expensiveAction = new Action("test", cost, recipie, ShrinelandsTactics.Mechanics.Action.RangeType.Melee,
+            var cost2 = new Dictionary<Character.StatType, int>() { { Character.StatType.Stamina,999} };
+            var expensiveAction = new Action("test", cost2, recipie, ShrinelandsTactics.Mechanics.Action.RangeType.Melee,
                 1);
 
             Assert.IsTrue(guy.CanPay(cheapAction));
