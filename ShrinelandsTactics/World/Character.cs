@@ -63,7 +63,26 @@ namespace ShrinelandsTactics.World
             Stats.Add(StatType.Mana, new Stat(mana));
         }
 
-        internal void TakeDamage(DamageEffect.DamageType typeOfDamage, int amount)
+        public void Activate()
+        {
+            //TODO: return an Outcome?
+            Stamina.Regain(2);
+            HasActed = false;
+            HasBeenActivated = true;
+            Move.Value = Move.Max;
+            foreach (var condition in Conditions)
+            {
+                condition.StartingActivation();
+            }
+            Conditions.RemoveAll(c => c.Duration <= 0);
+        }
+
+        public void EndActivation()
+        {
+            //usually won't mean anything
+        }
+
+        public void TakeDamage(DamageEffect.DamageType typeOfDamage, int amount)
         {
             Stats[StatType.Vitality].Value -= amount; //TODO: check for 0?
         }

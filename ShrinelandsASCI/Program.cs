@@ -33,12 +33,13 @@ namespace ShrinelandsASCI
                 Console.Clear();
                 output.Clear();
                 var result = Parser.Default.ParseArguments<
-                    MoveOptions, UseOptions, QuitOptions, StatusOptions
+                    MoveOptions, UseOptions, QuitOptions, StatusOptions, EndTurnOptions
                     >(line.Split(' '))
                     .WithParsed<MoveOptions>(Move)
                     .WithParsed<UseOptions>(Use)
-                    .WithParsed<QuitOptions>(opts => Environment.Exit(0)).
-                    WithParsed<StatusOptions>(ShowStatus);
+                    .WithParsed<QuitOptions>(opts => Environment.Exit(0))
+                    .WithParsed<StatusOptions>(ShowStatus)
+                    .WithParsed<EndTurnOptions>(opts => DM.EndTurn());
                 Console.WriteLine(DM.VisualizeWorld());
                 if(DM.activatedCharacter != null)
                 {
@@ -101,6 +102,12 @@ namespace ShrinelandsASCI
     class StatusOptions
     {
         //TODO: option for detailed status on specific unit
+    }
+
+    [Verb("endturn", HelpText="ends your turn")]
+    class EndTurnOptions
+    {
+
     }
 
     [Verb("quit", HelpText = "exit the program")]

@@ -16,11 +16,18 @@ namespace ShrinelandsTactics.Mechanics
         public string Name { get; private set; }
         [JsonProperty]
         public int Value { get; private set; }
+        [JsonProperty]
+        public int Duration { get; private set; }
 
         public Condition(string Name, int Value)
         {
             this.Name = Name;
             this.Value = Value;
+        }
+
+        public void StartingActivation()
+        {
+            Duration--;
         }
 
         //TODO: add handlers for start turn, end turn, so forth?

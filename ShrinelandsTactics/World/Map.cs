@@ -103,5 +103,10 @@ namespace ShrinelandsTactics.World
                 { Direction.NE, new Position(1, -1) },
                 { Direction.SE, new Position(1, 1) },
             };
+
+        public void NewTurn()
+        {
+            //TODO: update tiles
+        }
     }
 }

@@ -93,6 +93,34 @@ namespace ShrinelandsTactics
             return Activate(guy);
         }
 
+        public Outcome EndTurn()
+        {
+            var outcome = new Outcome();
+            // TODO: validate this 
+            //need to quickly activate and de-activate remaining units
+            foreach (var leftoverGuy in Characters.FindAll(c => c.SideID == currentSide.ID && 
+                                                            c.HasBeenActivated == false))
+            {
+                leftoverGuy.Activate();
+                leftoverGuy.EndActivation();
+            }
+
+            //update turn counter
+            if(Sides.IndexOf(currentSide) == Sides.Count - 1)
+            {
+                TurnCount++; //we're going to the next turn now that all sides have acted
+                //TODO: this assumes all characters on every side act before the side passes turn
+                map.NewTurn();
+            }
+
+            //pass control to next side
+            int i = Sides.IndexOf(currentSide);
+            i = (i + 1) % Sides.Count;
+            currentSide = Sides[i];
+
+            return outcome;
+        }
+
         public bool IsActiveAndControllable(Character guy)
         {
             if(activatedCharacter == null || currentSide == null)
@@ -117,8 +145,7 @@ namespace ShrinelandsTactics
                 return outcome;
             }
 
-            guy.HasBeenActivated = true;
-            activatedCharacter = guy;
+            guy.Activate();
             outcome.Message.AppendLine("Starting activation for " + guy.Name);
             return outcome;
         }

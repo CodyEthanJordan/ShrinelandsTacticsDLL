@@ -67,6 +67,9 @@
     <Compile Include="World\Tile.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GameData\conepts.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="GameData\characterData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
