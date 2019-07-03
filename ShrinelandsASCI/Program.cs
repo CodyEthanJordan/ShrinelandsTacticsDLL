@@ -40,6 +40,10 @@ namespace ShrinelandsASCI
                     .WithParsed<QuitOptions>(opts => Environment.Exit(0)).
                     WithParsed<StatusOptions>(ShowStatus);
                 Console.WriteLine(DM.VisualizeWorld());
+                if(DM.activatedCharacter != null)
+                {
+                    Console.WriteLine(DM.activatedCharacter.GetInfo(1));
+                }
                 Console.WriteLine(output.ToString());
                 line = Console.ReadLine();
 
@@ -66,7 +70,7 @@ namespace ShrinelandsASCI
                 output.AppendLine(side.Name);
                 foreach (var guy in DM.Characters.FindAll(c => c.SideID == side.ID))
                 {
-                    output.AppendLine("   " + guy.OneLineStatus());
+                    output.AppendLine("   " + guy.GetInfo(0));
                 }
             }
         }
@@ -88,6 +92,8 @@ namespace ShrinelandsASCI
     [Verb("use", HelpText = "use AbilityName ")]
     class UseOptions
     {
+        [Value(0)]
+        public string Ability { get; set; } //can be ability name (possibly with quotes) or number on activated character
 
     }
 

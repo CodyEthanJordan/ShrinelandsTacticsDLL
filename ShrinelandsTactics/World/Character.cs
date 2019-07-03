@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Newtonsoft.Json;
 using ShrinelandsTactics.BasicStructures;
 using ShrinelandsTactics.Mechanics;
@@ -48,6 +49,7 @@ namespace ShrinelandsTactics.World
             Name = "";
             Stats = new Dictionary<StatType, Stat>();
             Conditions = new List<Condition>();
+            Actions = new List<Mechanics.Action>();
         }
 
         public Character(string name, int vitality, int move, int stamina, int profeciency, int strength, int mana) : this()
@@ -117,10 +119,31 @@ namespace ShrinelandsTactics.World
             }
         }
 
-        public string OneLineStatus()
+        public string GetInfo(int verbosity)
         {
-            return Name + " Vit:" + Vitality + " Sta:" + Stamina + 
-                " Move:" + Move + " Pos:" + Pos;
+            switch (verbosity)
+            {
+                case 0:
+                    return Name + " Vit:" + Vitality + " Sta:" + Stamina + 
+                        " Move:" + Move + " Pos:" + Pos;
+                case 1:
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine(Name);
+                    foreach (var kvp in Stats)
+                    {
+                        sb.AppendLine(kvp.Key + ":" + kvp.Value);
+                    }
+                    for (int i = 0; i < Actions.Count; i++)
+                    {
+                        sb.Append(i + ":" + Actions[i].Name + "  ");
+                    }
+                    sb.AppendLine();
+                    return sb.ToString();
+                default:
+                    break;
+            }
+
+            return null;
         }
 
         public enum StatType

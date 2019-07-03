@@ -17,7 +17,7 @@ namespace ShrinelandsTactics
 
         private GameData data;
         public Side currentSide { get; private set; }
-        private Character activatedCharacter = null;
+        public Character activatedCharacter = null;
 
         public DungeonMaster(GameData data)
         {

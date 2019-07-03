@@ -11,7 +11,7 @@ using ShrinelandsTactics.World;
 
 namespace ShrinelandsTactics.Mechanics
 {
-    public class Action
+    public class Action : ICloneable
     {
         [JsonProperty]
         public string Name { get; private set; }
@@ -43,17 +43,8 @@ namespace ShrinelandsTactics.Mechanics
             this.TypeOfAction = TypeOfAction;
             this.Repeatable = Repeatable;
 
-            this.Cost.Clear();
-            foreach (var kvp in Cost)
-            {
-                this.Cost.Add(kvp.Key, kvp.Value);
-            }
-
-            this.DeckRecipie.Clear();
-            foreach (var kvp in DeckRecipie)
-            {
-                this.DeckRecipie.Add(kvp.Key, kvp.Value);
-            }
+            this.Cost = Cost;
+            this.DeckRecipie = DeckRecipie;
         }
 
         public bool IsValidToDo(DungeonMaster DM, Character user, Position posTarget,
@@ -144,6 +135,12 @@ namespace ShrinelandsTactics.Mechanics
             return deck;
         }
 
+        public object Clone()
+        {
+            string json = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<Action>(json);
+        }
+
         public enum CardSource
         {
             TargetDodge,
@@ -164,6 +161,5 @@ namespace ShrinelandsTactics.Mechanics
             Major,
             Minor,
         }
-
     }
 }

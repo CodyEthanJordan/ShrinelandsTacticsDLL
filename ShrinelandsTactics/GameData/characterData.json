@@ -27,7 +27,10 @@
           "Value": 0,
           "Max": 0
         }
-      }
+      },
+      "Actions": [
+        {"Name": "Attack"}
+      ]
     }
   ]
 }
