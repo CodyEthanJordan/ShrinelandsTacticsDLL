@@ -44,9 +44,10 @@
           "TypeOfCard": "Hit",
           "Effects": [
             {
-              "TypeOfDamage": "Slashing",
-              "Amount": 5,
-              "TypeOfEffect": "Damage"
+              "TypeOfEffect": "Redraw",
+              "DeckRecipie": {
+
+              }
             }
           ],
           "ReplacingCard": false,

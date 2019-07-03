@@ -160,5 +160,16 @@ namespace DM_UnitTests
             attack.ResolveAction(DM, robby, null, zach, "", hitIndex);
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
         }
+
+        [TestMethod]
+        public void DeserializeAttackTest()
+        {
+            var DM = DungeonMaster.GetDebugDM(data);
+            var robby = DM.Characters[0];
+
+            Assert.IsTrue(robby.Actions.Any(a => a.Name == "Attack"));
+
+            //TODO: assert stuff about attack actions
+        }
     }
 }
