@@ -62,18 +62,15 @@ namespace ShrinelandsTactics.World
             { {Character.StatType.Stamina, 1 } };
 
             Card hit = new Card("Hit", Card.CardType.Hit);
-            Card armor = Card.CreateReplacementCard("Glancing Blow", Card.CardType.Armor, hit);
-            Card miss = new Card("Dodge", Card.CardType.Miss);
 
             Dictionary<Action.CardSource, Card> DeckRecipie = new Dictionary<Mechanics.Action.CardSource, Card>()
             {
                 {Action.CardSource.UserBaseAttack, hit },
-                {Action.CardSource.TargetDodge, miss },
-                {Action.CardSource.TargetArmorCoverage, armor }
             };
 
             var action = new Action(Name, Cost, DeckRecipie,
                 Mechanics.Action.RangeType.Melee, 1);
+            action.Tags.Add(Mechanics.Action.AbilityType.Attack);
             return action;
         }
 

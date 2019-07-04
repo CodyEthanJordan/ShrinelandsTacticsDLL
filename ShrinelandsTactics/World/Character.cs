@@ -114,22 +114,28 @@ namespace ShrinelandsTactics.World
             this.Pos = pos;
         }
 
-        internal void AddBaseAttackCards(DungeonMaster dM, Character charTarget, Deck deck)
+        public void AddArmorCards(Deck deck, DungeonMaster DM, Character attacker, Action action)
         {
-            throw new NotImplementedException();
-        }
+            int coverage = 2; //TODO: no magic numbers, actually use items
+            int protection = 2; //TODO: doesnt work for slimes
 
-        public void AddDodgeCards(DungeonMaster DM, Character attacker, Deck deck, Card baseCard)
+            var hit = new Card("Hit", Card.CardType.Hit);
+            var armor = Card.CreateReplacementCard("Glancing Blow", Card.CardType.Armor, hit);
+            deck.AddCards(armor, coverage); //armor card causes hit to be redirected to character for resolution?
+        }
+       
+        public void AddDodgeCards(Deck deck, DungeonMaster DM, Character attacker, Action action)
         {
             //TODO: no magic numbers
-            deck.AddCards(baseCard, 2);
+            var defense = new Card("Defense", Card.CardType.Miss);
+            deck.AddCards(defense, 2);
 
+            //TODO: pass to condition and query
             var dodging = Conditions.FirstOrDefault(c => c.Name == "Dodging");
             if(dodging != null)
             {
-                var tempDodge = baseCard.Clone() as Card;
-                var reduceDodge = new ModifyConditionEffect("Dodging", -1, this);
-                deck.AddCards(tempDodge, dodging.Value);
+                var dodge = new Card("Dodge", Card.CardType.Miss);
+                deck.AddCards(dodge, dodging.Value);
             }
         }
 
@@ -158,6 +164,26 @@ namespace ShrinelandsTactics.World
             }
 
             return null;
+        }
+
+        internal void AddModifiers(Deck deck, DungeonMaster DM, Character user, Action action, bool isTarget)
+        {
+            foreach (var tag in action.Tags)
+            {
+                switch (tag)
+                {
+                    case Mechanics.Action.AbilityType.Attack:
+                        if(isTarget)
+                        {
+                            AddDodgeCards(deck, DM, user, action);
+                            AddArmorCards(deck, DM, user, action);
+                            //add dodge 
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         public enum StatType

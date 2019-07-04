@@ -82,6 +82,7 @@ namespace ShrinelandsTactics.World
 
         internal void AddSituationalModifiers(Deck deck, Mechanics.Action action, Character user, Position posTarget, Character charTarget, bool v)
         {
+            return; //TODO: pass to files
             throw new NotImplementedException();
         }
     }

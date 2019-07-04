@@ -182,6 +182,7 @@ namespace ShrinelandsTactics
 
         private bool IsFlanking(Character user, Character charTarget)
         {
+            return false; //TODO: implement
             throw new NotImplementedException();
         }
 

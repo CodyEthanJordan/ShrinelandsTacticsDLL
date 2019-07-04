@@ -42,6 +42,11 @@ namespace ShrinelandsTactics.BasicStructures
             return card;
         }
 
+        public override string ToString()
+        {
+            return Name + " (" + TypeOfCard + ")";
+        }
+
         public object Clone()
         {
             string json = JsonConvert.SerializeObject(this);

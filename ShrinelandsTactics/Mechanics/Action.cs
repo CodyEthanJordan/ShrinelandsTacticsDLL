@@ -113,7 +113,7 @@ namespace ShrinelandsTactics.Mechanics
                 switch (source)
                 {
                     case CardSource.TargetDodge:
-                        charTarget.AddDodgeCards(DM, user, deck, card);
+                        //charTarget.AddDodgeCards(DM, user, deck, card);
                         break;
                     case CardSource.TargetVitality:
                         deck.AddCards(card, charTarget.Vitality.Value);
@@ -125,7 +125,7 @@ namespace ShrinelandsTactics.Mechanics
                         break;
 
                     case CardSource.UserBaseAttack:
-                        user.AddBaseAttackCards(DM, charTarget, deck);
+                        //user.AddBaseAttackCards(DM, charTarget, deck);
                         deck.AddCards(card, user.Profeciency.Value);
                         //TODO: maybe pass effect and cardsource to character and have it figure the number
                         break;
@@ -134,6 +134,10 @@ namespace ShrinelandsTactics.Mechanics
                 }
             }
 
+            if(charTarget != null)
+            {
+                charTarget.AddModifiers(deck, DM, user, this, true);
+            }
             DM.AddSituationalModifiers(deck, this, user, posTarget, charTarget);
 
             deck.Consolidate();
