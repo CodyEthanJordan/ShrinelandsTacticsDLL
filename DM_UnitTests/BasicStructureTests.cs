@@ -31,9 +31,8 @@ namespace DM_UnitTests
         public void TestCombiningCards()
         {
             Deck deck = new Deck();
-            Effect n = new NullEffect();
-            Card hit = new Card("Hit", Card.CardType.Hit, n);
-            Card armor = Card.CreateReplacementCard("Glacing Blow", Card.CardType.Armor, n, hit);
+            Card hit = new Card("Hit", Card.CardType.Hit);
+            Card armor = Card.CreateReplacementCard("Glacing Blow", Card.CardType.Armor, hit);
 
             int numHits = 5;
             int armorCoverage = 3;

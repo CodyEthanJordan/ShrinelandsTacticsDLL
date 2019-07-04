@@ -29,6 +29,8 @@ namespace ShrinelandsTactics.Mechanics
         public ActionType TypeOfAction = ActionType.Major;
         [JsonProperty]
         public bool Repeatable = false;
+        [JsonProperty]
+        public List<AbilityType> Tags = new List<AbilityType>();
 
         private int timesUsed = 0;
 
@@ -55,6 +57,7 @@ namespace ShrinelandsTactics.Mechanics
                 return false;
             }
 
+            //TODO: have DM do check
             Position target;
             if(posTarget != null)
             {
@@ -95,7 +98,6 @@ namespace ShrinelandsTactics.Mechanics
             //TODO: inform user and target what card was drawn, possibly for temporary dodge or breaking shields
 
             //apply relevant effects
-            card.ApplyEffects(DM, user, posTarget, charTarget, optionalFeatures);
         }
 
         public Deck GetDeckFor(DungeonMaster DM, Character user, Position posTarget,
@@ -120,9 +122,10 @@ namespace ShrinelandsTactics.Mechanics
                         deck.AddCards(card, charTarget.Stamina.Value);
                         break;
                     case CardSource.TargetArmorCoverage:
-                        charTarget.AddArmorCards(DM, user, deck, card);
                         break;
-                    case CardSource.UserProfeciency:
+
+                    case CardSource.UserBaseAttack:
+                        user.AddBaseAttackCards(DM, charTarget, deck);
                         deck.AddCards(card, user.Profeciency.Value);
                         //TODO: maybe pass effect and cardsource to character and have it figure the number
                         break;
@@ -130,6 +133,8 @@ namespace ShrinelandsTactics.Mechanics
                         break;
                 }
             }
+
+            DM.AddSituationalModifiers(deck, this, user, posTarget, charTarget);
 
             deck.Consolidate();
             return deck;
@@ -147,7 +152,7 @@ namespace ShrinelandsTactics.Mechanics
             TargetVitality,
             TargetStamina,
             TargetArmorCoverage,
-            UserProfeciency,
+            UserBaseAttack,
         }
 
         public enum RangeType
@@ -160,6 +165,11 @@ namespace ShrinelandsTactics.Mechanics
         {
             Major,
             Minor,
+        }
+
+        public enum AbilityType
+        {
+            Attack,
         }
     }
 }

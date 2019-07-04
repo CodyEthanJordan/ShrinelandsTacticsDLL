@@ -60,16 +60,14 @@ namespace ShrinelandsTactics.World
             string Name = "DebugAttack";
             Dictionary<Character.StatType, int> Cost = new Dictionary<Character.StatType, int>()
             { {Character.StatType.Stamina, 1 } };
-            Effect dealDamage = new DamageEffect(DamageEffect.DamageType.Slashing, 5);
-            Effect none = new NullEffect();
 
-            Card hit = new Card("Hit", Card.CardType.Hit, dealDamage);
-            Card armor = Card.CreateReplacementCard("Glancing Blow", Card.CardType.Armor, dealDamage, hit);
-            Card miss = new Card("Dodge", Card.CardType.Miss, none);
+            Card hit = new Card("Hit", Card.CardType.Hit);
+            Card armor = Card.CreateReplacementCard("Glancing Blow", Card.CardType.Armor, hit);
+            Card miss = new Card("Dodge", Card.CardType.Miss);
 
             Dictionary<Action.CardSource, Card> DeckRecipie = new Dictionary<Mechanics.Action.CardSource, Card>()
             {
-                {Action.CardSource.UserProfeciency, hit },
+                {Action.CardSource.UserBaseAttack, hit },
                 {Action.CardSource.TargetDodge, miss },
                 {Action.CardSource.TargetArmorCoverage, armor }
             };

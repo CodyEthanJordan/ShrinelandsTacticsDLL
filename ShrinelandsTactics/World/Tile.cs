@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using ShrinelandsTactics.BasicStructures;
+using ShrinelandsTactics.Mechanics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -76,6 +78,11 @@ namespace ShrinelandsTactics.World
             }
 
             return tile.Clone() as Tile;
+        }
+
+        internal void AddSituationalModifiers(Deck deck, Mechanics.Action action, Character user, Position posTarget, Character charTarget, bool v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

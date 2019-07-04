@@ -8,26 +8,12 @@
         "TargetVitality": {
           "Name": "Drain",
           "TypeOfCard": "Hit",
-          "Effects": [
-            {
-              "TypeOfDamage": "Magic",
-              "Amount": 1,
-              "TypeOfEffect": "Damage"
-            },
-            {
-              "TypeOfEffect": "RegainStat",
-              "Amount": 1,
-              "StatAffected": "Mana",
-              "AffectCaster":  true
-            }
-          ],
           "ReplacingCard": false,
           "CardToReplace": null
         },
         "TargetStamina": {
           "Name": "Resist",
           "TypeOfCard": "Miss",
-          "Effects": [ { "TypeOfEffect": "Null" } ],
           "ReplacingCard": false,
           "CardToReplace": null
         }
@@ -38,47 +24,25 @@
     {
       "Cost": { "Stamina": 1 },
       "DeckRecipie": {
-        "UserProfeciency": {
+        "UserBaseAttack": {
           "Name": "Hit",
           "TypeOfCard": "Hit",
-          "Effects": [
-            {
-              "TypeOfDamage": "Slashing",
-              "Amount": 5,
-              "TypeOfEffect": "Damage"
-            }
-          ],
           "ReplacingCard": false,
           "CardToReplace": null
         },
         "TargetDodge": {
           "Name": "Dodge",
           "TypeOfCard": "Miss",
-          "Effects": [ { "TypeOfEffect": "Null" } ],
           "ReplacingCard": false,
           "CardToReplace": null
         },
         "TargetArmorCoverage": {
           "Name": "Glancing Blow",
           "TypeOfCard": "Armor",
-          "Effects": [
-            {
-              "TypeOfDamage": "Slashing",
-              "Amount": 5,
-              "TypeOfEffect": "Damage"
-            }
-          ],
           "ReplacingCard": true,
           "CardToReplace": {
             "Name": "Hit",
             "TypeOfCard": "Hit",
-            "Effects": [
-              {
-                "TypeOfDamage": "Slashing",
-                "Amount": 5,
-                "TypeOfEffect": "Damage"
-              }
-            ],
             "ReplacingCard": false,
             "CardToReplace": null
           }

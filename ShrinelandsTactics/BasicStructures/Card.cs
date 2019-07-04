@@ -18,28 +18,24 @@ namespace ShrinelandsTactics.BasicStructures
         [JsonProperty]
         public CardType TypeOfCard { get; private set; }
         [JsonProperty]
-        public List<Effect> Effects { get; private set; }
-        [JsonProperty]
         public bool ReplacingCard { get; set; }
         [JsonProperty]
         public Card CardToReplace { get; set; }
 
         private Card()
         {
-            Effects = new List<Effect>();
             ReplacingCard = false;
         }
 
-        public Card(string Name, CardType TypeOfCard, Effect effect) : this()
+        public Card(string Name, CardType TypeOfCard) : this()
         {
             this.Name = Name;
             this.TypeOfCard = TypeOfCard;
-            this.Effects.Add(effect);
         }
 
-        public static Card CreateReplacementCard(string Name, CardType TypeOfCard, Effect effect, Card toReplace)
+        public static Card CreateReplacementCard(string Name, CardType TypeOfCard, Card toReplace)
         {
-            Card card = new Card(Name, TypeOfCard, effect);
+            Card card = new Card(Name, TypeOfCard);
             card.ReplacingCard = true;
             card.CardToReplace = toReplace;
 
@@ -58,15 +54,6 @@ namespace ShrinelandsTactics.BasicStructures
             Miss,
             Block,
             Armor,
-        }
-
-        public void ApplyEffects(DungeonMaster DM, Character user, Position posTarget, 
-            Character charTarget, string optionalFeatures)
-        {
-            foreach (var effect in Effects)
-            {
-                effect.Apply(DM, user, posTarget, charTarget, optionalFeatures);
-            }
         }
     }
 }

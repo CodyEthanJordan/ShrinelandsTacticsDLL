@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ShrinelandsTactics.BasicStructures;
+using ShrinelandsTactics.Mechanics;
 
 namespace ShrinelandsTactics
 {
@@ -154,6 +155,34 @@ namespace ShrinelandsTactics
             activatedCharacter = guy;
             outcome.Message.AppendLine("Starting activation for " + guy.Name);
             return outcome;
+        }
+
+        public void AddSituationalModifiers(Deck deck, Mechanics.Action action, Character user, Position posTarget, Character charTarget)
+        {
+            foreach (var tag in action.Tags)
+            {
+                switch (tag)
+                {
+                    case Mechanics.Action.AbilityType.Attack:
+                        if(IsFlanking(user, charTarget))
+                        {
+                            var flank = new Card("Flanking", Card.CardType.Hit);
+                            deck.AddCards(flank, 2); //TODO: magic number
+                        }
+                        var userOn = map.GetTile(user.Pos);
+                        userOn.AddSituationalModifiers(deck, action, user, posTarget, charTarget, false);
+                        var targetOn = map.GetTile(charTarget.Pos);
+                        targetOn.AddSituationalModifiers(deck, action, user, posTarget, charTarget, true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private bool IsFlanking(Character user, Character charTarget)
+        {
+            throw new NotImplementedException();
         }
 
         public Outcome MoveCharacter(string characterName, IEnumerable<string> directions)

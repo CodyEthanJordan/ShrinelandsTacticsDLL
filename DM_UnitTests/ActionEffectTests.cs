@@ -76,8 +76,8 @@ namespace DM_UnitTests
             var nullEffect = new NullEffect();
             var recipie = new Dictionary<Action.CardSource, Card>()
             {
-                { Action.CardSource.TargetDodge, new Card("Dodge", Card.CardType.Miss, nullEffect) },
-                { Action.CardSource.UserProfeciency, new Card("Hit", Card.CardType.Hit, nullEffect) },
+                { Action.CardSource.TargetDodge, new Card("Dodge", Card.CardType.Miss) },
+                { Action.CardSource.UserBaseAttack, new Card("Hit", Card.CardType.Hit) },
             };
 
             var action = new Action("test", cost, recipie, ShrinelandsTactics.Mechanics.Action.RangeType.Melee, 1);
@@ -129,14 +129,6 @@ namespace DM_UnitTests
             Assert.AreEqual(robby.Profeciency.Value - 2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
             Assert.AreEqual(2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
             Assert.AreEqual(5, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Miss));
-
-            var glacingBlow = deck.Cards.FirstOrDefault(c => c.TypeOfCard == Card.CardType.Armor);
-            DamageEffect armorDamage = glacingBlow.Effects[0] as DamageEffect;
-            var hit = deck.Cards.FirstOrDefault(c => c.TypeOfCard == Card.CardType.Hit);
-            DamageEffect hitDamage = hit.Effects[0] as DamageEffect;
-
-            Assert.IsTrue(armorDamage.Amount < hitDamage.Amount);
-
         }
 
         [TestMethod]

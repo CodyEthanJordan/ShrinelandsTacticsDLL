@@ -114,18 +114,9 @@ namespace ShrinelandsTactics.World
             this.Pos = pos;
         }
 
-        public void AddArmorCards(DungeonMaster DM, Character attacker, Deck deck, Card card)
+        internal void AddBaseAttackCards(DungeonMaster dM, Character charTarget, Deck deck)
         {
-            //reduce damage by 2 TODO: no hardcode
-            //TODO: does null break this?
-            DamageEffect damage = card.Effects.FirstOrDefault(e => e.TypeOfEffect == Effect.EffectType.Damage) as DamageEffect;
-            if(damage != null)
-            {
-                damage.Amount -= 2; //TODO: don't go negative
-            }
-
-            deck.AddCards(card, 2); //TODO: check actual items
-
+            throw new NotImplementedException();
         }
 
         public void AddDodgeCards(DungeonMaster DM, Character attacker, Deck deck, Card baseCard)
@@ -138,7 +129,6 @@ namespace ShrinelandsTactics.World
             {
                 var tempDodge = baseCard.Clone() as Card;
                 var reduceDodge = new ModifyConditionEffect("Dodging", -1, this);
-                tempDodge.Effects.Add(reduceDodge);
                 deck.AddCards(tempDodge, dodging.Value);
             }
         }
