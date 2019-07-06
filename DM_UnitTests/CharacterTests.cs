@@ -21,14 +21,6 @@ namespace DM_UnitTests
         }
 
         [TestMethod]
-        public void TestDebugJsonCharacter()
-        {
-            var debugGuy = data.Characters.FirstOrDefault(c => c.Name == "Debug Guy");
-            Assert.AreEqual(10, debugGuy.Vitality.Value);
-        }
-      
-
-        [TestMethod]
         public void RoundTripSerializationTest()
         {
             var char1 = DebugData.GetDebugCharacter();
