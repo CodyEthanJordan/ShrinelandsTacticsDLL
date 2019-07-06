@@ -76,5 +76,14 @@ namespace ShrinelandsTactics.BasicStructures
 
             return !(a.Equals(b));
         }
+
+        public static Position Parse(string posString)
+        {
+            var parts = posString.Split(' ');
+            int x = int.Parse(parts[0]);
+            int y = int.Parse(parts[1]);
+
+            return new Position(x, y);
+        }
     }
 }

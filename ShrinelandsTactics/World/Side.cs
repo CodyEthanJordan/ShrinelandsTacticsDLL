@@ -16,7 +16,7 @@ namespace ShrinelandsTactics.World
         [JsonProperty]
         public string Name { get; private set; }
 
-        public Side()
+        private Side()
         {
             ID = Guid.NewGuid();
             Name = "";

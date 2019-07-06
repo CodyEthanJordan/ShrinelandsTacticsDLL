@@ -92,4 +92,34 @@ public class GameData
 
         return data;
     }
+
+    public Character LoadCharacterByClass(string characterClass)
+    {
+        var charTemplate = Characters.FirstOrDefault(c => c.Name == characterClass);
+        if (charTemplate == null)
+        {
+            throw new ArgumentException("No such character as " + characterClass);
+        }
+
+        var newChar = charTemplate.Clone() as Character;
+
+        FleshOutActions(newChar);
+
+        return newChar;
+    }
+
+    private void FleshOutActions(Character newChar)
+    {
+        for (int i = 0; i < newChar.Actions.Count; i++)
+        {
+            Action action = GetActionByName(newChar.Actions[i].Name);
+            newChar.Actions[i] = action;
+        }
+    }
+
+    private Action GetActionByName(string name)
+    {
+        var action = Actions.FirstOrDefault(a => a.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        return action;
+    }
 }

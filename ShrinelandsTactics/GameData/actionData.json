@@ -1,42 +1,117 @@
 {
   "actionData": [
-      {
-        "Name": "Drain Vitality",
-        "Cost": { "Stamina": 1 },
-        "DeckRecipie": {
-          "TargetVitality": {
-            "Name": "Drain",
-            "TypeOfCard": "Hit"
-          },
-          "TargetStamina": {
-            "Name": "Resist",
-            "TypeOfCard":  "Miss"
+    {
+      "Name": "Drain Vitality",
+      "Cost": { "Stamina": 1 },
+      "DeckRecipie": {
+        "TargetVitality": {
+          "Name": "Drain",
+          "TypeOfCard": "Hit"
+        },
+        "TargetStamina": {
+          "Name": "Resist",
+          "TypeOfCard": "Miss"
+        }
+      },
+      "Effects": {
+        "Miss": [
+          {
+            "TypeOfEffect": "Null"
           }
-        },
-        "Effects": {
-          "Miss": [
-            {
-              "TypeOfEffect": "Null"
-            }
-          ],
-          "Hit": [
-            {
-              "TypeOfDamage": "Magic",
-              "StaticAmount": 1,
-              "TypeOfEffect": "Damage"
+        ],
+        "Hit": [
+          {
+            "TypeOfDamage": "Magic",
+            "StaticAmount": 1,
+            "TypeOfEffect": "Damage"
+          },
+          {
+            "TypeOfEffect": "RegainStat",
+            "StatAffected": "Mana",
+            "Amount": 1,
+            "AffectCaster": true
+          }
+        ]
+      },
+      "TypeOfRange": "Ranged",
+      "Range": 7,
+      "TypeOfAction": "Major",
+      "Repeatable": false
+    },
+    {
+      "Cost": { "Stamina": 1 },
+      "DeckRecipie": {
+        "UserBaseAttack": {
+          "Name": "Hit",
+          "TypeOfCard": "Hit",
+          "ReplacingCard": false,
+          "CardToReplace": null
+        }
+      },
+      "Effects": {
+        "Miss": [
+          {
+            "AffectCaster": false,
+            "TypeOfEffect": "Null"
+          }
+        ],
+        "Hit": [
+          {
+            "Effects": {
+              "Hit": [
+                {
+                  "Sources": [ "UserBaseDamage", "UserStrength" ],
+                  "AffectCaster": false,
+                  "TypeOfDamage": "Slashing",
+                  "StaticAmount": 0,
+                  "TypeOfEffect": "Damage"
+                }
+              ],
+              "Armor": [
+                {
+                  "Sources": [ "UserBaseDamage" ],
+                  "AffectCaster": false,
+                  "TypeOfDamage": "Slashing",
+                  "StaticAmount": 0,
+                  "TypeOfEffect": "Damage"
+                }
+              ],
+              "Miss": [
+                {
+                  "Sources": [ "UserBaseDamage" ],
+                  "AffectCaster": false,
+                  "TypeOfDamage": "Slashing",
+                  "StaticAmount": 0,
+                  "TypeOfEffect": "Damage"
+                }
+              ]
             },
-            {
-              "TypeOfEffect": "RegainStat",
-              "StatAffected": "Mana",
-              "Amount": 1,
-              "AffectCaster": true
-            }
-          ]
-        },
-        "TypeOfRange": "Ranged",
-        "Range": 7,
-        "TypeOfAction": "Major",
-        "Repeatable": false
-      }
-  ]
+            "AffectCaster": false,
+            "TypeOfEffect": "Redraw"
+          }
+        ],
+        "Armor": [
+          {
+            "TypicalEffects": [
+              {
+                "Sources": [ "UserBaseDamage" ],
+                "AffectCaster": false,
+                "TypeOfDamage": "Slashing",
+                "StaticAmount": 0,
+                "TypeOfEffect": "Damage"
+              }
+            ],
+            "AffectCaster": false,
+            "TypeOfEffect": "ResolveByTarget"
+          }
+        ]
+      },
+      "TypeOfRange": "Melee",
+      "Range": 1,
+      "TypeOfAction": "Major",
+      "Repeatable": false,
+      "Tags": [ "Attack" ],
+      "Name": "Attack"
+    }
+    ]
 }

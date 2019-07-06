@@ -1,0 +1,17 @@
+# Test level file for game
+encounter_name: Slime Cave
+map_file: ExampleCaveMap.gif
+
+sides:
+ - Heros
+ - The Foe
+
+characters:
+ - name: Zach
+   class: Knight
+   pos: 13 25
+   side: Heros
+ - name: Robby
+   class: Slimelord
+   pos: 9 9
+   side: The Foe

@@ -31,8 +31,7 @@ namespace ShrinelandsTactics.Mechanics
         public ActionType TypeOfAction = ActionType.Major;
         [JsonProperty]
         public bool Repeatable = false;
-        [JsonConverter(typeof(StringEnumConverter))]
-        [JsonProperty]
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<AbilityType> Tags = new List<AbilityType>();
 
         private int timesUsed = 0;

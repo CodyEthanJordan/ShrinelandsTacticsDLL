@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ShrinelandsTactics.BasicStructures;
 using ShrinelandsTactics.Mechanics;
+using System.Drawing;
+using YamlDotNet.RepresentationModel;
 
 namespace ShrinelandsTactics
 {
@@ -24,13 +26,6 @@ namespace ShrinelandsTactics
         {
             this.data = data;
         }
-
-        public void ResolveAction()
-        {
-             
-            // validate action
-        }
-
 
         public string VisualizeWorld()
         {
@@ -131,6 +126,38 @@ namespace ShrinelandsTactics
             }
 
             return outcome;
+        }
+
+        public static DungeonMaster LoadEncounter(YamlMappingNode yaml, Bitmap bitmap, GameData data)
+        {
+            var DM = new DungeonMaster(data);
+            DM.map = Map.CreateFromBitmap(bitmap, data);
+
+            var sides = (YamlSequenceNode)yaml.Children[new YamlScalarNode("sides")];
+            foreach (var side in sides)
+            {
+                var name = (side as YamlScalarNode).Value;
+                DM.Sides.Add(new Side(name));
+            }
+
+            var characters = (YamlSequenceNode)yaml.Children[new YamlScalarNode("characters")];
+            foreach (var node in characters)
+            {
+                var c = node as YamlMappingNode;
+                var name = (c["name"] as YamlScalarNode).Value;
+                var characterClass = (c["class"] as YamlScalarNode).Value;
+                var posString = (c["pos"] as YamlScalarNode).Value;
+                var sideName = (c["side"] as YamlScalarNode).Value;
+                Position pos = Position.Parse(posString);
+                var side = DM.Sides.FirstOrDefault(s => s.Name.Equals(sideName, StringComparison.OrdinalIgnoreCase));
+
+                Character newCharacter = data.LoadCharacterByClass(characterClass);
+                newCharacter.InitializeIndividual(name, pos, side.ID);
+
+                DM.Characters.Add(newCharacter);
+            }
+
+            return DM;
         }
 
         public bool IsActiveAndControllable(Character guy)

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using ShrinelandsTactics;
 using ShrinelandsTactics.World;
+using YamlDotNet;
+using YamlDotNet.RepresentationModel;
 
 namespace DM_UnitTests
 {
@@ -72,7 +75,25 @@ namespace DM_UnitTests
 
             Assert.IsTrue(robby.HasBeenActivated);
             Assert.AreEqual(robby.Move.Max, robby.Move.Value);
-           
+        }
+
+        [TestMethod]
+        public void LoadSlimeEncounter()
+        {
+            var yaml = new YamlStream();
+            using (StreamReader r = new StreamReader("GameData/SlimeCave.yaml"))
+            {
+                yaml.Load(r);
+            }
+
+            var mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
+            var mapFile = (mapping[new YamlScalarNode("map_file")] as YamlScalarNode).Value;
+
+            Bitmap bitmap = new Bitmap("GameData/" + mapFile);
+
+            DungeonMaster DM = DungeonMaster.LoadEncounter(mapping, bitmap, data);
+
+            Assert.IsNotNull(DM);
         }
     }
 }

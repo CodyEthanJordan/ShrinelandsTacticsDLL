@@ -1,7 +1,40 @@
 {
   "characterData": [
     {
-      "Name": "Debug Guy",
+      "Name": "Slimelord",
+      "Stats": {
+        "Vitality": {
+          "Value": 10,
+          "Max": 10
+        },
+        "Move": {
+          "Value": 5,
+          "Max": 5
+        },
+        "Stamina": {
+          "Value": 4,
+          "Max": 4
+        },
+        "Profeciency": {
+          "Value": 3,
+          "Max": 3
+        },
+        "Strength": {
+          "Value": 3,
+          "Max": 3
+        },
+        "Mana": {
+          "Value": 0,
+          "Max": 0
+        }
+      },
+      "Actions": [
+        { "Name": "Attack" },
+        { "Name": "Drain Vitality"}
+      ]
+    },
+    {
+      "Name": "Knight",
       "Stats": {
         "Vitality": {
           "Value": 10,

@@ -17,6 +17,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
         public DamageType TypeOfDamage { get; private set; }
         [JsonProperty]
         public int StaticAmount { get; set; }
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<Action.CardSource> Sources = null;
 
         public int GetAmount(DungeonMaster DM, Character user, Position posTarget,
