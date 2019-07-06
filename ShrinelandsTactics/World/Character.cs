@@ -20,6 +20,12 @@ namespace ShrinelandsTactics.World
         public Position Pos { get; set; } //TODO: maybe should be private, use method?
         [JsonProperty]
         public string Name { get; private set; }
+
+        internal void ResolveEffect(Deck deck, Card cardDrawn)
+        {
+            throw new NotImplementedException();
+        }
+
         [JsonProperty]
         public Dictionary<StatType, Stat> Stats { get; private set; }
         [JsonProperty]

@@ -21,7 +21,7 @@ namespace DM_UnitTests
         [ClassInitialize]
         public static void ReadGameData(TestContext context)
         {
-            data = GameData.ReadDatafilesInDirectory("GameData");
+            //data = GameData.ReadDatafilesInDirectory("GameData");
         }
 
         [TestMethod]
