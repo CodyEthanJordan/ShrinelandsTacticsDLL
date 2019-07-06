@@ -267,11 +267,11 @@ namespace ShrinelandsTactics
             DM.Sides.Add(new Side("The Foe"));
             DM.currentSide = DM.Sides[0];
 
-            var robby = data.GetCharacterByName("Debug Guy");
+            var robby = DebugData.GetDebugCharacter();
             robby.InitializeIndividual("Robby", new Position(1, 1), DM.Sides[0].ID);
             DM.Characters.Add(robby);
 
-            var zach = data.GetCharacterByName("Debug Guy");
+            var zach = DebugData.GetDebugCharacter();
             zach.InitializeIndividual("Zach", new Position(1, 3), DM.Sides[1].ID);
             DM.Characters.Add(zach);
 

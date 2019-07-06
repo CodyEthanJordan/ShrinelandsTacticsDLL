@@ -15,7 +15,7 @@ namespace ShrinelandsTactics.Mechanics
         [JsonProperty]
         public string Name { get; private set; }
         [JsonProperty]
-        public int Value { get; private set; }
+        public int Value { get; set; }
         [JsonProperty]
         public int Duration { get; private set; }
 

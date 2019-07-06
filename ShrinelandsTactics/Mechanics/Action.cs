@@ -19,6 +19,8 @@ namespace ShrinelandsTactics.Mechanics
         public Dictionary<Character.StatType, int> Cost = new Dictionary<Character.StatType, int>();
         [JsonProperty]
         public Dictionary<CardSource, Card> DeckRecipie = new Dictionary<CardSource, Card>();
+        [JsonProperty]
+        public Dictionary<Card.CardType, List<Effect>> Effects = new Dictionary<Card.CardType, List<Effect>>();
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public RangeType TypeOfRange;
@@ -36,7 +38,8 @@ namespace ShrinelandsTactics.Mechanics
 
 
         public Action(string Name, Dictionary<Character.StatType, int> Cost,
-            Dictionary<CardSource, Card> DeckRecipie, RangeType TypeOfRange, int Range,
+            Dictionary<CardSource, Card> DeckRecipie, Dictionary<Card.CardType, List<Effect>> Effects,
+            RangeType TypeOfRange, int Range, 
             ActionType TypeOfAction = ActionType.Major, bool Repeatable = false)
         {
             this.Name = Name;
@@ -44,6 +47,7 @@ namespace ShrinelandsTactics.Mechanics
             this.Range = Range;
             this.TypeOfAction = TypeOfAction;
             this.Repeatable = Repeatable;
+            this.Effects = Effects;
 
             this.Cost = Cost;
             this.DeckRecipie = DeckRecipie;
@@ -95,9 +99,18 @@ namespace ShrinelandsTactics.Mechanics
             //special drawing rules?
             Card card = deck.Draw(fated_roll);
 
-            //TODO: inform user and target what card was drawn, possibly for temporary dodge or breaking shields
+            //inform user and target what card was drawn, possibly for temporary dodge or breaking shields
+            user.CardDrawn(deck, card);
+            if(charTarget != null)
+            {
+                charTarget.CardDrawn(deck, card);
+            }
 
             //apply relevant effects
+            foreach (var effect in Effects[card.TypeOfCard])
+            {
+                effect.Apply(DM, user, posTarget, charTarget, deck, card, "");
+            }
         }
 
         public Deck GetDeckFor(DungeonMaster DM, Character user, Position posTarget,

@@ -29,11 +29,10 @@ namespace ShrinelandsTactics.Mechanics.Effects
             this.Amount = Amount;
         }
 
+
         public override void Apply(DungeonMaster DM, Character user, Position posTarget, 
-            Character charTarget, string optionalFeatures)
+            Character charTarget, Deck deck, Card cardDrawn, string optionalFeatures = null)
         {
-            var affected = AffectCaster ? user: charTarget;
-            affected.TakeDamage(TypeOfDamage, Amount);
         }
 
         public enum DamageType

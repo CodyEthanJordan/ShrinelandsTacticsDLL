@@ -17,7 +17,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
         }
 
         public override void Apply(DungeonMaster DM, Character user, Position posTarget, 
-            Character charTarget, string optionalFeatures)
+            Character charTarget, Deck deck, Card cardDrawn, string optionalFeatures = null)
         {
         }
     }

@@ -57,7 +57,7 @@ namespace ShrinelandsTactics.World
 
         public static Action GetDebugAttackAction()
         {
-            string Name = "DebugAttack";
+            string Name = "Attack";
             Dictionary<Character.StatType, int> Cost = new Dictionary<Character.StatType, int>()
             { {Character.StatType.Stamina, 1 } };
 
@@ -68,7 +68,21 @@ namespace ShrinelandsTactics.World
                 {Action.CardSource.UserBaseAttack, hit },
             };
 
-            var action = new Action(Name, Cost, DeckRecipie,
+            var criticalEffects = new Dictionary<Card.CardType, List<Effect>>()
+            {
+                { Card.CardType.Hit, new List<Effect>() {new DamageEffect(DamageEffect.DamageType.Bludgeoning, 5)} },
+                { Card.CardType.Armor, new List<Effect>() {new DamageEffect(DamageEffect.DamageType.Bludgeoning, 2)} },
+                { Card.CardType.Miss, new List<Effect>() {new DamageEffect(DamageEffect.DamageType.Bludgeoning, 2)} },           
+            };
+
+
+            var effects = new Dictionary<Card.CardType, List<Effect>>()
+            {
+                {Card.CardType.Miss, new List<Effect>(){new NullEffect()} },
+                {Card.CardType.Hit, new List<Effect>(){} }
+            };
+
+            var action = new Action(Name, Cost, DeckRecipie, effects,
                 Mechanics.Action.RangeType.Melee, 1);
             action.Tags.Add(Mechanics.Action.AbilityType.Attack);
             return action;

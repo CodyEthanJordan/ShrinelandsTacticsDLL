@@ -106,6 +106,28 @@ namespace ShrinelandsTactics.World
             return true;
         }
 
+        public void CardDrawn(Deck deck, Card card)
+        {
+            if(card.Name == "Dodge")
+            {
+                ReduceCondition("Dodging", 1); //TODO: pass card to conditions and let them sort it out?
+            }
+        }
+
+        public void ReduceCondition(string name, int amount)
+        {
+            var condition = Conditions.First(c => c.Name == name);
+            if(condition == null)
+            {
+                return; //TODO: throw error? have outcome?
+            }
+            condition.Value -= amount;
+            if(condition.Value <= 0)
+            {
+                Conditions.Remove(condition);
+            }
+        }
+
         public void InitializeIndividual(string name, Position pos, Guid SideID)
         {
             this.ID = Guid.NewGuid();
