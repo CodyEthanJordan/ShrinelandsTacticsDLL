@@ -431,7 +431,19 @@ namespace ShrinelandsTactics
             }
 
             //has enough movement
+            bool adjacentToOpponent = IsAdjacentToOpponent(guy);
+
+            if(adjacentToOpponent && guy.Stamina.Value < 1)
+            {
+                outcome.Message.AppendLine("Cannot move through threatened area without stamina");
+                return outcome;
+            }
+
             var moveCost = map.GetTile(guy.Pos).MoveCost;
+            if(adjacentToOpponent)
+            {
+                moveCost++; //effective +1
+            }
             if(moveCost > (guy.Move.Value + guy.Stamina.Value))
             {
                 outcome.Message.AppendLine(guy.Name + " only has " + guy.Move.Value + " movement" +
@@ -439,10 +451,26 @@ namespace ShrinelandsTactics
                 return outcome; //TODO: error
             }
 
-            guy.PayMovement(moveCost);
+            moveCost = map.GetTile(guy.Pos).MoveCost;
+            int staminaCost = adjacentToOpponent ? 1 : 0;
+            guy.PayMovement(moveCost, staminaCost);
             guy.Pos = destination;
             outcome.Message.AppendLine(guy.Name + " moved to " + destination);
             return outcome;
+        }
+
+        private bool IsAdjacentToOpponent(Character guy)
+        {
+            if(Map.GetAdjacent(guy.Pos).Any(
+                p => Characters.Where(c => c.SideID != guy.SideID)
+                .Select(c => c.Pos).Contains(p)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool IsOpen(Position pos)

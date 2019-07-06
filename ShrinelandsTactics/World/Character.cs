@@ -110,6 +110,17 @@ namespace ShrinelandsTactics.World
             //TODO: add slime splitting
             if (cardDrawn.TypeOfCard == Card.CardType.Armor)
             {
+                //TODO: more elegant method
+                if (Traits.Contains("Split"))
+                {
+                    var emptySpaces = DM.GetEmptyAdjacentSquares(Pos);
+                    int i = DungeonMaster.rand.Next(emptySpaces.Count);
+                    var emptySpace = emptySpaces[i];
+                    var cloneCharacter = this.Clone() as Character;
+                    cloneCharacter.InitializeIndividual("Copy of " + Name, emptySpace, SideID);
+                    DM.CreateCharacter(cloneCharacter);
+                }
+
                 //reduce damage
                 var damage = typicalEffects.FirstOrDefault(e => e.TypeOfEffect == Effect.EffectType.Damage) as DamageEffect;
                 if (damage != null)
@@ -121,16 +132,7 @@ namespace ShrinelandsTactics.World
                     outcome.Message.AppendLine("Damage reduced to " + x + " by armor");
                 }
 
-                //TODO: more elegant method
-                if(Traits.Contains("Split"))
-                {
-                    var emptySpaces = DM.GetEmptyAdjacentSquares(Pos);
-                    int i = DungeonMaster.rand.Next(emptySpaces.Count);
-                    var emptySpace = emptySpaces[i];
-                    var cloneCharacter = this.Clone() as Character;
-                    cloneCharacter.InitializeIndividual("Copy of " + Name, emptySpace, SideID);
-                    DM.CreateCharacter(cloneCharacter);
-                }
+                
             }
 
             return outcome;
@@ -304,8 +306,9 @@ namespace ShrinelandsTactics.World
                 }
             }
         }
-        public void PayMovement(int moveCost)
+        public void PayMovement(int moveCost, int staminaCost=0)
         {
+            Stamina.Value -= staminaCost;
             int overFlow = Math.Max(moveCost - Move.Value, 0);
             Move.Value -= (moveCost - overFlow);
             Stamina.Value -= overFlow;
