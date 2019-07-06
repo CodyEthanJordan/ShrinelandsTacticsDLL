@@ -186,6 +186,65 @@ namespace ShrinelandsTactics
             throw new NotImplementedException();
         }
 
+        public Outcome UseAbility(string abilityIdentifier, List<string> target)
+        {
+            var outcome = new Outcome();
+            if(activatedCharacter == null)
+            {
+                outcome.Message.AppendLine("No activated character");
+                return outcome;
+            }
+
+            var ability = activatedCharacter.Actions.FirstOrDefault(a => a.Name == abilityIdentifier);
+            if(ability == null)
+            {
+                //try parsing as int
+                int i;
+                if(int.TryParse(abilityIdentifier, out i))
+                {
+                    ability = activatedCharacter.Actions[i];
+                }
+                else
+                {
+                    outcome.Message.AppendLine("Can't find ability " + abilityIdentifier);
+                    return outcome;
+                }
+            }
+
+            if(target.Count() == 1)
+            {
+                //either direction or name
+                var targetCharacter = Characters.FirstOrDefault(c => c.Name.Equals(target[0], StringComparison.OrdinalIgnoreCase));
+                if(targetCharacter == null)
+                {
+                    //possibly direction
+                    try
+                    {
+                        var dir = Map.ParseDirection(target[0]);
+                        var pos = activatedCharacter.Pos + Map.DirectionToPosition[dir];
+                        targetCharacter = Characters.FirstOrDefault(c => c.Pos == pos);
+                        ability.ResolveAction(this, activatedCharacter, pos, targetCharacter, "");
+                        return outcome; //TODO: get from resolve action
+                    }
+                    catch
+                    {
+                        outcome.Message.AppendLine("Cannot target " + target[0]);
+                        return outcome;
+                    }
+                }
+                else
+                {
+                    //target isn't null
+                    ability.ResolveAction(this, activatedCharacter, null, targetCharacter, "");
+                    return outcome; //TODO: get from resolve action
+                }
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public Outcome MoveCharacter(string characterName, IEnumerable<string> directions)
         {
             var outcome = new Outcome();

@@ -33,7 +33,7 @@ namespace ShrinelandsTactics.BasicStructures
 
         public void Regain(int amount)
         {
-            Value = Math.Max(Value + amount, Max);
+            Value = Math.Min(Value + amount, Max);
         }
 
         public override string ToString()

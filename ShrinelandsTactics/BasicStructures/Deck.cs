@@ -23,7 +23,7 @@ namespace ShrinelandsTactics.BasicStructures
         {
             int i = rand.Next(Cards.Count);
 
-            if(FatedDraws != null)
+            if(FatedDraws != null && FatedDraws.Count > 0)
             {
                 var nextDraw = Cards.FirstOrDefault(c => c.Name == FatedDraws.First());
                 if(nextDraw != null)

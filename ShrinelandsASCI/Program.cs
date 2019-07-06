@@ -33,8 +33,9 @@ namespace ShrinelandsASCI
                 Console.Clear();
                 output.Clear();
                 var result = Parser.Default.ParseArguments<
-                    MoveOptions, UseOptions, QuitOptions, StatusOptions, EndTurnOptions
+                    ActivateOptions, MoveOptions, UseOptions, QuitOptions, StatusOptions, EndTurnOptions
                     >(line.Split(' '))
+                    .WithParsed<ActivateOptions>(opts => DM.ImplicitActivation(opts.UnitName))
                     .WithParsed<MoveOptions>(Move)
                     .WithParsed<UseOptions>(Use)
                     .WithParsed<QuitOptions>(opts => Environment.Exit(0))
@@ -53,14 +54,22 @@ namespace ShrinelandsASCI
 
         static void Use(UseOptions opt)
         {
-            throw new NotImplementedException();
+            if(DM.activatedCharacter == null)
+            {
+                output.AppendLine("No active character");
+            }
+            var outcome = DM.UseAbility(opt.Ability, opt.Target.ToList());
+            output.Append(outcome.Message.ToString());
         }
 
         static void Move(MoveOptions opt)
         {
-            var outcome = DM.ImplicitActivation(opt.UnitName);
-            output.Append(outcome.Message.ToString());
-            outcome = DM.MoveCharacter(opt.UnitName, opt.Directions);
+            if(DM.activatedCharacter == null)
+            {
+                output.AppendLine("No active character");
+                return;
+            }
+            var outcome = DM.MoveCharacter(DM.activatedCharacter.Name, opt.Directions);
             output.Append(outcome.Message.ToString());
         }
 
@@ -80,13 +89,18 @@ namespace ShrinelandsASCI
     //TODO: think verb to see deck for ability?
     //TODO: "status" verb to show sides, units, and general status
 
-    //TODO: why rquire unit name if it has to be activated anyway
-    [Verb("move", HelpText = "move unitName s ne n")]
-    class MoveOptions
+    [Verb("activate", HelpText = "activate unitName")]
+    class ActivateOptions
     {
         [Value(0)]
         public string UnitName { get; set; }
-        [Value(1)]
+    }
+
+    //TODO: why rquire unit name if it has to be activated anyway
+    [Verb("move", HelpText = "move s ne n")]
+    class MoveOptions
+    {
+        [Value(0)]
         public IEnumerable<string> Directions { get; set; }
     }
 
@@ -96,6 +110,8 @@ namespace ShrinelandsASCI
         [Value(0)]
         public string Ability { get; set; } //can be ability name (possibly with quotes) or number on activated character
 
+        [Value(1)]
+        public IEnumerable<string> Target { get; set; }
     }
 
     [Verb("status", HelpText="show game status summary")]
