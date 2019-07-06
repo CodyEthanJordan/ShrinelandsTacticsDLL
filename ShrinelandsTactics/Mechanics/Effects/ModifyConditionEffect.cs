@@ -13,14 +13,16 @@ namespace ShrinelandsTactics.Mechanics.Effects
     {
         public string Condition;
         public int Amount;
+        public int Duration;
 
         private ModifyConditionEffect()
         {
             TypeOfEffect = EffectType.ModifyCondition;
         }
 
-        public ModifyConditionEffect(string Condition, int Amount) : this()
+        public ModifyConditionEffect(string Condition, int Amount, int Duration=-1) : this()
         {
+            this.Duration = Duration;
             this.Condition = Condition;
             this.Amount = Amount;
         }
@@ -30,7 +32,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
         {
             var outcome = new Outcome();
             var affected = AffectCaster ? user: charTarget;
-            affected.AddCondition(Condition, Amount);
+            affected.AddCondition(Condition, Amount, Duration);
             outcome.Message.AppendLine(affected.Name + " affected by " + Condition + ":" + Amount);
             return outcome;
         }

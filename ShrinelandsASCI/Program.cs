@@ -72,7 +72,7 @@ namespace ShrinelandsASCI
             {
                 output.AppendLine("No active character");
             }
-            var outcome = DM.UseAbility(opt.Ability, opt.Target.ToList());
+            var outcome = DM.UseAbility(opt.Ability, opt.Target.ToList(), null);
             output.Append(outcome.Message.ToString());
         }
 
@@ -139,6 +139,10 @@ namespace ShrinelandsASCI
 
         [Value(1)]
         public IEnumerable<string> Target { get; set; }
+
+        //[Value(2)]
+        //public string Options { get; set; }
+
     }
 
     [Verb("status", HelpText="show game status summary")]

@@ -79,6 +79,17 @@ namespace ShrinelandsTactics.World
             return tiles[pos].Passable;
         }
 
+        public List<Position> GetAdjacent(Position pos)
+        {
+            var positions = new List<Position>();
+            foreach (var dir in Enum.GetValues(typeof(Direction)))
+            {
+                var offset = DirectionToPosition[(Direction)dir];
+                positions.Add(pos + offset);
+            }
+            return positions;
+        }
+
         public static Map CreateFromText(string description, GameData data)
         {
             if(!IsValidMapDescription(description))

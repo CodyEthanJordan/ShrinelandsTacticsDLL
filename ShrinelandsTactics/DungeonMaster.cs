@@ -160,6 +160,24 @@ namespace ShrinelandsTactics
             return DM;
         }
 
+        public void CreateCharacter(Character cloneCharacter)
+        {
+            Characters.Add(cloneCharacter);
+        }
+
+        public List<Position> GetEmptyAdjacentSquares(Position pos)
+        {
+            var validPositions = new List<Position>();
+            foreach (var adj in map.GetAdjacent(pos))
+            {
+                if(IsOpen(adj))
+                {
+                    validPositions.Add(adj);
+                }
+            }
+            return validPositions;
+        }
+
         public bool IsActiveAndControllable(Character guy)
         {
             if(activatedCharacter == null || currentSide == null)
@@ -202,6 +220,16 @@ namespace ShrinelandsTactics
                 return; //TODO: error
             }
 
+            //automatically use dodge as a convencience factor
+            var dodge = guy.Actions.FirstOrDefault(a => a.Name == "Dodge");
+            if(dodge != null)
+            {
+                while(guy.CanPay(dodge))
+                {
+                    dodge.ResolveAction(this, guy, null, null, "");
+                }
+            }
+
             guy.EndActivation();
             activatedCharacter = null;
         }
@@ -235,7 +263,7 @@ namespace ShrinelandsTactics
             throw new NotImplementedException();
         }
 
-        public Outcome UseAbility(string abilityIdentifier, List<string> target)
+        public Outcome UseAbility(string abilityIdentifier, List<string> target, string options=null)
         {
             var outcome = new Outcome();
             if(activatedCharacter == null)
@@ -283,7 +311,7 @@ namespace ShrinelandsTactics
                         var dir = Map.ParseDirection(target[0]);
                         var pos = activatedCharacter.Pos + Map.DirectionToPosition[dir];
                         targetCharacter = Characters.FirstOrDefault(c => c.Pos == pos);
-                        outcome = ability.ResolveAction(this, activatedCharacter, pos, targetCharacter, "");
+                        outcome = ability.ResolveAction(this, activatedCharacter, pos, targetCharacter, options);
                         return outcome; //TODO: get from resolve action
                     }
                     catch
@@ -295,13 +323,13 @@ namespace ShrinelandsTactics
                 else
                 {
                     //target isn't null
-                    outcome = ability.ResolveAction(this, activatedCharacter, null, targetCharacter, "");
+                    outcome = ability.ResolveAction(this, activatedCharacter, null, targetCharacter, options);
                     return outcome; //TODO: get from resolve action
                 }
             }
             else if(target.Count == 0)
             {
-                outcome = ability.ResolveAction(this, activatedCharacter, null, null, "");
+                outcome = ability.ResolveAction(this, activatedCharacter, null, null, options);
                 return outcome;
             }
 
@@ -362,14 +390,14 @@ namespace ShrinelandsTactics
 
             //has enough movement
             var moveCost = map.GetTile(guy.Pos).MoveCost;
-            if(moveCost > guy.Move.Value)
+            if(moveCost > (guy.Move.Value + guy.Stamina.Value))
             {
                 outcome.Message.AppendLine(guy.Name + " only has " + guy.Move.Value + " movement" +
                     " remaining, but needs " + moveCost + " to move");
                 return outcome; //TODO: error
             }
 
-            guy.Move.Value -= moveCost;
+            guy.PayMovement(moveCost);
             guy.Pos = destination;
             outcome.Message.AppendLine(guy.Name + " moved to " + destination);
             return outcome;
@@ -406,5 +434,6 @@ namespace ShrinelandsTactics
             return DM;
         }
 
+        public static Random rand = new Random();
     }
 }

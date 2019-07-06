@@ -31,13 +31,15 @@ namespace ShrinelandsTactics.World
         public bool HasBeenActivated = false;
         public bool HasActed = false;
         [JsonProperty]
-        public int ArmorProtection =  2;
+        public int ArmorProtection = 2;
         [JsonProperty]
-        public int ArmorCoverage=  2;
+        public int ArmorCoverage = 2;
         [JsonProperty]
         public int WeaponAdvantage = 3;
         [JsonProperty]
         public int WeaponDamage = 3;
+        [JsonProperty]
+        public List<string> Traits = new List<string>();
 
         [JsonIgnore]
         public Stat Vitality { get { return Stats[StatType.Vitality]; } }
@@ -51,7 +53,7 @@ namespace ShrinelandsTactics.World
         public Stat Strength { get { return Stats[StatType.Strength]; } }
         [JsonIgnore]
         public Stat Mana { get { return Stats[StatType.Mana]; } }
-        
+
         public bool Incapacitated
         {
             get { return Vitality.Value <= 0; }
@@ -93,7 +95,7 @@ namespace ShrinelandsTactics.World
             {
                 condition.StartingActivation();
             }
-            Conditions.RemoveAll(c => c.Duration <= 0);
+            Conditions.RemoveAll(c => c.Duration == 0);
         }
 
         public void EndActivation()
@@ -101,7 +103,7 @@ namespace ShrinelandsTactics.World
             //usually won't mean anything
         }
 
-        public Outcome ResolveEffect(DungeonMaster DM, Character user, Position posTarget, Deck deck, Card cardDrawn, 
+        public Outcome ResolveEffect(DungeonMaster DM, Character user, Position posTarget, Deck deck, Card cardDrawn,
             List<Effect> typicalEffects)
         {
             var outcome = new Outcome();
@@ -117,6 +119,17 @@ namespace ShrinelandsTactics.World
                     var reducedDamage = new DamageEffect(damage.TypeOfDamage, x);
                     reducedDamage.Apply(DM, user, posTarget, this, deck, cardDrawn);
                     outcome.Message.AppendLine("Damage reduced to " + x + " by armor");
+                }
+
+                //TODO: more elegant method
+                if(Traits.Contains("Split"))
+                {
+                    var emptySpaces = DM.GetEmptyAdjacentSquares(Pos);
+                    int i = DungeonMaster.rand.Next(emptySpaces.Count);
+                    var emptySpace = emptySpaces[i];
+                    var cloneCharacter = this.Clone() as Character;
+                    cloneCharacter.InitializeIndividual("Copy of " + Name, emptySpace, SideID);
+                    DM.CreateCharacter(cloneCharacter);
                 }
             }
 
@@ -141,7 +154,7 @@ namespace ShrinelandsTactics.World
             //TODO: factor in complicated qualities
             foreach (var kvp in action.Cost)
             {
-                if(Stats[kvp.Key].Value < kvp.Value)
+                if (Stats[kvp.Key].Value < kvp.Value)
                 {
                     return false;
                 }
@@ -152,21 +165,29 @@ namespace ShrinelandsTactics.World
 
         public void CardDrawn(Deck deck, Card card)
         {
-            if(card.Name == "Dodge")
+            if (card.Name == "Dodge")
             {
                 ReduceCondition("Dodging", 1); //TODO: pass card to conditions and let them sort it out?
             }
+            else if (card.Name == "Empowered")
+            {
+                ReduceCondition("Empowered", 1);
+            }
+            else if(card.Name == "Exertion")
+            {
+                ReduceCondition("Exertion", 1);
+            }
         }
 
-        public void AddCondition(string name, int amount)
+        public void AddCondition(string name, int amount, int duration=-1)
         {
             var condition = Conditions.FirstOrDefault(c => c.Name == name);
             if (condition == null)
             {
-                condition = new Condition(name, amount);
+                condition = new Condition(name, amount, duration);
                 Conditions.Add(condition); //don't have it, so gain it
                 return;
-            }            
+            }
             condition.Value += amount;
             if (condition.Value <= 0)
             {
@@ -177,12 +198,12 @@ namespace ShrinelandsTactics.World
         public void ReduceCondition(string name, int amount)
         {
             var condition = Conditions.FirstOrDefault(c => c.Name == name);
-            if(condition == null)
+            if (condition == null)
             {
                 return; //TODO: throw error? have outcome?
             }
             condition.Value -= amount;
-            if(condition.Value <= 0)
+            if (condition.Value <= 0)
             {
                 Conditions.Remove(condition);
             }
@@ -202,7 +223,7 @@ namespace ShrinelandsTactics.World
             var armor = Card.CreateReplacementCard("Glancing Blow", Card.CardType.Armor, hit);
             deck.AddCards(armor, ArmorCoverage); //armor card causes hit to be redirected to character for resolution?
         }
-       
+
         public void AddDodgeCards(Deck deck, DungeonMaster DM, Character attacker, Action action)
         {
             //TODO: no magic numbers
@@ -211,7 +232,7 @@ namespace ShrinelandsTactics.World
 
             //TODO: pass to condition and query
             var dodging = Conditions.FirstOrDefault(c => c.Name == "Dodging");
-            if(dodging != null)
+            if (dodging != null)
             {
                 var dodge = new Card("Dodge", Card.CardType.Miss);
                 deck.AddCards(dodge, dodging.Value);
@@ -223,7 +244,7 @@ namespace ShrinelandsTactics.World
             switch (verbosity)
             {
                 case 0:
-                    return Name + " Vit:" + Vitality + " Sta:" + Stamina + 
+                    return Name + " Vit:" + Vitality + " Sta:" + Stamina +
                         " Move:" + Move + " Pos:" + Pos;
                 case 1:
                     StringBuilder sb = new StringBuilder();
@@ -256,17 +277,38 @@ namespace ShrinelandsTactics.World
                 switch (tag)
                 {
                     case Mechanics.Action.AbilityType.Attack:
-                        if(isTarget)
+                        if (isTarget)
                         {
                             AddDodgeCards(deck, DM, user, action);
                             AddArmorCards(deck, DM, user, action);
                             //add dodge 
+                        }
+                        else
+                        {
+                            //check for buffs to attack
+                            var empowered = Conditions.FirstOrDefault(c => c.Name == "Empowered");
+                            if (empowered != null)
+                            {
+                                deck.AddCards(new Card("Empowered", Card.CardType.Hit), empowered.Value);
+                            }
+
+                            var exertion = Conditions.FirstOrDefault(c => c.Name == "Exertion");
+                            if (exertion != null)
+                            {
+                                deck.AddCards(new Card("Exertion", Card.CardType.Hit), exertion.Value);
+                            }
                         }
                         break;
                     default:
                         break;
                 }
             }
+        }
+        public void PayMovement(int moveCost)
+        {
+            int overFlow = Math.Max(moveCost - Move.Value, 0);
+            Move.Value -= (moveCost - overFlow);
+            Stamina.Value -= overFlow;
         }
 
         public enum StatType
@@ -285,4 +327,5 @@ namespace ShrinelandsTactics.World
             return JsonConvert.DeserializeObject<Character>(json);
         }
     }
+
 }

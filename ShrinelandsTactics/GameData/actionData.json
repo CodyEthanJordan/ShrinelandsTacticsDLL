@@ -39,7 +39,7 @@
       "Repeatable": false
     },
     {
-      "Cost": { "Stamina": 1 },
+      "Cost": { },
       "DeckRecipie": {
         "UserBaseAttack": {
           "Name": "Hit",
@@ -122,10 +122,52 @@
             "TypeOfEffect": "ModifyCondition",
             "Condition": "Dodging",
             "Amount": 1,
+            "Duration": 1,
             "AffectCaster": true
           }
         ]
       },
+      "TypeOfAction": "Minor",
+      "Repeatable": true,
+      "Tags": [ "Uncontested" ]
+    },
+    {
+      "Name": "Exert",
+      "Cost": { "Stamina": 1 },
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "ModifyCondition",
+            "Condition": "Exertion",
+            "Duration": 1,
+            "Amount": 1,
+            "AffectCaster": true
+          }
+        ]
+      },
+      "TypeOfAction": "Minor",
+      "Repeatable": true,
+      "Tags": [ "Uncontested" ]
+    },
+    {
+      "Name": "Empower Ally",
+      "Cost": { "Mana": 1 },
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "RegainStat",
+            "Condition": "Vitality",
+            "Amount": 3
+          },
+          {
+            "TypeOfEffect": "ModifyCondition",
+            "Condition": "Empowered",
+            "Amount": 2
+          }
+        ]
+      },
+      "Range": 7,
+      "TypeOfRange": "Ranged",
       "TypeOfAction": "Minor",
       "Repeatable": true,
       "Tags": ["Uncontested"]

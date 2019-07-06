@@ -185,6 +185,8 @@ namespace ShrinelandsTactics.Mechanics
                 deck.AddCards(card, num);
             }
 
+            user.AddModifiers(deck, DM, user, this, false);
+
             if(charTarget != null)
             {
                 charTarget.AddModifiers(deck, DM, user, this, true);

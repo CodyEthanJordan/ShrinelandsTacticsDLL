@@ -27,3 +27,19 @@ characters:
    class: Slime
    pos: 9 13
    side: The Foe
+ - name: Slime2
+   class: Slime
+   pos: 7 13
+   side: The Foe
+ - name: Slime3
+   class: Slime
+   pos: 9 15
+   side: The Foe
+ - name: Slime4
+   class: Slime
+   pos: 11 8
+   side: The Foe
+ - name: Slime5
+   class: Slime
+   pos: 22 23
+   side: The Foe

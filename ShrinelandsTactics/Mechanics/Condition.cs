@@ -19,10 +19,11 @@ namespace ShrinelandsTactics.Mechanics
         [JsonProperty]
         public int Duration { get; private set; }
 
-        public Condition(string Name, int Value)
+        public Condition(string Name, int Value, int Duration=-1)
         {
             this.Name = Name;
             this.Value = Value;
+            this.Duration = Duration;
         }
 
         public void StartingActivation()

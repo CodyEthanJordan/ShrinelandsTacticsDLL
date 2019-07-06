@@ -4,49 +4,51 @@
       "Name": "Slimelord",
       "Stats": {
         "Vitality": {
-          "Value": 10,
-          "Max": 10
+          "Value": 15,
+          "Max": 15
         },
         "Move": {
           "Value": 5,
           "Max": 5
         },
         "Stamina": {
-          "Value": 4,
-          "Max": 4
+          "Value": 3,
+          "Max": 3
         },
         "Profeciency": {
-          "Value": 3,
-          "Max": 3
+          "Value": 2,
+          "Max": 2
         },
         "Strength": {
-          "Value": 3,
-          "Max": 3
+          "Value": 2,
+          "Max": 2
         },
         "Mana": {
           "Value": 0,
-          "Max": 0
+          "Max": 3
         }
       },
       "Actions": [
         { "Name": "Attack" },
-        { "Name": "Drain Vitality"}
+        { "Name": "Dodge" },
+        { "Name": "Drain Vitality" },
+        { "Name": "Empower Ally"}
       ]
     },
     {
       "Name": "Knight",
       "Stats": {
         "Vitality": {
-          "Value": 10,
-          "Max": 10
+          "Value": 16,
+          "Max": 16
         },
         "Move": {
           "Value": 5,
           "Max": 5
         },
         "Stamina": {
-          "Value": 4,
-          "Max": 4
+          "Value": 3,
+          "Max": 3
         },
         "Profeciency": {
           "Value": 3,
@@ -63,7 +65,8 @@
       },
       "Actions": [
         { "Name": "Attack" },
-        { "Name": "Dodge" }
+        { "Name": "Dodge" },
+        { "Name": "Exert" }
       ]
     },
     {
@@ -97,9 +100,10 @@
       "Actions": [
         { "Name": "Attack" }
       ],
-      "ArmorCoverage": 0,
+      "ArmorCoverage": 10,
       "WeaponAdvantage": 2,
       "WeaponDamage": 2,
+      "Traits": ["Split"]
     }
   ]
 }
