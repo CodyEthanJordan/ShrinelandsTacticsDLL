@@ -68,12 +68,15 @@ namespace ShrinelandsTactics.World
                 {Action.CardSource.UserBaseAttack, hit },
             };
 
+            var hitEffect = new DamageEffect(DamageEffect.DamageType.Slashing, 5);
+            var critEffect = new DamageEffect(DamageEffect.DamageType.Slashing, 8);
+
             //TODO: have numeric resolver?
             var criticalEffects = new Dictionary<Card.CardType, List<Effect>>()
             {
-                { Card.CardType.Hit, new List<Effect>() {new DamageEffect(DamageEffect.DamageType.Bludgeoning, 5)} },
-                { Card.CardType.Armor, new List<Effect>() {new DamageEffect(DamageEffect.DamageType.Bludgeoning, 2)} },
-                { Card.CardType.Miss, new List<Effect>() {new DamageEffect(DamageEffect.DamageType.Bludgeoning, 2)} },           
+                { Card.CardType.Hit, new List<Effect>() {critEffect} },
+                { Card.CardType.Armor, new List<Effect>() {hitEffect} },
+                { Card.CardType.Miss, new List<Effect>() {hitEffect} },           
             };
 
 
@@ -81,7 +84,8 @@ namespace ShrinelandsTactics.World
             {
                 {Card.CardType.Miss, new List<Effect>(){new NullEffect()} },
                 {Card.CardType.Hit, new List<Effect>(){new RedrawEffect(criticalEffects)} },
-                {Card.CardType.Armor, new List<Effect>(){new ResolveByTargetEffect()} }
+                {Card.CardType.Armor, new List<Effect>()
+                { new ResolveByTargetEffect(new List<Effect>() { hitEffect })} }
             };
 
             var action = new Action(Name, Cost, DeckRecipie, effects,

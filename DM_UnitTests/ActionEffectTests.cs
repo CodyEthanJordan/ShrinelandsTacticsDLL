@@ -21,7 +21,7 @@ namespace DM_UnitTests
         [ClassInitialize]
         public static void ReadGameData(TestContext context)
         {
-            //data = GameData.ReadDatafilesInDirectory("GameData");
+            data = GameData.ReadDatafilesInDirectory("GameData");
         }
 
         [TestMethod]
@@ -98,8 +98,9 @@ namespace DM_UnitTests
 
             var deck = drain.GetDeckFor(DM, robby, null, zach);
             var hitIndex = deck.Cards.IndexOf(deck.Cards.Find(c => c.TypeOfCard == Card.CardType.Hit));
+            Deck.FatedDraws.Add("Drain");
 
-            drain.ResolveAction(DM, robby, null, zach, "", hitIndex);
+            drain.ResolveAction(DM, robby, null, zach, "");
 
             Assert.IsTrue(robby.Mana.Value > 0);
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
@@ -132,7 +133,7 @@ namespace DM_UnitTests
         }
 
         [TestMethod]
-        public void DebugAttackOutcomeTest()
+        public void DebugAttackHitTest()
         {
             var DM = DungeonMaster.GetDebugDM(data);
             var attack = DebugData.GetDebugAttackAction();
@@ -141,16 +142,35 @@ namespace DM_UnitTests
             var zach = DM.Characters[1];
             zach.Conditions.Add(new Condition("Dodging", 3));
 
-            var deck = attack.GetDeckFor(DM, robby, null, zach);
-            int hitIndex = deck.Cards.IndexOf(deck.Cards.First(c => c.TypeOfCard == Card.CardType.Hit));
-
-            attack.ResolveAction(DM, robby, null, zach, "", hitIndex);
+            DM.Activate(robby);
+            attack.ResolveAction(DM, robby, null, zach, "");
             //not adjacent so nothing happens
             Assert.IsTrue(zach.Vitality.Value == zach.Vitality.Max);
 
-            zach.Pos = robby.Pos + new Position(1, 0);
-            attack.ResolveAction(DM, robby, null, zach, "", hitIndex);
+            zach.Pos = robby.Pos + Map.DirectionToPosition[Map.Direction.E];
+            Deck.SetFate(new List<string>() { "Hit", "Miss" });
+            attack.ResolveAction(DM, robby, null, zach, "");
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
+            Assert.AreEqual(zach.Vitality.Max - robby.Strength.Value - robby.weaponDamage, zach.Vitality.Value);
+        }
+
+        [TestMethod]
+        public void DebugAttackDodgeTest()
+        {
+            var DM = DungeonMaster.GetDebugDM(data);
+            var attack = DebugData.GetDebugAttackAction();
+
+            var robby = DM.Characters[0];
+            var zach = DM.Characters[1];
+            int dodgeCards = 3;
+            zach.Conditions.Add(new Condition("Dodging", dodgeCards));
+            DM.Activate(robby);
+            zach.Pos = robby.Pos + Map.DirectionToPosition[Map.Direction.E];
+
+            Deck.SetFate(new List<string>() { "Dodge" });
+            attack.ResolveAction(DM, robby, null, zach, "");
+            Assert.IsTrue(zach.Vitality.Value == zach.Vitality.Max);
+            Assert.AreEqual(dodgeCards - 1, zach.Conditions.First(c => c.Name == "Dodging").Value);
         }
 
         [TestMethod]

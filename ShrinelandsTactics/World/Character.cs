@@ -21,10 +21,6 @@ namespace ShrinelandsTactics.World
         [JsonProperty]
         public string Name { get; private set; }
 
-        internal void ResolveEffect(Deck deck, Card cardDrawn)
-        {
-            throw new NotImplementedException();
-        }
 
         [JsonProperty]
         public Dictionary<StatType, Stat> Stats { get; private set; }
@@ -34,6 +30,9 @@ namespace ShrinelandsTactics.World
         public List<Action> Actions { get; private set; }
         public bool HasBeenActivated = false;
         public bool HasActed = false;
+        public int armorProtection =  2;
+        public int weaponAdvantage = 3;
+        public int weaponDamage = 3;
 
         [JsonIgnore]
         public Stat Vitality { get { return Stats[StatType.Vitality]; } }
@@ -93,6 +92,24 @@ namespace ShrinelandsTactics.World
             //usually won't mean anything
         }
 
+        public void ResolveEffect(DungeonMaster DM, Character user, Position posTarget, Deck deck, Card cardDrawn, 
+            List<Effect> typicalEffects)
+        {
+            //TODO: add slime splitting
+            if (cardDrawn.TypeOfCard == Card.CardType.Armor)
+            {
+                //reduce damage
+                var damage = typicalEffects.FirstOrDefault(e => e.TypeOfEffect == Effect.EffectType.Damage) as DamageEffect;
+                if (damage != null)
+                {
+                    int amount = damage.Amount;
+                    int x = Math.Max(0, amount - armorProtection);
+                    var reducedDamage = new DamageEffect(damage.TypeOfDamage, x);
+                    reducedDamage.Apply(DM, user, posTarget, this, deck, cardDrawn);
+                }
+            }
+        }
+
         public void TakeDamage(DamageEffect.DamageType typeOfDamage, int amount)
         {
             Stats[StatType.Vitality].Value -= amount; //TODO: check for 0?
@@ -122,7 +139,7 @@ namespace ShrinelandsTactics.World
 
         public void ReduceCondition(string name, int amount)
         {
-            var condition = Conditions.First(c => c.Name == name);
+            var condition = Conditions.FirstOrDefault(c => c.Name == name);
             if(condition == null)
             {
                 return; //TODO: throw error? have outcome?
@@ -145,7 +162,6 @@ namespace ShrinelandsTactics.World
         public void AddArmorCards(Deck deck, DungeonMaster DM, Character attacker, Action action)
         {
             int coverage = 2; //TODO: no magic numbers, actually use items
-            int protection = 2; //TODO: doesnt work for slimes
 
             var hit = new Card("Hit", Card.CardType.Hit);
             var armor = Card.CreateReplacementCard("Glancing Blow", Card.CardType.Armor, hit);

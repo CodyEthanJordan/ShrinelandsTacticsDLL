@@ -85,7 +85,7 @@ namespace ShrinelandsTactics.Mechanics
         }
 
         public void ResolveAction(DungeonMaster DM, Character user, Position posTarget,
-            Character charTarget, string optionalFeatures, int? fated_roll=null)
+            Character charTarget, string optionalFeatures)
         {
             if(!IsValidToDo(DM, user, posTarget, charTarget, optionalFeatures))
             {
@@ -97,7 +97,7 @@ namespace ShrinelandsTactics.Mechanics
 
             //draw card
             //special drawing rules?
-            Card card = deck.Draw(fated_roll);
+            Card card = deck.Draw();
 
             //inform user and target what card was drawn, possibly for temporary dodge or breaking shields
             user.CardDrawn(deck, card);

@@ -19,13 +19,18 @@ namespace ShrinelandsTactics.BasicStructures
             }
         }
 
-        public Card Draw(int? fatedRoll = null)
+        public Card Draw()
         {
             int i = rand.Next(Cards.Count);
 
-            if(fatedRoll.HasValue)
+            if(FatedDraws != null)
             {
-                i = fatedRoll.Value;
+                var nextDraw = Cards.FirstOrDefault(c => c.Name == FatedDraws.First());
+                if(nextDraw != null)
+                {
+                    FatedDraws.RemoveAt(0);
+                    i = Cards.IndexOf(nextDraw);
+                }
             }
 
             Card card = Cards[i];
@@ -54,5 +59,18 @@ namespace ShrinelandsTactics.BasicStructures
         }
 
         public static readonly Random rand = new Random();
+
+        public static List<string> FatedDraws = new List<string>();
+
+        public static void SetFate(string Fate)
+        {
+            SetFate(new List<string>() { Fate });
+        }
+
+        public static void SetFate(List<string> Fate)
+        {
+            FatedDraws.Clear();
+            FatedDraws.AddRange(Fate);
+        }
     }
 }

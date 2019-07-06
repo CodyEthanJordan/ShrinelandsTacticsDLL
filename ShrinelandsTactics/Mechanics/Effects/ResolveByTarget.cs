@@ -11,15 +11,22 @@ namespace ShrinelandsTactics.Mechanics.Effects
 {
     public class ResolveByTargetEffect : Effect
     {
-        public ResolveByTargetEffect()
+        public List<Effect> TypicalEffects = new List<Effect>();
+
+        private ResolveByTargetEffect()
         {
             TypeOfEffect = EffectType.ResolveByTarget;
+        }
+
+        public ResolveByTargetEffect(List<Effect> TypicalEffects) : this()
+        {
+            this.TypicalEffects = TypicalEffects;
         }
 
         public override void Apply(DungeonMaster DM, Character user, Position posTarget, 
             Character charTarget, Deck deck, Card cardDrawn, string optionalFeatures = null)
         {
-            charTarget.ResolveEffect(deck, cardDrawn);
+            charTarget.ResolveEffect(DM, user, posTarget, deck, cardDrawn, TypicalEffects);
         }
     }
 }

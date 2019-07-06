@@ -19,7 +19,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
             TypeOfEffect = EffectType.Redraw;
         }
 
-        public RedrawEffect(Dictionary<Card.CardType, List<Effect>> Effects)
+        public RedrawEffect(Dictionary<Card.CardType, List<Effect>> Effects) : this()
         {
             this.Effects = Effects;
         }
