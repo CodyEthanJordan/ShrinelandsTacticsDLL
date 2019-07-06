@@ -76,6 +76,22 @@ namespace ShrinelandsTactics.World
             return map;
         }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(Name);
+            sb.AppendLine(Width + " " + Height);
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    sb.Append(GetTile(x, y).ToString());
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
         public static Direction ParseDirection(string dir)
         {
             return (Direction)Enum.Parse(typeof(Direction), dir.ToUpper());

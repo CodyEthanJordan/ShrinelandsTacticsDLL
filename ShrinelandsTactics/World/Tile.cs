@@ -48,6 +48,11 @@ namespace ShrinelandsTactics.World
             return JsonConvert.DeserializeObject<Tile>(json);
         }
 
+        public override string ToString()
+        {
+            return Icon.ToString();
+        }
+
         public enum TileProperties
         {
             OnFire,

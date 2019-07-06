@@ -50,8 +50,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MapTests.cs" />
     <Compile Include="BasicStructureTests.cs" />
     <Compile Include="ActionEffectTests.cs" />
     <Compile Include="CharacterTests.cs" />

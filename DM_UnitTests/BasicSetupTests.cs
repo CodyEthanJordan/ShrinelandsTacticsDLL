@@ -53,7 +53,5 @@ namespace DM_UnitTests
 
             Assert.IsNotNull(vis);
         }
-
-
     }
 }
