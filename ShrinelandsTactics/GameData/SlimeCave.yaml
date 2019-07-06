@@ -11,7 +11,19 @@ characters:
    class: Knight
    pos: 13 25
    side: Heros
+ - name: Charlie
+   class: Knight
+   pos: 15 25
+   side: Heros
+ - name: JJ
+   class: Knight
+   pos: 14 23
+   side: Heros
  - name: Robby
    class: Slimelord
    pos: 9 9
+   side: The Foe
+ - name: Slime1
+   class: Slime
+   pos: 9 13
    side: The Foe

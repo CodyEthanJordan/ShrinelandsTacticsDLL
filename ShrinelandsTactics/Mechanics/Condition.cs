@@ -30,6 +30,11 @@ namespace ShrinelandsTactics.Mechanics
             Duration--;
         }
 
+        public override string ToString()
+        {
+            return Name + ":" + Value;
+        }
+
         //TODO: add handlers for start turn, end turn, so forth?
     }
 }

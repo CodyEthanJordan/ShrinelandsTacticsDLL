@@ -30,10 +30,14 @@ namespace ShrinelandsTactics.World
         public List<Action> Actions { get; private set; }
         public bool HasBeenActivated = false;
         public bool HasActed = false;
-        public int armorProtection =  2;
-        public int armorCoverage=  2;
-        public int weaponAdvantage = 3;
-        public int weaponDamage = 3;
+        [JsonProperty]
+        public int ArmorProtection =  2;
+        [JsonProperty]
+        public int ArmorCoverage=  2;
+        [JsonProperty]
+        public int WeaponAdvantage = 3;
+        [JsonProperty]
+        public int WeaponDamage = 3;
 
         [JsonIgnore]
         public Stat Vitality { get { return Stats[StatType.Vitality]; } }
@@ -109,7 +113,7 @@ namespace ShrinelandsTactics.World
                 if (damage != null)
                 {
                     int amount = damage.GetAmount(DM, user, posTarget, this);
-                    int x = Math.Max(0, amount - armorProtection);
+                    int x = Math.Max(0, amount - ArmorProtection);
                     var reducedDamage = new DamageEffect(damage.TypeOfDamage, x);
                     reducedDamage.Apply(DM, user, posTarget, this, deck, cardDrawn);
                     outcome.Message.AppendLine("Damage reduced to " + x + " by armor");
@@ -146,6 +150,22 @@ namespace ShrinelandsTactics.World
             }
         }
 
+        public void AddCondition(string name, int amount)
+        {
+            var condition = Conditions.FirstOrDefault(c => c.Name == name);
+            if (condition == null)
+            {
+                condition = new Condition(name, amount);
+                Conditions.Add(condition); //don't have it, so gain it
+                return;
+            }            
+            condition.Value += amount;
+            if (condition.Value <= 0)
+            {
+                Conditions.Remove(condition);
+            }
+        }
+
         public void ReduceCondition(string name, int amount)
         {
             var condition = Conditions.FirstOrDefault(c => c.Name == name);
@@ -172,7 +192,7 @@ namespace ShrinelandsTactics.World
         {
             var hit = new Card("Hit", Card.CardType.Hit);
             var armor = Card.CreateReplacementCard("Glancing Blow", Card.CardType.Armor, hit);
-            deck.AddCards(armor, armorCoverage); //armor card causes hit to be redirected to character for resolution?
+            deck.AddCards(armor, ArmorCoverage); //armor card causes hit to be redirected to character for resolution?
         }
        
         public void AddDodgeCards(Deck deck, DungeonMaster DM, Character attacker, Action action)
@@ -209,6 +229,10 @@ namespace ShrinelandsTactics.World
                         sb.Append(i + ":" + Actions[i].Name + "  ");
                     }
                     sb.AppendLine();
+                    foreach (var condition in Conditions)
+                    {
+                        sb.AppendLine(condition.ToString());
+                    }
                     return sb.ToString();
                 default:
                     break;
@@ -217,7 +241,7 @@ namespace ShrinelandsTactics.World
             return null;
         }
 
-        internal void AddModifiers(Deck deck, DungeonMaster DM, Character user, Action action, bool isTarget)
+        public void AddModifiers(Deck deck, DungeonMaster DM, Character user, Action action, bool isTarget)
         {
             foreach (var tag in action.Tags)
             {

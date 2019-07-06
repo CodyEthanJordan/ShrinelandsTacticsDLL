@@ -72,9 +72,13 @@ namespace ShrinelandsTactics.Mechanics
             {
                 target = posTarget;
             }
-            else
+            else if(charTarget != null)
             {
                 target = charTarget.Pos;
+            }
+            else
+            {
+                return true; //if no target always works
             }
 
             int dist = user.Pos.Distance(target);
@@ -100,6 +104,16 @@ namespace ShrinelandsTactics.Mechanics
             }
 
             timesUsed++; //TODO: check for no re-use
+
+            if (Tags.Any(t => t == AbilityType.Uncontested))
+            {
+                foreach (var effect in Effects[Card.CardType.Hit])
+                {
+                    var effectOutcome = effect.Apply(DM, user, posTarget, charTarget, null, null, "");
+                    outcome.Message.Append(effectOutcome.Message); //TODO: better way to combine
+                }
+                return outcome;
+            }
 
             //generate outcome deck or mark as uncontested
             Deck deck = GetDeckFor(DM, user, posTarget, charTarget);
@@ -142,11 +156,11 @@ namespace ShrinelandsTactics.Mechanics
                 case CardSource.TargetStamina:
                     return charTarget.Vitality.Value;
                 case CardSource.TargetArmorCoverage:
-                    return charTarget.armorCoverage;
+                    return charTarget.ArmorCoverage;
                 case CardSource.UserBaseAttack:
-                    return user.weaponAdvantage + user.Profeciency.Value;
+                    return user.WeaponAdvantage + user.Profeciency.Value;
                 case CardSource.UserBaseDamage:
-                    return user.Strength.Value + user.weaponDamage;
+                    return user.Strength.Value + user.WeaponDamage;
                 case CardSource.UserStrength:
                     return user.Strength.Value;
                 default:
@@ -159,6 +173,7 @@ namespace ShrinelandsTactics.Mechanics
             Character charTarget)
         {
             Deck deck = new Deck();
+
 
             foreach (var ingredient in DeckRecipie)
             {
@@ -209,6 +224,7 @@ namespace ShrinelandsTactics.Mechanics
         public enum AbilityType
         {
             Attack,
+            Uncontested,
         }
     }
 }

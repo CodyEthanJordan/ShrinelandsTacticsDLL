@@ -97,10 +97,11 @@ namespace DM_UnitTests
             var robby = DM.Characters[0];
             var zach = DM.Characters[1];
 
+         
             var deck = attack.GetDeckFor(DM, robby, null, zach);
 
-            Assert.AreEqual(robby.Profeciency.Value + robby.weaponAdvantage - zach.armorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
-            Assert.AreEqual(zach.armorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
+            Assert.AreEqual(robby.Profeciency.Value + robby.WeaponAdvantage - zach.ArmorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
+            Assert.AreEqual(zach.ArmorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
             Assert.AreEqual(2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Miss));
 
             int dodgeCards = 3;
@@ -108,7 +109,7 @@ namespace DM_UnitTests
 
             deck = attack.GetDeckFor(DM, robby, null, zach);
 
-            Assert.AreEqual(robby.Profeciency.Value + robby.weaponAdvantage - zach.armorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
+            Assert.AreEqual(robby.Profeciency.Value + robby.WeaponAdvantage - zach.ArmorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
             Assert.AreEqual(2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
             Assert.AreEqual(2 + dodgeCards, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Miss));
         }
@@ -132,7 +133,7 @@ namespace DM_UnitTests
             Deck.SetFate(new List<string>() { "Hit", "Miss" });
             attack.ResolveAction(DM, robby, null, zach, "");
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
-            Assert.AreEqual(zach.Vitality.Max - robby.Strength.Value - robby.weaponDamage, zach.Vitality.Value);
+            Assert.AreEqual(zach.Vitality.Max - robby.Strength.Value - robby.WeaponDamage, zach.Vitality.Value);
         }
 
         [TestMethod]
@@ -154,7 +155,7 @@ namespace DM_UnitTests
             Deck.SetFate(new List<string>() { "Hit", "Hit" });
             attack.ResolveAction(DM, robby, null, zach, "");
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
-            Assert.AreEqual(zach.Vitality.Max - (2*robby.Strength.Value) - robby.weaponDamage, zach.Vitality.Value);
+            Assert.AreEqual(zach.Vitality.Max - (2*robby.Strength.Value) - robby.WeaponDamage, zach.Vitality.Value);
         }
 
         [TestMethod]
@@ -176,7 +177,7 @@ namespace DM_UnitTests
             Deck.SetFate(new List<string>() { "Glancing Blow" });
             attack.ResolveAction(DM, robby, null, zach, "");
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
-            Assert.AreEqual(zach.Vitality.Max - robby.Strength.Value - robby.weaponDamage + zach.armorProtection, zach.Vitality.Value);
+            Assert.AreEqual(zach.Vitality.Max - robby.Strength.Value - robby.WeaponDamage + zach.ArmorProtection, zach.Vitality.Value);
         }
 
         [TestMethod]

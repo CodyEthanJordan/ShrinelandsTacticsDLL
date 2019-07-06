@@ -82,8 +82,7 @@ namespace ShrinelandsTactics
                 {
                     return outcome; //already active, do nothing
                 }
-                outcome.Message.AppendLine("Currently " + activatedCharacter.Name + "'s activation, needs to end first");
-                return outcome;
+                Deactivate(activatedCharacter);
             }
 
             return Activate(guy);
@@ -258,6 +257,11 @@ namespace ShrinelandsTactics
                 int i;
                 if(int.TryParse(abilityIdentifier, out i))
                 {
+                    if(i >= activatedCharacter.Actions.Count)
+                    {
+                        outcome.Message.AppendLine("Can't find ability " + i);
+                        return outcome;
+                    }
                     ability = activatedCharacter.Actions[i];
                 }
                 else
@@ -295,10 +299,13 @@ namespace ShrinelandsTactics
                     return outcome; //TODO: get from resolve action
                 }
             }
-            else
+            else if(target.Count == 0)
             {
-                throw new NotImplementedException();
+                outcome = ability.ResolveAction(this, activatedCharacter, null, null, "");
+                return outcome;
             }
+
+            throw new NotImplementedException();
         }
 
         public Outcome MoveCharacter(string characterName, IEnumerable<string> directions)

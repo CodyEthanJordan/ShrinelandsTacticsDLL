@@ -112,6 +112,23 @@
       "Repeatable": false,
       "Tags": [ "Attack" ],
       "Name": "Attack"
+    },
+    {
+      "Name": "Dodge",
+      "Cost": { "Move": 2 },
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "ModifyCondition",
+            "Condition": "Dodging",
+            "Amount": 1,
+            "AffectCaster": true
+          }
+        ]
+      },
+      "TypeOfAction": "Minor",
+      "Repeatable": true,
+      "Tags": ["Uncontested"]
     }
     ]
 }
