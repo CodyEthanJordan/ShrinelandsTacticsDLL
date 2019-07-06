@@ -217,6 +217,12 @@ namespace ShrinelandsTactics
                 return outcome;
             }
 
+            if(activatedCharacter.Incapacitated)
+            {
+                outcome.Message.AppendLine(activatedCharacter.Name + " is incapacitated and cannot act");
+                return outcome;
+            }
+
             var ability = activatedCharacter.Actions.FirstOrDefault(a => a.Name.Equals(abilityIdentifier, StringComparison.OrdinalIgnoreCase));
             if(ability == null)
             {
@@ -302,6 +308,12 @@ namespace ShrinelandsTactics
             if(!IsActiveAndControllable(guy))
             {
                 outcome.Message.AppendLine(guy.Name + " cannot act at this time, is not activated");
+                return outcome;
+            }
+
+            if(guy.Incapacitated)
+            {
+                outcome.Message.AppendLine(guy.Name + " is incapacitated and cannot move");
                 return outcome;
             }
 

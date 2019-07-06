@@ -48,6 +48,10 @@ namespace ShrinelandsTactics.World
         [JsonIgnore]
         public Stat Mana { get { return Stats[StatType.Mana]; } }
         
+        public bool Incapacitated
+        {
+            get { return Vitality.Value <= 0; }
+        }
 
         public Character()
         {
