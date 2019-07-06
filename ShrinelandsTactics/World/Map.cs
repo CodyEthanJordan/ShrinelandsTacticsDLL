@@ -79,7 +79,7 @@ namespace ShrinelandsTactics.World
             return tiles[pos].Passable;
         }
 
-        public List<Position> GetAdjacent(Position pos)
+        public static List<Position> GetAdjacent(Position pos)
         {
             var positions = new List<Position>();
             foreach (var dir in Enum.GetValues(typeof(Direction)))

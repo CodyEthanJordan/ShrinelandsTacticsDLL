@@ -72,8 +72,25 @@ namespace ShrinelandsTactics
 
             if(guy == null)
             {
-                outcome.Message.AppendLine("No such character as " + unitName);
-                return outcome;
+                //might be number
+                int i;
+                if(int.TryParse(unitName, out i))
+                {
+                    if(i < Characters.Count)
+                    {
+                        guy = Characters[i];
+                    }
+                    else
+                    {
+                        outcome.Message.AppendLine("No such character as " + unitName);
+                        return outcome;
+                    }
+                }
+                else
+                {
+                    outcome.Message.AppendLine("No such character as " + unitName);
+                    return outcome;
+                }
             }
 
             if (activatedCharacter != null)
@@ -168,7 +185,7 @@ namespace ShrinelandsTactics
         public List<Position> GetEmptyAdjacentSquares(Position pos)
         {
             var validPositions = new List<Position>();
-            foreach (var adj in map.GetAdjacent(pos))
+            foreach (var adj in Map.GetAdjacent(pos))
             {
                 if(IsOpen(adj))
                 {
@@ -259,8 +276,15 @@ namespace ShrinelandsTactics
 
         private bool IsFlanking(Character user, Character charTarget)
         {
-            return false; //TODO: implement
-            throw new NotImplementedException();
+            var dir = charTarget.Pos - user.Pos;
+            var oppositeSquare = charTarget.Pos + dir;
+            if(Characters.Any(c => c.Pos == oppositeSquare && c.SideID == user.SideID &&
+                                !c.Incapacitated))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public Outcome UseAbility(string abilityIdentifier, List<string> target, string options=null)
@@ -305,20 +329,38 @@ namespace ShrinelandsTactics
                 var targetCharacter = Characters.FirstOrDefault(c => c.Name.Equals(target[0], StringComparison.OrdinalIgnoreCase));
                 if(targetCharacter == null)
                 {
+                    int i;
+                    if(int.TryParse(target[0], out i))
+                    {
+                        if (i < Characters.Count)
+                        {
+                            targetCharacter = Characters[i];
+                            outcome = ability.ResolveAction(this, activatedCharacter, null, targetCharacter, options);
+                            return outcome;
+                        }
+                        else
+                        {
+                            outcome.Message.AppendLine("No such character as " + target[0]);
+                            return outcome;
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var dir = Map.ParseDirection(target[0]);
+                            var pos = activatedCharacter.Pos + Map.DirectionToPosition[dir];
+                            targetCharacter = Characters.FirstOrDefault(c => c.Pos == pos);
+                            outcome = ability.ResolveAction(this, activatedCharacter, pos, targetCharacter, options);
+                            return outcome; //TODO: get from resolve action
+                        }
+                        catch
+                        {
+                            outcome.Message.AppendLine("Cannot target " + target[0]);
+                            return outcome;
+                        }
+                    }
                     //possibly direction
-                    try
-                    {
-                        var dir = Map.ParseDirection(target[0]);
-                        var pos = activatedCharacter.Pos + Map.DirectionToPosition[dir];
-                        targetCharacter = Characters.FirstOrDefault(c => c.Pos == pos);
-                        outcome = ability.ResolveAction(this, activatedCharacter, pos, targetCharacter, options);
-                        return outcome; //TODO: get from resolve action
-                    }
-                    catch
-                    {
-                        outcome.Message.AppendLine("Cannot target " + target[0]);
-                        return outcome;
-                    }
                 }
                 else
                 {

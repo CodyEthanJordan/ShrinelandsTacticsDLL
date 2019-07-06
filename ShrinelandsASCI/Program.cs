@@ -91,12 +91,14 @@ namespace ShrinelandsASCI
         {
             if(opt.Thing == null || opt.Thing.Length == 0)
             {
+                int i = 0;
                 foreach (var side in DM.Sides)
                 {
                     output.AppendLine(side.Name);
                     foreach (var guy in DM.Characters.FindAll(c => c.SideID == side.ID))
                     {
-                        output.AppendLine("   " + guy.GetInfo(0));
+                        output.AppendLine("   " + i + ":" + guy.GetInfo(0));
+                        i++;
                     }
                 }
             }

@@ -85,13 +85,27 @@ namespace ShrinelandsTactics.Mechanics
 
             int dist = user.Pos.Distance(target);
 
-            if(dist <= Range)
+            if(TypeOfRange == RangeType.Melee)
             {
-                return true;
+                if(Map.GetAdjacent(user.Pos).Contains(charTarget.Pos))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
-                return false;
+                if (dist <= Range)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
