@@ -31,6 +31,7 @@ namespace ShrinelandsTactics.World
         public bool HasBeenActivated = false;
         public bool HasActed = false;
         public int armorProtection =  2;
+        public int armorCoverage=  2;
         public int weaponAdvantage = 3;
         public int weaponDamage = 3;
 
@@ -102,7 +103,7 @@ namespace ShrinelandsTactics.World
                 var damage = typicalEffects.FirstOrDefault(e => e.TypeOfEffect == Effect.EffectType.Damage) as DamageEffect;
                 if (damage != null)
                 {
-                    int amount = damage.Amount;
+                    int amount = damage.GetAmount(DM, user, posTarget, this);
                     int x = Math.Max(0, amount - armorProtection);
                     var reducedDamage = new DamageEffect(damage.TypeOfDamage, x);
                     reducedDamage.Apply(DM, user, posTarget, this, deck, cardDrawn);
@@ -161,11 +162,9 @@ namespace ShrinelandsTactics.World
 
         public void AddArmorCards(Deck deck, DungeonMaster DM, Character attacker, Action action)
         {
-            int coverage = 2; //TODO: no magic numbers, actually use items
-
             var hit = new Card("Hit", Card.CardType.Hit);
             var armor = Card.CreateReplacementCard("Glancing Blow", Card.CardType.Armor, hit);
-            deck.AddCards(armor, coverage); //armor card causes hit to be redirected to character for resolution?
+            deck.AddCards(armor, armorCoverage); //armor card causes hit to be redirected to character for resolution?
         }
        
         public void AddDodgeCards(Deck deck, DungeonMaster DM, Character attacker, Action action)

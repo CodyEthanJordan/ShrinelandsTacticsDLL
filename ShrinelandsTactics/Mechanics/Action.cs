@@ -31,6 +31,7 @@ namespace ShrinelandsTactics.Mechanics
         public ActionType TypeOfAction = ActionType.Major;
         [JsonProperty]
         public bool Repeatable = false;
+        [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public List<AbilityType> Tags = new List<AbilityType>();
 
@@ -59,6 +60,11 @@ namespace ShrinelandsTactics.Mechanics
             if(!user.CanPay(this))
             {
                 return false;
+            }
+
+            if(TypeOfAction == ActionType.Major && user.HasActed)
+            {
+                return false; //already taken major action
             }
 
             //TODO: have DM do check
@@ -92,6 +98,8 @@ namespace ShrinelandsTactics.Mechanics
                 return; //TODO: generate error or raise event?
             }
 
+            timesUsed++; //TODO: check for no re-use
+
             //generate outcome deck or mark as uncontested
             Deck deck = GetDeckFor(DM, user, posTarget, charTarget);
 
@@ -113,6 +121,29 @@ namespace ShrinelandsTactics.Mechanics
             }
         }
 
+        public static int ResolveSource(CardSource source, DungeonMaster DM, Character user, 
+            Position posTarget, Character charTarget)
+        {
+            switch (source)
+            {
+                case CardSource.TargetVitality:
+                    return charTarget.Vitality.Value;
+                case CardSource.TargetStamina:
+                    return charTarget.Vitality.Value;
+                case CardSource.TargetArmorCoverage:
+                    return charTarget.armorCoverage;
+                case CardSource.UserBaseAttack:
+                    return user.weaponAdvantage + user.Profeciency.Value;
+                case CardSource.UserBaseDamage:
+                    return user.Strength.Value + user.weaponDamage;
+                case CardSource.UserStrength:
+                    return user.Strength.Value;
+                default:
+                    break;
+            }
+            throw new NotImplementedException();
+        }
+
         public Deck GetDeckFor(DungeonMaster DM, Character user, Position posTarget,
             Character charTarget)
         {
@@ -121,30 +152,9 @@ namespace ShrinelandsTactics.Mechanics
             foreach (var ingredient in DeckRecipie)
             {
                 var source = ingredient.Key;
+                int num = ResolveSource(source, DM, user, posTarget, charTarget);
                 var card = ingredient.Value;
-
-                switch (source)
-                {
-                    case CardSource.TargetDodge:
-                        //charTarget.AddDodgeCards(DM, user, deck, card);
-                        break;
-                    case CardSource.TargetVitality:
-                        deck.AddCards(card, charTarget.Vitality.Value);
-                        break;
-                    case CardSource.TargetStamina:
-                        deck.AddCards(card, charTarget.Stamina.Value);
-                        break;
-                    case CardSource.TargetArmorCoverage:
-                        break;
-
-                    case CardSource.UserBaseAttack:
-                        //user.AddBaseAttackCards(DM, charTarget, deck);
-                        deck.AddCards(card, user.Profeciency.Value);
-                        //TODO: maybe pass effect and cardsource to character and have it figure the number
-                        break;
-                    default:
-                        break;
-                }
+                deck.AddCards(card, num);
             }
 
             if(charTarget != null)
@@ -165,11 +175,12 @@ namespace ShrinelandsTactics.Mechanics
 
         public enum CardSource
         {
-            TargetDodge,
             TargetVitality,
             TargetStamina,
             TargetArmorCoverage,
             UserBaseAttack,
+            UserStrength,
+            UserBaseDamage,
         }
 
         public enum RangeType

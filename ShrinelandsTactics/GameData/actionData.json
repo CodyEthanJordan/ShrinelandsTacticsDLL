@@ -1,54 +1,42 @@
 {
   "actionData": [
-    {
-      "Cost": { "Stamina": 1 },
-      "Range": 7,
-      "TypeOfRange": "Ranged",
-      "DeckRecipie": {
-        "TargetVitality": {
-          "Name": "Drain",
-          "TypeOfCard": "Hit",
-          "ReplacingCard": false,
-          "CardToReplace": null
-        },
-        "TargetStamina": {
-          "Name": "Resist",
-          "TypeOfCard": "Miss",
-          "ReplacingCard": false,
-          "CardToReplace": null
-        }
-      },
-      "Name": "Drain Vitality"
-    },
-
-    {
-      "Cost": { "Stamina": 1 },
-      "DeckRecipie": {
-        "UserBaseAttack": {
-          "Name": "Hit",
-          "TypeOfCard": "Hit",
-          "ReplacingCard": false,
-          "CardToReplace": null
-        },
-        "TargetDodge": {
-          "Name": "Dodge",
-          "TypeOfCard": "Miss",
-          "ReplacingCard": false,
-          "CardToReplace": null
-        },
-        "TargetArmorCoverage": {
-          "Name": "Glancing Blow",
-          "TypeOfCard": "Armor",
-          "ReplacingCard": true,
-          "CardToReplace": {
-            "Name": "Hit",
-            "TypeOfCard": "Hit",
-            "ReplacingCard": false,
-            "CardToReplace": null
+      {
+        "Name": "Drain Vitality",
+        "Cost": { "Stamina": 1 },
+        "DeckRecipie": {
+          "TargetVitality": {
+            "Name": "Drain",
+            "TypeOfCard": "Hit"
+          },
+          "TargetStamina": {
+            "Name": "Resist",
+            "TypeOfCard":  "Miss"
           }
-        }
-      },
-      "Name": "DebugAttack"
-    }
+        },
+        "Effects": {
+          "Miss": [
+            {
+              "TypeOfEffect": "Null"
+            }
+          ],
+          "Hit": [
+            {
+              "TypeOfDamage": "Magic",
+              "StaticAmount": 1,
+              "TypeOfEffect": "Damage"
+            },
+            {
+              "TypeOfEffect": "RegainStat",
+              "StatAffected": "Mana",
+              "Amount": 1,
+              "AffectCaster": true
+            }
+          ]
+        },
+        "TypeOfRange": "Ranged",
+        "Range": 7,
+        "TypeOfAction": "Major",
+        "Repeatable": false
+      }
   ]
 }

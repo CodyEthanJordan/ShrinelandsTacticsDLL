@@ -68,8 +68,11 @@ namespace ShrinelandsTactics.World
                 {Action.CardSource.UserBaseAttack, hit },
             };
 
-            var hitEffect = new DamageEffect(DamageEffect.DamageType.Slashing, 5);
-            var critEffect = new DamageEffect(DamageEffect.DamageType.Slashing, 8);
+            var hitEffect = new DamageEffect(DamageEffect.DamageType.Slashing, 
+                                new List<Action.CardSource>() { Mechanics.Action.CardSource.UserBaseDamage });
+            var critEffect = new DamageEffect(DamageEffect.DamageType.Slashing, 
+                                new List<Action.CardSource>() { Mechanics.Action.CardSource.UserBaseDamage,
+                                                                Mechanics.Action.CardSource.UserStrength});
 
             //TODO: have numeric resolver?
             var criticalEffects = new Dictionary<Card.CardType, List<Effect>>()

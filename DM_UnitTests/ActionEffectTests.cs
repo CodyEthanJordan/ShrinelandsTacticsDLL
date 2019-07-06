@@ -33,7 +33,7 @@ namespace DM_UnitTests
             string json = JsonConvert.SerializeObject(damage1);
             Effect returnedEffect = JsonConvert.DeserializeObject<Effect>(json);
             DamageEffect damage2 = returnedEffect as DamageEffect;
-            Assert.AreEqual(damageAmount, damage2.Amount);
+            Assert.AreEqual(damageAmount, damage2.StaticAmount);
             Assert.AreEqual(typeOfDamage, damage2.TypeOfDamage);
             Assert.AreEqual(Effect.EffectType.Damage, damage2.TypeOfEffect);
         }
@@ -64,26 +64,6 @@ namespace DM_UnitTests
 
             Assert.IsTrue(guy.CanPay(cheapAction));
             Assert.IsFalse(guy.CanPay(expensiveAction));
-        }
-
-        [TestMethod]
-        public void BasicDeckBuildingTest()
-        {
-            var DM = DungeonMaster.GetDebugDM(data);
-            var guy1 = DebugData.GetDebugCharacter();
-            var guy2 = DebugData.GetDebugCharacter();
-            var cost = new Dictionary<Character.StatType, int>() { { Character.StatType.Stamina, 1 } };
-            var nullEffect = new NullEffect();
-            var recipie = new Dictionary<Action.CardSource, Card>()
-            {
-                { Action.CardSource.TargetDodge, new Card("Dodge", Card.CardType.Miss) },
-                { Action.CardSource.UserBaseAttack, new Card("Hit", Card.CardType.Hit) },
-            };
-
-            var action = new Action("test", cost, recipie, null, ShrinelandsTactics.Mechanics.Action.RangeType.Melee, 1);
-            Deck deck = action.GetDeckFor(DM, guy1, null, guy2);
-
-            Assert.AreEqual(guy1.Profeciency.Value, deck.Cards.Count(c => c.Name == "Hit"));
         }
 
         [TestMethod]
@@ -119,17 +99,18 @@ namespace DM_UnitTests
 
             var deck = attack.GetDeckFor(DM, robby, null, zach);
 
-            Assert.AreEqual(robby.Profeciency.Value - 2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
-            Assert.AreEqual(2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
+            Assert.AreEqual(robby.Profeciency.Value + robby.weaponAdvantage - zach.armorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
+            Assert.AreEqual(zach.armorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
             Assert.AreEqual(2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Miss));
 
-            zach.Conditions.Add(new Condition("Dodging", 3));
+            int dodgeCards = 3;
+            zach.Conditions.Add(new Condition("Dodging", dodgeCards));
 
             deck = attack.GetDeckFor(DM, robby, null, zach);
 
-            Assert.AreEqual(robby.Profeciency.Value - 2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
+            Assert.AreEqual(robby.Profeciency.Value + robby.weaponAdvantage - zach.armorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
             Assert.AreEqual(2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
-            Assert.AreEqual(5, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Miss));
+            Assert.AreEqual(2 + dodgeCards, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Miss));
         }
 
         [TestMethod]
@@ -152,6 +133,50 @@ namespace DM_UnitTests
             attack.ResolveAction(DM, robby, null, zach, "");
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
             Assert.AreEqual(zach.Vitality.Max - robby.Strength.Value - robby.weaponDamage, zach.Vitality.Value);
+        }
+
+        [TestMethod]
+        public void DebugAttackCritTest()
+        {
+            var DM = DungeonMaster.GetDebugDM(data);
+            var attack = DebugData.GetDebugAttackAction();
+
+            var robby = DM.Characters[0];
+            var zach = DM.Characters[1];
+            zach.Conditions.Add(new Condition("Dodging", 3));
+
+            DM.Activate(robby);
+            attack.ResolveAction(DM, robby, null, zach, "");
+            //not adjacent so nothing happens
+            Assert.IsTrue(zach.Vitality.Value == zach.Vitality.Max);
+
+            zach.Pos = robby.Pos + Map.DirectionToPosition[Map.Direction.E];
+            Deck.SetFate(new List<string>() { "Hit", "Hit" });
+            attack.ResolveAction(DM, robby, null, zach, "");
+            Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
+            Assert.AreEqual(zach.Vitality.Max - (2*robby.Strength.Value) - robby.weaponDamage, zach.Vitality.Value);
+        }
+
+        [TestMethod]
+        public void DebugAttackArmorTest()
+        {
+            var DM = DungeonMaster.GetDebugDM(data);
+            var attack = DebugData.GetDebugAttackAction();
+
+            var robby = DM.Characters[0];
+            var zach = DM.Characters[1];
+            zach.Conditions.Add(new Condition("Dodging", 3));
+
+            DM.Activate(robby);
+            attack.ResolveAction(DM, robby, null, zach, "");
+            //not adjacent so nothing happens
+            Assert.IsTrue(zach.Vitality.Value == zach.Vitality.Max);
+
+            zach.Pos = robby.Pos + Map.DirectionToPosition[Map.Direction.E];
+            Deck.SetFate(new List<string>() { "Glancing Blow" });
+            attack.ResolveAction(DM, robby, null, zach, "");
+            Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
+            Assert.AreEqual(zach.Vitality.Max - robby.Strength.Value - robby.weaponDamage + zach.armorProtection, zach.Vitality.Value);
         }
 
         [TestMethod]

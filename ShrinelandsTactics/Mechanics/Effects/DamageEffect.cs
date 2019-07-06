@@ -16,7 +16,26 @@ namespace ShrinelandsTactics.Mechanics.Effects
         [JsonProperty]
         public DamageType TypeOfDamage { get; private set; }
         [JsonProperty]
-        public int Amount { get; set; }
+        public int StaticAmount { get; set; }
+        public List<Action.CardSource> Sources = null;
+
+        public int GetAmount(DungeonMaster DM, Character user, Position posTarget,
+            Character charTarget)
+        {
+            if (Sources != null)
+            {
+                int amount = 0;
+                foreach (var s in Sources)
+                {
+                    amount += Action.ResolveSource(s, DM, user, posTarget, charTarget);
+                }
+                return amount;
+            }
+            else
+            {
+                return StaticAmount;
+            }
+        }
 
         private DamageEffect()
         {
@@ -26,7 +45,12 @@ namespace ShrinelandsTactics.Mechanics.Effects
         public DamageEffect(DamageType TypeOfDamage, int Amount) : this()
         {
             this.TypeOfDamage = TypeOfDamage;
-            this.Amount = Amount;
+            this.StaticAmount = Amount;
+        }
+
+        public DamageEffect(DamageType TypeOfDamage, List<Action.CardSource> Sources) : this()
+        {
+            this.Sources = Sources;
         }
 
 
@@ -34,7 +58,17 @@ namespace ShrinelandsTactics.Mechanics.Effects
             Character charTarget, Deck deck, Card cardDrawn, string optionalFeatures = null)
         {
             var affected = AffectCaster ? user: charTarget;
-            affected.TakeDamage(TypeOfDamage, Amount);
+            int amount = StaticAmount;
+            if(Sources != null)
+            {
+                amount = 0;
+                foreach (var s in Sources)
+                {
+                    amount += Action.ResolveSource(s, DM, user, posTarget, charTarget);
+                }
+            }
+
+            affected.TakeDamage(TypeOfDamage, amount);
         }
 
         public enum DamageType
