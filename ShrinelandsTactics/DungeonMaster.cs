@@ -217,7 +217,7 @@ namespace ShrinelandsTactics
                 return outcome;
             }
 
-            var ability = activatedCharacter.Actions.FirstOrDefault(a => a.Name == abilityIdentifier);
+            var ability = activatedCharacter.Actions.FirstOrDefault(a => a.Name.Equals(abilityIdentifier, StringComparison.OrdinalIgnoreCase));
             if(ability == null)
             {
                 //try parsing as int
@@ -245,7 +245,7 @@ namespace ShrinelandsTactics
                         var dir = Map.ParseDirection(target[0]);
                         var pos = activatedCharacter.Pos + Map.DirectionToPosition[dir];
                         targetCharacter = Characters.FirstOrDefault(c => c.Pos == pos);
-                        ability.ResolveAction(this, activatedCharacter, pos, targetCharacter, "");
+                        outcome = ability.ResolveAction(this, activatedCharacter, pos, targetCharacter, "");
                         return outcome; //TODO: get from resolve action
                     }
                     catch
@@ -257,7 +257,7 @@ namespace ShrinelandsTactics
                 else
                 {
                     //target isn't null
-                    ability.ResolveAction(this, activatedCharacter, null, targetCharacter, "");
+                    outcome = ability.ResolveAction(this, activatedCharacter, null, targetCharacter, "");
                     return outcome; //TODO: get from resolve action
                 }
             }

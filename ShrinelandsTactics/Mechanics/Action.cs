@@ -90,35 +90,47 @@ namespace ShrinelandsTactics.Mechanics
             }
         }
 
-        public void ResolveAction(DungeonMaster DM, Character user, Position posTarget,
+        public Outcome ResolveAction(DungeonMaster DM, Character user, Position posTarget,
             Character charTarget, string optionalFeatures)
         {
+            var outcome = new Outcome();
             if(!IsValidToDo(DM, user, posTarget, charTarget, optionalFeatures))
             {
-                return; //TODO: generate error or raise event?
+                outcome.Message.AppendLine("Can't do that");
+                return outcome;
             }
 
             timesUsed++; //TODO: check for no re-use
 
             //generate outcome deck or mark as uncontested
             Deck deck = GetDeckFor(DM, user, posTarget, charTarget);
+            outcome.Message.AppendLine(deck.ToString());
 
             //draw card
             //special drawing rules?
             Card card = deck.Draw();
+            outcome.Message.AppendLine(card.ToString());
 
             //inform user and target what card was drawn, possibly for temporary dodge or breaking shields
             user.CardDrawn(deck, card);
             if(charTarget != null)
             {
-                charTarget.CardDrawn(deck, card);
+                charTarget.CardDrawn(deck, card); //TODO: outcome effects
             }
 
             //apply relevant effects
             foreach (var effect in Effects[card.TypeOfCard])
             {
-                effect.Apply(DM, user, posTarget, charTarget, deck, card, "");
+                var effectOutcome = effect.Apply(DM, user, posTarget, charTarget, deck, card, "");
+                outcome.Message.Append(effectOutcome.Message); //TODO: better way to combine
             }
+
+            if(TypeOfAction == ActionType.Major)
+            {
+                user.HasActed = true;
+            }
+
+            return outcome;
         }
 
         public static int ResolveSource(CardSource source, DungeonMaster DM, Character user, 

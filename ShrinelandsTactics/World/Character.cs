@@ -93,9 +93,10 @@ namespace ShrinelandsTactics.World
             //usually won't mean anything
         }
 
-        public void ResolveEffect(DungeonMaster DM, Character user, Position posTarget, Deck deck, Card cardDrawn, 
+        public Outcome ResolveEffect(DungeonMaster DM, Character user, Position posTarget, Deck deck, Card cardDrawn, 
             List<Effect> typicalEffects)
         {
+            var outcome = new Outcome();
             //TODO: add slime splitting
             if (cardDrawn.TypeOfCard == Card.CardType.Armor)
             {
@@ -107,8 +108,11 @@ namespace ShrinelandsTactics.World
                     int x = Math.Max(0, amount - armorProtection);
                     var reducedDamage = new DamageEffect(damage.TypeOfDamage, x);
                     reducedDamage.Apply(DM, user, posTarget, this, deck, cardDrawn);
+                    outcome.Message.AppendLine("Damage reduced to " + x + " by armor");
                 }
             }
+
+            return outcome;
         }
 
         public void TakeDamage(DamageEffect.DamageType typeOfDamage, int amount)

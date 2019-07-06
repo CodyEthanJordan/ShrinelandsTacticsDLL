@@ -24,23 +24,27 @@ namespace ShrinelandsTactics.Mechanics.Effects
             this.Effects = Effects;
         }
 
-        public override void Apply(DungeonMaster DM, Character user, Position posTarget, 
+        public override Outcome Apply(DungeonMaster DM, Character user, Position posTarget, 
             Character charTarget, Deck deck, Card cardDrawn, string optionalFeatures = null)
         {
+            var outcome = new Outcome();
             Card card = deck.Draw();
-
+            outcome.Message.AppendLine(card.ToString());
             //inform user and target what card was drawn, possibly for temporary dodge or breaking shields
             user.CardDrawn(deck, card);
             if (charTarget != null)
             {
-                charTarget.CardDrawn(deck, card);
+                charTarget.CardDrawn(deck, card); //TODO: apply to outcome and unify with Action class
             }
 
             //apply relevant effects
             foreach (var effect in Effects[card.TypeOfCard])
             {
-                effect.Apply(DM, user, posTarget, charTarget, deck, card, "");
+                var effectOutcome = effect.Apply(DM, user, posTarget, charTarget, deck, card, "");
+                outcome.Message.Append(effectOutcome.Message);
             }
+
+            return outcome;
         }
     }
 }

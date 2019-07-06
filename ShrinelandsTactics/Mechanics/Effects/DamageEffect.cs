@@ -54,9 +54,10 @@ namespace ShrinelandsTactics.Mechanics.Effects
         }
 
 
-        public override void Apply(DungeonMaster DM, Character user, Position posTarget, 
+        public override Outcome Apply(DungeonMaster DM, Character user, Position posTarget, 
             Character charTarget, Deck deck, Card cardDrawn, string optionalFeatures = null)
         {
+            var outcome = new Outcome();
             var affected = AffectCaster ? user: charTarget;
             int amount = StaticAmount;
             if(Sources != null)
@@ -69,6 +70,8 @@ namespace ShrinelandsTactics.Mechanics.Effects
             }
 
             affected.TakeDamage(TypeOfDamage, amount);
+            outcome.Message.AppendLine(affected.Name + " takes " + amount + " " + TypeOfDamage);
+            return outcome;
         }
 
         public enum DamageType

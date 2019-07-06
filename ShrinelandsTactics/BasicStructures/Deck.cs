@@ -58,6 +58,16 @@ namespace ShrinelandsTactics.BasicStructures
             }
         }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var card in Cards)
+            {
+                sb.Append(card + ", ");
+            }
+            return sb.ToString();
+        }
+
         public static readonly Random rand = new Random();
 
         public static List<string> FatedDraws = new List<string>();

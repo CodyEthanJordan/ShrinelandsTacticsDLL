@@ -22,7 +22,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
         [JsonProperty]
         public bool AffectCaster = false;
 
-        public abstract void Apply(DungeonMaster DM, Character user, Position posTarget,
+        public abstract Outcome Apply(DungeonMaster DM, Character user, Position posTarget,
             Character charTarget, Deck deck, Card cardDrawn, string optionalFeatures=null);
 
         public enum EffectType
