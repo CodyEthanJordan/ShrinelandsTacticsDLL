@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.Threading.Tasks;
 
 namespace ShrinelandsTactics.World
@@ -29,6 +30,38 @@ namespace ShrinelandsTactics.World
                     tiles.Add(new Position(x, y), null);
                 }
             }
+        }
+
+        public static Map CreateFromBitmap(Bitmap bitmap, GameData data)
+        {
+            var pal = bitmap.Palette;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Test Map");
+            sb.AppendLine(bitmap.Width + " " + bitmap.Height);
+            for (int y = 0; y < bitmap.Height; y++)
+            {
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    var color = bitmap.GetPixel(x, y);
+                    int index = pal.Entries.Select((c, i) => new { i, c })
+                         .Where(pair => pair.c.Name.Equals(color.Name, StringComparison.OrdinalIgnoreCase))
+                         .Select(c => c.i).First();
+
+                    if (index == 1)
+                    {
+                        sb.Append("#");
+                    }
+                    else
+                    {
+                        sb.Append(".");
+                    }
+                }
+                sb.AppendLine();
+            }
+
+            Map map = Map.CreateFromText(sb.ToString(), data);
+
+            return map;
         }
 
         public Tile GetTile(Position pos)
