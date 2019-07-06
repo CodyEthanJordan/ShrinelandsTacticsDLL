@@ -116,6 +116,7 @@ namespace ShrinelandsTactics.World
                     var emptySpaces = DM.GetEmptyAdjacentSquares(Pos);
                     int i = DungeonMaster.rand.Next(emptySpaces.Count);
                     var emptySpace = emptySpaces[i];
+                    Vitality.Value = Vitality.Value / 2;
                     var cloneCharacter = this.Clone() as Character;
                     cloneCharacter.InitializeIndividual("Copy of " + Name, emptySpace, SideID);
                     DM.CreateCharacter(cloneCharacter);
@@ -131,8 +132,6 @@ namespace ShrinelandsTactics.World
                     reducedDamage.Apply(DM, user, posTarget, this, deck, cardDrawn);
                     outcome.Message.AppendLine("Damage reduced to " + x + " by armor");
                 }
-
-                
             }
 
             return outcome;
@@ -243,13 +242,18 @@ namespace ShrinelandsTactics.World
 
         public string GetInfo(int verbosity)
         {
+            StringBuilder sb = new StringBuilder();
             switch (verbosity)
             {
                 case 0:
-                    return Name + " Vit:" + Vitality + " Sta:" + Stamina +
-                        " Move:" + Move + " Pos:" + Pos;
+                    sb.Append(Name + " Vit:" + Vitality + " Sta:" + Stamina +
+                        " Move:" + Move + " Pos:" + Pos);
+                    if(HasBeenActivated)
+                    {
+                        sb.Append(" Already Activated");
+                    }
+                    return sb.ToString();
                 case 1:
-                    StringBuilder sb = new StringBuilder();
                     sb.AppendLine(Name);
                     foreach (var kvp in Stats)
                     {
@@ -263,6 +267,10 @@ namespace ShrinelandsTactics.World
                     foreach (var condition in Conditions)
                     {
                         sb.AppendLine(condition.ToString());
+                    }
+                    if(HasBeenActivated)
+                    {
+                        sb.AppendLine("Already Activated");
                     }
                     return sb.ToString();
                 default:

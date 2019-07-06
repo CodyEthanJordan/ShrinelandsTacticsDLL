@@ -100,7 +100,7 @@
       "Actions": [
         { "Name": "Attack" }
       ],
-      "ArmorCoverage": 10,
+      "ArmorCoverage": 1,
       "ArmorProtection":  999,
       "WeaponAdvantage": 2,
       "WeaponDamage": 2,

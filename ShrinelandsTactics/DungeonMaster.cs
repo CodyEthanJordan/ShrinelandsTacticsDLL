@@ -462,7 +462,7 @@ namespace ShrinelandsTactics
         private bool IsAdjacentToOpponent(Character guy)
         {
             if(Map.GetAdjacent(guy.Pos).Any(
-                p => Characters.Where(c => c.SideID != guy.SideID)
+                p => Characters.Where(c => c.SideID != guy.SideID && !c.Incapacitated)
                 .Select(c => c.Pos).Contains(p)))
             {
                 return true;

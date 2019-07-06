@@ -170,7 +170,7 @@ namespace ShrinelandsTactics.Mechanics
                 case CardSource.TargetVitality:
                     return charTarget.Vitality.Value;
                 case CardSource.TargetStamina:
-                    return charTarget.Vitality.Value;
+                    return charTarget.Stamina.Value;
                 case CardSource.TargetArmorCoverage:
                     return charTarget.ArmorCoverage;
                 case CardSource.UserBaseAttack:
