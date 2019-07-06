@@ -20,7 +20,6 @@ namespace ShrinelandsASCI
         static void Main(string[] args)
         {
             Console.WriteLine("Shrinelands");
-            Console.WriteLine("Press Any Key to Start");
 
             var data = GameData.ReadDatafilesInDirectory("GameData");
 
@@ -90,14 +89,27 @@ namespace ShrinelandsASCI
 
         static void ShowStatus(StatusOptions opt)
         {
-            foreach (var side in DM.Sides)
+            if(opt.Thing == null || opt.Thing.Length == 0)
             {
-                output.AppendLine(side.Name);
-                foreach (var guy in DM.Characters.FindAll(c => c.SideID == side.ID))
+                foreach (var side in DM.Sides)
                 {
-                    output.AppendLine("   " + guy.GetInfo(0));
+                    output.AppendLine(side.Name);
+                    foreach (var guy in DM.Characters.FindAll(c => c.SideID == side.ID))
+                    {
+                        output.AppendLine("   " + guy.GetInfo(0));
+                    }
                 }
             }
+            else
+            {
+                var character = DM.Characters.FirstOrDefault(c => c.Name.Equals(opt.Thing, StringComparison.OrdinalIgnoreCase));
+                if(character != null)
+                {
+                    output.AppendLine(character.GetInfo(1));
+                    return;
+                }
+            }
+           
         }
     }
 
@@ -132,7 +144,8 @@ namespace ShrinelandsASCI
     [Verb("status", HelpText="show game status summary")]
     class StatusOptions
     {
-        //TODO: option for detailed status on specific unit
+        [Value(0)]
+        public string Thing { get; set; }
     }
 
     [Verb("endturn", HelpText="ends your turn")]

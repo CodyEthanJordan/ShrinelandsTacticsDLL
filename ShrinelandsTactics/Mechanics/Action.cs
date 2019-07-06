@@ -66,6 +66,8 @@ namespace ShrinelandsTactics.Mechanics
                 return false; //already taken major action
             }
 
+            user.PayCost(this);
+
             //TODO: have DM do check
             Position target;
             if(posTarget != null)

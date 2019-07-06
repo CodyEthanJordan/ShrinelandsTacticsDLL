@@ -128,6 +128,14 @@ namespace ShrinelandsTactics.World
             Stats[StatType.Vitality].Value -= amount; //TODO: check for 0?
         }
 
+        public void PayCost(Action action)
+        {
+            foreach (var kvp in action.Cost)
+            {
+                Stats[kvp.Key].Value -= kvp.Value;
+            }
+        }
+
         public bool CanPay(Mechanics.Action action)
         {
             //TODO: factor in complicated qualities
