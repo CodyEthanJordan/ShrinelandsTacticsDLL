@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
+using YamlDotNet.RepresentationModel;
+using System.IO;
+using System.Drawing;
 
 namespace ShrinelandsASCI
 {
@@ -20,7 +23,19 @@ namespace ShrinelandsASCI
             Console.WriteLine("Press Any Key to Start");
 
             var data = GameData.ReadDatafilesInDirectory("GameData");
-            DM = DungeonMaster.GetDebugDM(data);
+
+            var yaml = new YamlStream();
+            using (StreamReader r = new StreamReader("GameData/SlimeCave.yaml"))
+            {
+                yaml.Load(r);
+            }
+
+            var mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
+            var mapFile = (mapping[new YamlScalarNode("map_file")] as YamlScalarNode).Value;
+
+            Bitmap bitmap = new Bitmap("GameData/" + mapFile);
+
+            DM = DungeonMaster.LoadEncounter(mapping, bitmap, data);
 
             GameLoop();
         }

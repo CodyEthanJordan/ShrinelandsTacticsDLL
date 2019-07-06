@@ -139,6 +139,7 @@ namespace ShrinelandsTactics
                 var name = (side as YamlScalarNode).Value;
                 DM.Sides.Add(new Side(name));
             }
+            DM.currentSide = DM.Sides[0];
 
             var characters = (YamlSequenceNode)yaml.Children[new YamlScalarNode("characters")];
             foreach (var node in characters)
