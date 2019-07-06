@@ -99,11 +99,17 @@ namespace ShrinelandsTactics
             var outcome = new Outcome();
             // TODO: validate this 
             //need to quickly activate and de-activate remaining units
+
+            if(activatedCharacter != null)
+            {
+                Deactivate(activatedCharacter);
+            }
+
             foreach (var leftoverGuy in Characters.FindAll(c => c.SideID == currentSide.ID && 
                                                             c.HasBeenActivated == false))
             {
-                leftoverGuy.Activate();
-                leftoverGuy.EndActivation();
+                Activate(leftoverGuy);
+                Deactivate(leftoverGuy);
             }
 
             //update turn counter
@@ -138,6 +144,11 @@ namespace ShrinelandsTactics
 
         public Outcome Activate(Character guy)
         {
+            if(activatedCharacter != null)
+            {
+                Deactivate(activatedCharacter); //TODO: add to outcome
+            }
+
             var outcome = new Outcome();
             if(guy.HasBeenActivated)
             {
@@ -155,6 +166,17 @@ namespace ShrinelandsTactics
             activatedCharacter = guy;
             outcome.Message.AppendLine("Starting activation for " + guy.Name);
             return outcome;
+        }
+
+        public void Deactivate(Character guy)
+        {
+            if(guy != activatedCharacter)
+            {
+                return; //TODO: error
+            }
+
+            guy.EndActivation();
+            activatedCharacter = null;
         }
 
         public void AddSituationalModifiers(Deck deck, Mechanics.Action action, Character user, Position posTarget, Character charTarget)
