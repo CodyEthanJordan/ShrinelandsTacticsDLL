@@ -3,7 +3,7 @@
     {
       "Name": "Drain Vitality",
       "Cost": { "Stamina": 1 },
-      "DeckRecipie": {
+      "DeckRecipe": {
         "TargetVitality": {
           "Name": "Drain",
           "TypeOfCard": "Hit"
@@ -40,7 +40,7 @@
     },
     {
       "Cost": { },
-      "DeckRecipie": {
+      "DeckRecipe": {
         "UserBaseAttack": {
           "Name": "Hit",
           "TypeOfCard": "Hit",

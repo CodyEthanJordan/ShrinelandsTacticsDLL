@@ -63,7 +63,7 @@ namespace ShrinelandsTactics.World
 
             Card hit = new Card("Hit", Card.CardType.Hit);
 
-            Dictionary<Action.CardSource, Card> DeckRecipie = new Dictionary<Mechanics.Action.CardSource, Card>()
+            Dictionary<Action.CardSource, Card> DeckRecipe = new Dictionary<Mechanics.Action.CardSource, Card>()
             {
                 {Action.CardSource.UserBaseAttack, hit },
             };
@@ -91,7 +91,7 @@ namespace ShrinelandsTactics.World
                 { new ResolveByTargetEffect(new List<Effect>() { hitEffect })} }
             };
 
-            var action = new Action(Name, Cost, DeckRecipie, effects,
+            var action = new Action(Name, Cost, DeckRecipe, effects,
                 Mechanics.Action.RangeType.Melee, 1);
             action.Tags.Add(Mechanics.Action.AbilityType.Attack);
             return action;

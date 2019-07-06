@@ -46,7 +46,7 @@ namespace DM_UnitTests
             var action2 = JsonConvert.DeserializeObject<Action>(json);
             Assert.AreEqual(action.Name, action2.Name);
             Assert.AreEqual(action.Cost.Count, action2.Cost.Count);
-            Assert.AreEqual(action.DeckRecipie.Count, action2.DeckRecipie.Count);
+            Assert.AreEqual(action.DeckRecipe.Count, action2.DeckRecipe.Count);
         }
 
         [TestMethod]
@@ -55,11 +55,11 @@ namespace DM_UnitTests
             var guy = DebugData.GetDebugCharacter();
             var cost = new Dictionary<Character.StatType, int>() { { Character.StatType.Stamina,1} };
             var effects = new Dictionary<Card, Effect>();
-            var recipie = new Dictionary<Action.CardSource, Card>();
-            var cheapAction = new Action("test", cost, recipie, null, ShrinelandsTactics.Mechanics.Action.RangeType.Melee,
+            var Recipe = new Dictionary<Action.CardSource, Card>();
+            var cheapAction = new Action("test", cost, Recipe, null, ShrinelandsTactics.Mechanics.Action.RangeType.Melee,
                 1);
             var cost2 = new Dictionary<Character.StatType, int>() { { Character.StatType.Stamina,999} };
-            var expensiveAction = new Action("test", cost2, recipie, null, ShrinelandsTactics.Mechanics.Action.RangeType.Melee,
+            var expensiveAction = new Action("test", cost2, Recipe, null, ShrinelandsTactics.Mechanics.Action.RangeType.Melee,
                 1);
 
             Assert.IsTrue(guy.CanPay(cheapAction));

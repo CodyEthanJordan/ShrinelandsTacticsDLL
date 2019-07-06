@@ -18,7 +18,7 @@ namespace ShrinelandsTactics.Mechanics
         [JsonProperty]
         public Dictionary<Character.StatType, int> Cost = new Dictionary<Character.StatType, int>();
         [JsonProperty]
-        public Dictionary<CardSource, Card> DeckRecipie = new Dictionary<CardSource, Card>();
+        public Dictionary<CardSource, Card> DeckRecipe = new Dictionary<CardSource, Card>();
         [JsonProperty]
         public Dictionary<Card.CardType, List<Effect>> Effects = new Dictionary<Card.CardType, List<Effect>>();
         [JsonConverter(typeof(StringEnumConverter))]
@@ -38,7 +38,7 @@ namespace ShrinelandsTactics.Mechanics
 
 
         public Action(string Name, Dictionary<Character.StatType, int> Cost,
-            Dictionary<CardSource, Card> DeckRecipie, Dictionary<Card.CardType, List<Effect>> Effects,
+            Dictionary<CardSource, Card> DeckRecipe, Dictionary<Card.CardType, List<Effect>> Effects,
             RangeType TypeOfRange, int Range, 
             ActionType TypeOfAction = ActionType.Major, bool Repeatable = false)
         {
@@ -50,7 +50,7 @@ namespace ShrinelandsTactics.Mechanics
             this.Effects = Effects;
 
             this.Cost = Cost;
-            this.DeckRecipie = DeckRecipie;
+            this.DeckRecipe = DeckRecipe;
         }
 
         public bool IsValidToDo(DungeonMaster DM, Character user, Position posTarget,
@@ -191,7 +191,7 @@ namespace ShrinelandsTactics.Mechanics
             Deck deck = new Deck();
 
 
-            foreach (var ingredient in DeckRecipie)
+            foreach (var ingredient in DeckRecipe)
             {
                 var source = ingredient.Key;
                 int num = ResolveSource(source, DM, user, posTarget, charTarget);

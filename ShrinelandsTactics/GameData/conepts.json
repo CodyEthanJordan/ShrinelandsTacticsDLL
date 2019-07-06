@@ -4,7 +4,7 @@
       "Cost": { "Stamina": 1 },
       "Range": 7,
       "TypeOfRange": "Ranged",
-      "DeckRecipie": {
+      "DeckRecipe": {
         "TargetVitality": {
           "Name": "Drain",
           "TypeOfCard": "Hit",
@@ -38,14 +38,14 @@
     {
       "Name": "Determined Strike",
       "Cost": { "Stamina": 1 },
-      "DeckRecipie": {
+      "DeckRecipe": {
         "UserProfeciency": {
           "Name": "Hit",
           "TypeOfCard": "Hit",
           "Effects": [
             {
               "TypeOfEffect": "Redraw",
-              "DeckRecipie": {
+              "DeckRecipe": {
 
               }
             }
