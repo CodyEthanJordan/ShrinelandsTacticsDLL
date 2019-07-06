@@ -29,7 +29,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
         {
             var outcome = new Outcome();
             Card card = deck.Draw();
-            outcome.Message.AppendLine(card.ToString());
+            outcome.Message.AppendLine("Drawn:" + card.ToString());
             //inform user and target what card was drawn, possibly for temporary dodge or breaking shields
             user.CardDrawn(deck, card);
             if (charTarget != null)
