@@ -64,6 +64,11 @@ namespace ShrinelandsTactics.World
             return map;
         }
 
+        public static Map CreateFromCharArray(List<List<char>> tiles, GameData data)
+        {
+            throw new NotImplementedException();
+        }
+
         public Tile GetTile(Position pos)
         {
             return tiles[pos];

@@ -52,6 +52,18 @@ public class GameData
         return data;
     }
 
+    //TODO: fix hack
+    public readonly Dictionary<Tuple<byte, byte, byte>, char> ColorToIcon = new Dictionary<Tuple<byte, byte, byte>, char>()
+    {
+        {new Tuple<byte, byte, byte>(0,0,0 ), '#' },
+        {new Tuple<byte, byte, byte>(255,255,255 ), '.' },
+    };
+
+    public char GetIconByColor(byte r, byte g, byte b)
+    {
+        return ColorToIcon[new Tuple<byte, byte, byte>(r, g, b)];
+    }
+
     public static GameData ReadDatafilesInDirectory(string path)
     {
         var data = new GameData();

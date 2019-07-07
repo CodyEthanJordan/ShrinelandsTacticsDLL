@@ -144,10 +144,10 @@ namespace ShrinelandsTactics
             return outcome;
         }
 
-        public static DungeonMaster LoadEncounter(YamlMappingNode yaml, Bitmap bitmap, GameData data)
+        public static DungeonMaster LoadEncounter(YamlMappingNode yaml, string level, GameData data)
         {
             var DM = new DungeonMaster(data);
-            DM.map = Map.CreateFromBitmap(bitmap, data);
+            DM.map = Map.CreateFromText(level, data);
 
             var sides = (YamlSequenceNode)yaml.Children[new YamlScalarNode("sides")];
             foreach (var side in sides)

@@ -34,7 +34,22 @@ namespace ShrinelandsASCI
 
             Bitmap bitmap = new Bitmap("GameData/" + mapFile);
 
-            DM = DungeonMaster.LoadEncounter(mapping, bitmap, data);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Test Map");
+            sb.AppendLine(bitmap.Width + " " + bitmap.Height);
+
+            for (int y = 0; y < bitmap.Height; y++)
+            {
+                for (int x = 0; x < bitmap.Height; x++)
+                {
+                    var color = bitmap.GetPixel(x, y);
+                    sb.Append(data.GetIconByColor(color.R, color.G, color.B).ToString());
+                }
+                sb.AppendLine();
+            }
+
+
+            DM = DungeonMaster.LoadEncounter(mapping, sb.ToString(), data);
 
             GameLoop();
         }

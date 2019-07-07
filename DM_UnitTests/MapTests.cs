@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -27,7 +28,21 @@ namespace DM_UnitTests
         {
             Bitmap bitmap = new Bitmap("GameData/ExampleCaveMap.gif");
 
-            Map map = Map.CreateFromBitmap(bitmap, data);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Test Map");
+            sb.AppendLine(bitmap.Width + " " + bitmap.Height);
+
+            for (int y = 0; y < bitmap.Height; y++)
+            {
+                for (int x = 0; x < bitmap.Height; x++)
+                {
+                    var color = bitmap.GetPixel(x, y);
+                    sb.Append(data.GetIconByColor(color.R, color.G, color.B).ToString());
+                }
+                sb.AppendLine();
+            }
+
+            Map map = Map.CreateFromText(sb.ToString(), data);
 
             Assert.IsNotNull(map);
             Assert.IsTrue(map.GetTile(14, 18).Passable == false);
