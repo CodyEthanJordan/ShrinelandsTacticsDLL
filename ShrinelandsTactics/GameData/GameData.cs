@@ -14,9 +14,9 @@ public class GameData
     public List<Character> Characters = new List<Character>();
     public List<Action> Actions = new List<Action>();
 
-    public Character GetCharacterByName(string name)
+    public Character GetCharacterByClass(string name)
     {
-        var charTemplate = Characters.FirstOrDefault(c => c.Name == name);
+        var charTemplate = Characters.FirstOrDefault(c => c.Class == name);
         if(charTemplate == null)
         {
             throw new ArgumentException("No such character as " + name);
@@ -107,7 +107,7 @@ public class GameData
 
     public Character LoadCharacterByClass(string characterClass)
     {
-        var charTemplate = Characters.FirstOrDefault(c => c.Name == characterClass);
+        var charTemplate = Characters.FirstOrDefault(c => c.Class == characterClass) ;
         if (charTemplate == null)
         {
             throw new ArgumentException("No such character as " + characterClass);

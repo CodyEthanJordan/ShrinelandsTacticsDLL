@@ -1,7 +1,7 @@
 {
   "characterData": [
     {
-      "Name": "Slimelord",
+      "Class": "Slimelord",
       "Stats": {
         "Vitality": {
           "Value": 15,
@@ -36,7 +36,7 @@
       ]
     },
     {
-      "Name": "Knight",
+      "Class": "Knight",
       "Stats": {
         "Vitality": {
           "Value": 16,
@@ -70,7 +70,7 @@
       ]
     },
     {
-      "Name": "Slime",
+      "Class": "Slime",
       "Stats": {
         "Vitality": {
           "Value": 8,

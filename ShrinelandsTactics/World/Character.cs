@@ -20,6 +20,8 @@ namespace ShrinelandsTactics.World
         public Position Pos { get; set; } //TODO: maybe should be private, use method?
         [JsonProperty]
         public string Name { get; private set; }
+        [JsonProperty]
+        public string Class { get; private set; }
 
 
         [JsonProperty]
