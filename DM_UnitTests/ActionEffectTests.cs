@@ -110,7 +110,7 @@ namespace DM_UnitTests
             deck = attack.GetDeckFor(DM, robby, null, zach);
 
             Assert.AreEqual(robby.Profeciency.Value + robby.WeaponAdvantage - zach.ArmorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
-            Assert.AreEqual(2, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
+            Assert.AreEqual(zach.ArmorCoverage, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
             Assert.AreEqual(2 + dodgeCards, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Miss));
         }
 

@@ -67,7 +67,9 @@
         { "Name": "Attack" },
         { "Name": "Dodge" },
         { "Name": "Exert" }
-      ]
+      ],
+      "ArmorProtection": 3,
+      "ArmorCoverage" :  2
     },
     {
       "Class": "Slime",

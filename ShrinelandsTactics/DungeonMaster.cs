@@ -8,6 +8,7 @@ using ShrinelandsTactics.BasicStructures;
 using ShrinelandsTactics.Mechanics;
 using System.Drawing;
 using YamlDotNet.RepresentationModel;
+using ShrinelandsTactics.BasicStructures.Events;
 
 namespace ShrinelandsTactics
 {
@@ -21,6 +22,8 @@ namespace ShrinelandsTactics
         private GameData data;
         public Side currentSide { get; private set; }
         public Character activatedCharacter = null;
+
+        public event CharacterMovedEventHandler OnCharacterMoved;
 
         public DungeonMaster(GameData data)
         {
@@ -454,7 +457,13 @@ namespace ShrinelandsTactics
             moveCost = map.GetTile(guy.Pos).MoveCost;
             int staminaCost = adjacentToOpponent ? 1 : 0;
             guy.PayMovement(moveCost, staminaCost);
+
+            var oldPos = guy.Pos;
             guy.Pos = destination;
+            if(OnCharacterMoved != null)
+            {
+                OnCharacterMoved(this, new CharacterMovedEventArgs(guy.Name, guy.ID, oldPos, destination));
+            }
             outcome.Message.AppendLine(guy.Name + " moved to " + destination);
             return outcome;
         }
@@ -565,5 +574,7 @@ namespace ShrinelandsTactics
         }
 
         public static Random rand = new Random();
+
+        public delegate void CharacterMovedEventHandler(object sender, CharacterMovedEventArgs a);
     }
 }

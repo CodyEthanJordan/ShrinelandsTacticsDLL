@@ -52,6 +52,8 @@ namespace ShrinelandsTactics.World
         {
             var c = new Character("Debug Guy", 10, 5, 4, 3, 3, 4);
             c.Actions.Add(GetDebugAttackAction());
+            c.ArmorCoverage = 2;
+            c.ArmorProtection = 2;
             return c;
         }
 

@@ -33,9 +33,9 @@ namespace ShrinelandsTactics.World
         public bool HasBeenActivated = false;
         public bool HasActed = false;
         [JsonProperty]
-        public int ArmorProtection = 2;
+        public int ArmorProtection = 0;
         [JsonProperty]
-        public int ArmorCoverage = 2;
+        public int ArmorCoverage = 0;
         [JsonProperty]
         public int WeaponAdvantage = 3;
         [JsonProperty]

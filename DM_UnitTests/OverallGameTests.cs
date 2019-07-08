@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using ShrinelandsTactics;
+using ShrinelandsTactics.BasicStructures.Events;
 using ShrinelandsTactics.World;
 using YamlDotNet;
 using YamlDotNet.RepresentationModel;
@@ -34,8 +35,15 @@ namespace DM_UnitTests
             Assert.IsNotNull(outcome);
             Assert.AreEqual(startingPos, robby.Pos); //shouldn't have moved since he isn't activated yet
 
+            bool eventRaised = false;
+            DM.OnCharacterMoved += delegate (object sender, CharacterMovedEventArgs e)
+            {
+                Assert.AreEqual("Robby", e.Name);
+                eventRaised = true;
+            };
             outcome = DM.Activate(robby);
             outcome = DM.MoveCharacter(robby, Map.Direction.S);
+            Assert.IsTrue(eventRaised);
             Assert.AreNotEqual(startingPos, robby.Pos);
 
             startingPos = zach.Pos;
