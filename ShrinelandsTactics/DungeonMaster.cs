@@ -431,7 +431,7 @@ namespace ShrinelandsTactics
             }
 
             //has enough movement
-            bool adjacentToOpponent = IsAdjacentToOpponent(guy);
+            bool adjacentToOpponent = IsAdjacentToOpponent(guy.Pos, guy.SideID);
 
             if(adjacentToOpponent && guy.Stamina.Value < 1)
             {
@@ -459,10 +459,70 @@ namespace ShrinelandsTactics
             return outcome;
         }
 
-        private bool IsAdjacentToOpponent(Character guy)
+        public Dictionary<Character.StatType, int> CostToMove(Character guy, Position from, Position to)
         {
-            if(Map.GetAdjacent(guy.Pos).Any(
-                p => Characters.Where(c => c.SideID != guy.SideID && !c.Incapacitated)
+            //TODO: use this to do actual move calculations?
+            var cost = new Dictionary<Character.StatType, int>();
+            if(IsAdjacentToOpponent(from, guy.SideID))
+            {
+                cost.Add(Character.StatType.Stamina, 1);
+            }
+            else
+            {
+                cost.Add(Character.StatType.Stamina, 0);
+            }
+            var tile = map.GetTile(from);
+            cost.Add(Character.StatType.Move, tile.MoveCost);
+            return cost;
+        }
+
+        public Dictionary<Position, Dictionary<Character.StatType, int>> GetPossibleMoves(Character guy)
+        {
+            var moves = new Dictionary<Position, Dictionary<Character.StatType, int>>();
+
+            var frontier = new Queue<Position>();
+            frontier.Enqueue(guy.Pos);
+            moves.Add(guy.Pos, new Dictionary<Character.StatType, int>()
+            { { Character.StatType.Move, 0 }, {Character.StatType.Stamina, 0 } });
+
+            while(frontier.Count > 0)
+            {
+                var current = frontier.Dequeue();
+                foreach (var neighbor in Map.GetAdjacent(current))
+                {
+                    if(moves.Keys.Contains(neighbor))
+                    {
+                        //TODO: check if shorter?
+                    }
+                    else
+                    {
+                        if(IsOpen(neighbor))
+                        {
+                            //hard coded to only cost Move and Stamina
+                            var cost = CostToMove(guy, current, neighbor);
+                            var costSoFar = moves[current];
+                            cost[Character.StatType.Move] += costSoFar[Character.StatType.Move]; 
+                            cost[Character.StatType.Stamina] += costSoFar[Character.StatType.Stamina]; 
+                            if (cost[Character.StatType.Move] + cost[Character.StatType.Stamina] <=
+                                guy.Move.Max + guy.Stamina.Max)
+                            {
+                                moves.Add(neighbor, cost);
+                                frontier.Enqueue(neighbor);
+                            }
+                        }
+                       
+                    }
+                }
+            }
+
+            return moves;
+        }
+
+
+        private bool IsAdjacentToOpponent(Position pos, Guid SideID)
+        {
+            if(Map.GetAdjacent(pos).Any(
+                p => Characters.Where(c => c.SideID != SideID && !c.Incapacitated)
                 .Select(c => c.Pos).Contains(p)))
             {
                 return true;
