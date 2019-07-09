@@ -24,6 +24,7 @@ namespace ShrinelandsTactics
         public Character activatedCharacter = null;
 
         public event CharacterMovedEventHandler OnCharacterMoved;
+        public event EventHandler<Character> OnCharacterCreated;
 
         public DungeonMaster(GameData data)
         {
@@ -183,6 +184,10 @@ namespace ShrinelandsTactics
         public void CreateCharacter(Character cloneCharacter)
         {
             Characters.Add(cloneCharacter);
+            if(OnCharacterCreated != null)
+            {
+                OnCharacterCreated(this, cloneCharacter);
+            }
         }
 
         public List<Position> GetEmptyAdjacentSquares(Position pos)
