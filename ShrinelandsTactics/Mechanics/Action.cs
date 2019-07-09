@@ -109,6 +109,32 @@ namespace ShrinelandsTactics.Mechanics
             }
         }
 
+        public List<Position> GetValidTargets(DungeonMaster DM, Character user)
+        {
+            var valid = new List<Position>();
+            switch (TypeOfRange)
+            {
+                case RangeType.Melee:
+                    var adjacentCharacters = Map.GetAdjacent(user.Pos).Where(p =>
+                        DM.Characters.Select(c => c.Pos).Contains(p));
+                    valid.AddRange(adjacentCharacters);
+                    break;
+                case RangeType.Ranged:
+                    var inRange = DM.Characters.Where(c => c != user &&
+                        c.Pos.Distance(user.Pos) <= this.Range).Select(c => c.Pos);
+                    valid.AddRange(inRange);
+                    break;
+                case RangeType.Self:
+                    valid.Add(user.Pos);
+                    break;
+                default:
+                    throw new NotImplementedException();
+                    break;
+            }
+
+            return valid;
+        }
+
         public Outcome ResolveAction(DungeonMaster DM, Character user, Position posTarget,
             Character charTarget, string optionalFeatures)
         {
@@ -231,6 +257,7 @@ namespace ShrinelandsTactics.Mechanics
         {
             Melee,
             Ranged,
+            Self,
         }
 
         public enum ActionType

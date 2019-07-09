@@ -129,6 +129,7 @@
       },
       "TypeOfAction": "Minor",
       "Repeatable": true,
+      "TypeOfRange":  "Self",
       "Tags": [ "Uncontested" ]
     },
     {
@@ -147,6 +148,7 @@
       },
       "TypeOfAction": "Minor",
       "Repeatable": true,
+      "TypeOfRange":  "Self",
       "Tags": [ "Uncontested" ]
     },
     {

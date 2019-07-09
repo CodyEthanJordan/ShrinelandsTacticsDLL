@@ -527,6 +527,10 @@ namespace ShrinelandsTactics
             return moves;
         }
 
+        public List<Position> GetValidTargetsFor(Character guy, Mechanics.Action action)
+        {
+            return action.GetValidTargets(this, guy);
+        }
 
         private bool IsAdjacentToOpponent(Position pos, Guid SideID)
         {

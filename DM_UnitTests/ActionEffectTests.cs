@@ -130,6 +130,7 @@ namespace DM_UnitTests
             Assert.IsTrue(zach.Vitality.Value == zach.Vitality.Max);
 
             zach.Pos = robby.Pos + Map.DirectionToPosition[Map.Direction.E];
+            Assert.IsTrue(attack.GetValidTargets(DM, robby).Contains(zach.Pos));
             Deck.SetFate(new List<string>() { "Hit", "Miss" });
             attack.ResolveAction(DM, robby, null, zach, "");
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
