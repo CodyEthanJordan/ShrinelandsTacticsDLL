@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -95,7 +96,20 @@ namespace DM_UnitTests
             Assert.AreEqual(DM1.map.GetGamestateHash(), DM2.map.GetGamestateHash());
             Assert.AreEqual(DM1.Sides[0].ID.GetHashCode(), DM2.Sides[0].ID.GetHashCode());
             Assert.AreEqual(DM1.Sides[0].Name.GetHashCode(), DM2.Sides[0].Name.GetHashCode());
+            Assert.AreEqual(DM1.GetGamestateHash(), DM2.GetGamestateHash());
 
+            var robby = DM1.Characters.FirstOrDefault(c => c.Name == "Robby");
+
+            var activateOutcome = DM1.Activate(robby);
+            DM2.ApplyOutcome(activateOutcome);
+            Assert.AreEqual(DM1.GetGamestateHash(), DM2.GetGamestateHash());
+
+            var moveOutcome = DM1.MoveCharacter(robby, Map.Direction.S);
+            DM2.ApplyOutcome(moveOutcome);
+            Assert.AreEqual(DM1.GetGamestateHash(), DM2.GetGamestateHash());
+
+            var attackOutcome = DM1.UseAbility("Attack", new List<string>() { "Zach" });
+            DM2.ApplyOutcome(attackOutcome);
             Assert.AreEqual(DM1.GetGamestateHash(), DM2.GetGamestateHash());
         }
     }

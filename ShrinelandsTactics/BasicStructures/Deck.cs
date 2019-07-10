@@ -11,6 +11,8 @@ namespace ShrinelandsTactics.BasicStructures
     {
         public List<Card> Cards = new List<Card>();
 
+
+
         public void AddCards(Card card, int number)
         {
             for (int i = 0; i < number; i++)
@@ -35,6 +37,7 @@ namespace ShrinelandsTactics.BasicStructures
 
             Card card = Cards[i];
             Cards.RemoveAt(i);
+            DrawnCards.Add(card);
             return card;
         }
 
@@ -71,16 +74,22 @@ namespace ShrinelandsTactics.BasicStructures
         public static readonly Random rand = new Random();
 
         public static List<string> FatedDraws = new List<string>();
+        public static List<Card> DrawnCards = new List<Card>();
 
         public static void SetFate(string Fate)
         {
             SetFate(new List<string>() { Fate });
         }
 
-        public static void SetFate(List<string> Fate)
+        public static void SetFate(IEnumerable<string> Fate)
         {
             FatedDraws.Clear();
             FatedDraws.AddRange(Fate);
+        }
+
+        internal static void ClearTracking()
+        {
+            DrawnCards.Clear();
         }
     }
 }

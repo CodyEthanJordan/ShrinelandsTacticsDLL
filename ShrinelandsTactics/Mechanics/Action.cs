@@ -135,17 +135,25 @@ namespace ShrinelandsTactics.Mechanics
             return valid;
         }
 
-        public Outcome ResolveAction(DungeonMaster DM, Character user, Position posTarget,
-            Character charTarget, string optionalFeatures)
+        public void ResolveAction(DungeonMaster DM, Character user, Position posTarget,
+            Character charTarget, string optionalFeatures, Outcome outcome)
         {
-            var outcome = new Outcome();
             if(!IsValidToDo(DM, user, posTarget, charTarget, optionalFeatures))
             {
                 outcome.Message.AppendLine("Can't do that");
-                return outcome;
+                return;
             }
 
             timesUsed++; //TODO: check for no re-use
+
+            outcome.ActionTaken = this.Name;
+            outcome.UserID = user.ID;
+            outcome.PosTarget = posTarget;
+            if(charTarget != null)
+            {
+                outcome.TargetID = charTarget.ID;
+            }
+            Deck.ClearTracking();
 
             if (Tags.Any(t => t == AbilityType.Uncontested))
             {
@@ -154,7 +162,7 @@ namespace ShrinelandsTactics.Mechanics
                     var effectOutcome = effect.Apply(DM, user, posTarget, charTarget, null, null, "");
                     outcome.Message.Append(effectOutcome.Message); //TODO: better way to combine
                 }
-                return outcome;
+                return;
             }
 
             //generate outcome deck or mark as uncontested
@@ -185,7 +193,9 @@ namespace ShrinelandsTactics.Mechanics
                 user.HasActed = true;
             }
 
-            return outcome;
+            outcome.CardsDrawn.AddRange(Deck.DrawnCards);
+
+            return;
         }
 
         public static int ResolveSource(CardSource source, DungeonMaster DM, Character user, 

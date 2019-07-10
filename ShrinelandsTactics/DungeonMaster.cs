@@ -116,6 +116,32 @@ namespace ShrinelandsTactics
             return Activate(guy);
         }
 
+        public void ApplyOutcome(Outcome outcome)
+        {
+            if(outcome.ActionTaken == "Move")
+            {
+                var guy = Characters.First(c => c.ID == outcome.UserID);
+                MoveCharacter(guy, outcome.PosTarget);
+            }
+            else if(outcome.ActionTaken == "Activate")
+            {
+                var guy = Characters.First(c => c.ID == outcome.UserID);
+                Activate(guy);
+            }
+            else
+            {
+                Deck.SetFate(outcome.CardsDrawn.Select(c => c.Name)); //TODO: terrible hack
+                UseAbility(outcome.ActionTaken, outcome.UserID, outcome.TargetID, outcome.PosTarget);
+            }
+        }
+
+        private void MoveCharacter(Character guy, Position posTarget)
+        {
+            var offset = posTarget - guy.Pos;
+            var dir = Map.DirectionToPosition.FirstOrDefault(x => x.Value == offset).Key;
+            MoveCharacter(guy, dir);
+        }
+
         public Outcome EndTurn()
         {
             var outcome = new Outcome();
@@ -227,6 +253,9 @@ namespace ShrinelandsTactics
             }
 
             var outcome = new Outcome();
+            outcome.ActionTaken = "Activate";
+            outcome.UserID = guy.ID;
+
             if(guy.HasBeenActivated)
             {
                 outcome.Message.AppendLine(guy.Name + " has already been activated this turn");
@@ -245,12 +274,16 @@ namespace ShrinelandsTactics
             return outcome;
         }
 
-        public void Deactivate(Character guy)
+        public Outcome Deactivate(Character guy)
         {
+            var outcome = new Outcome();
+            outcome.ActionTaken = "Deactivate";
+            outcome.UserID = guy.ID;
             if(guy != activatedCharacter)
             {
-                return; //TODO: error
+                return outcome; //TODO: error
             }
+
 
             //automatically use dodge as a convencience factor
             var dodge = guy.Actions.FirstOrDefault(a => a.Name == "Dodge");
@@ -258,12 +291,13 @@ namespace ShrinelandsTactics
             {
                 while(guy.CanPay(dodge))
                 {
-                    dodge.ResolveAction(this, guy, null, null, "");
+                    dodge.ResolveAction(this, guy, null, null, "", outcome);
                 }
             }
 
-            guy.EndActivation();
+            guy.EndActivation(); //TODO: add to outcome?
             activatedCharacter = null;
+            return outcome;
         }
 
         public void AddSituationalModifiers(Deck deck, Mechanics.Action action, Character user, Position posTarget, Character charTarget)
@@ -300,6 +334,21 @@ namespace ShrinelandsTactics
             }
 
             return false;
+        }
+
+        public Outcome UseAbility(string abilityName, Guid UserID, Guid TargetID, Position PosTarget)
+        {
+            var outcome = new Outcome();
+            outcome.ActionTaken = abilityName;
+            outcome.UserID = UserID;
+            outcome.TargetID = TargetID;
+            outcome.PosTarget = PosTarget;
+            Deck.ClearTracking();
+            var user = Characters.First(c => c.ID == UserID);
+            var ability = user.Actions.First(a => a.Name == abilityName);
+            var targetCharacter = Characters.FirstOrDefault(c => c.ID == TargetID);
+            ability.ResolveAction(this, user, null, targetCharacter, "", outcome);
+            return outcome;
         }
 
         public Outcome UseAbility(string abilityIdentifier, List<string> target, string options=null)
@@ -350,8 +399,7 @@ namespace ShrinelandsTactics
                         if (i < Characters.Count)
                         {
                             targetCharacter = Characters[i];
-                            outcome = ability.ResolveAction(this, activatedCharacter, null, targetCharacter, options);
-                            return outcome;
+                            return UseAbility(abilityIdentifier, activatedCharacter.ID, targetCharacter.ID, null);
                         }
                         else
                         {
@@ -366,8 +414,7 @@ namespace ShrinelandsTactics
                             var dir = Map.ParseDirection(target[0]);
                             var pos = activatedCharacter.Pos + Map.DirectionToPosition[dir];
                             targetCharacter = Characters.FirstOrDefault(c => c.Pos == pos);
-                            outcome = ability.ResolveAction(this, activatedCharacter, pos, targetCharacter, options);
-                            return outcome; //TODO: get from resolve action
+                            return UseAbility(abilityIdentifier, activatedCharacter.ID, targetCharacter.ID, pos);
                         }
                         catch
                         {
@@ -380,14 +427,12 @@ namespace ShrinelandsTactics
                 else
                 {
                     //target isn't null
-                    outcome = ability.ResolveAction(this, activatedCharacter, null, targetCharacter, options);
-                    return outcome; //TODO: get from resolve action
+                    return UseAbility(abilityIdentifier, activatedCharacter.ID, targetCharacter.ID, null);
                 }
             }
-            else if(target.Count == 0)
+            else if(target.Count == 0) 
             {
-                outcome = ability.ResolveAction(this, activatedCharacter, null, null, options);
-                return outcome;
+                return UseAbility(abilityIdentifier, activatedCharacter.ID, Guid.Empty, null);
             }
 
             throw new NotImplementedException();
@@ -477,6 +522,9 @@ namespace ShrinelandsTactics
                 OnCharacterMoved(this, new CharacterMovedEventArgs(guy.Name, guy.ID, oldPos, destination));
             }
             outcome.Message.AppendLine(guy.Name + " moved to " + destination);
+            outcome.UserID = guy.ID;
+            outcome.ActionTaken = "Move";
+            outcome.PosTarget = destination;
             return outcome;
         }
 

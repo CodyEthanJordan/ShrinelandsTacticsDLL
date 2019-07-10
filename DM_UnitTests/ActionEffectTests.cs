@@ -79,8 +79,12 @@ namespace DM_UnitTests
             var deck = drain.GetDeckFor(DM, robby, null, zach);
             var hitIndex = deck.Cards.IndexOf(deck.Cards.Find(c => c.TypeOfCard == Card.CardType.Hit));
             Deck.FatedDraws.Add("Drain");
+            var outcome = new Outcome();
+            drain.ResolveAction(DM, robby, null, zach, "", outcome);
 
-            drain.ResolveAction(DM, robby, null, zach, "");
+            Assert.AreEqual("Drain", outcome.ActionTaken);
+            Assert.IsTrue(outcome.CardsDrawn.Count == 1);
+            Assert.IsTrue(outcome.CardsDrawn.Any(c => c.Name == "Drain"));
 
             Assert.IsTrue(robby.Mana.Value > 0);
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
@@ -125,14 +129,15 @@ namespace DM_UnitTests
             zach.Conditions.Add(new Condition("Dodging", 3));
 
             DM.Activate(robby);
-            attack.ResolveAction(DM, robby, null, zach, "");
+            var outcome = new Outcome();
+            attack.ResolveAction(DM, robby, null, zach, "", outcome);
             //not adjacent so nothing happens
             Assert.IsTrue(zach.Vitality.Value == zach.Vitality.Max);
 
             zach.Pos = robby.Pos + Map.DirectionToPosition[Map.Direction.E];
             Assert.IsTrue(attack.GetValidTargets(DM, robby).Contains(zach.Pos));
             Deck.SetFate(new List<string>() { "Hit", "Miss" });
-            attack.ResolveAction(DM, robby, null, zach, "");
+            attack.ResolveAction(DM, robby, null, zach, "", outcome);
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
             Assert.AreEqual(zach.Vitality.Max - robby.Strength.Value - robby.WeaponDamage, zach.Vitality.Value);
         }
@@ -148,13 +153,14 @@ namespace DM_UnitTests
             zach.Conditions.Add(new Condition("Dodging", 3));
 
             DM.Activate(robby);
-            attack.ResolveAction(DM, robby, null, zach, "");
+            var outcome = new Outcome();
+            attack.ResolveAction(DM, robby, null, zach, "", outcome);
             //not adjacent so nothing happens
             Assert.IsTrue(zach.Vitality.Value == zach.Vitality.Max);
 
             zach.Pos = robby.Pos + Map.DirectionToPosition[Map.Direction.E];
             Deck.SetFate(new List<string>() { "Hit", "Hit" });
-            attack.ResolveAction(DM, robby, null, zach, "");
+            attack.ResolveAction(DM, robby, null, zach, "", outcome);
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
             Assert.AreEqual(zach.Vitality.Max - (2*robby.Strength.Value) - robby.WeaponDamage, zach.Vitality.Value);
         }
@@ -169,14 +175,15 @@ namespace DM_UnitTests
             var zach = DM.Characters[1];
             zach.Conditions.Add(new Condition("Dodging", 3));
 
+            var outcome = new Outcome();
             DM.Activate(robby);
-            attack.ResolveAction(DM, robby, null, zach, "");
+            attack.ResolveAction(DM, robby, null, zach, "", outcome);
             //not adjacent so nothing happens
             Assert.IsTrue(zach.Vitality.Value == zach.Vitality.Max);
 
             zach.Pos = robby.Pos + Map.DirectionToPosition[Map.Direction.E];
             Deck.SetFate(new List<string>() { "Glancing Blow" });
-            attack.ResolveAction(DM, robby, null, zach, "");
+            attack.ResolveAction(DM, robby, null, zach, "", outcome);
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
             Assert.AreEqual(zach.Vitality.Max - robby.Strength.Value - robby.WeaponDamage + zach.ArmorProtection, zach.Vitality.Value);
         }
@@ -195,7 +202,8 @@ namespace DM_UnitTests
             zach.Pos = robby.Pos + Map.DirectionToPosition[Map.Direction.E];
 
             Deck.SetFate(new List<string>() { "Dodge" });
-            attack.ResolveAction(DM, robby, null, zach, "");
+            var outcome = new Outcome();
+            attack.ResolveAction(DM, robby, null, zach, "", outcome);
             Assert.IsTrue(zach.Vitality.Value == zach.Vitality.Max);
             Assert.AreEqual(dodgeCards - 1, zach.Conditions.First(c => c.Name == "Dodging").Value);
         }
