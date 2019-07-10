@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM_UnitTests", "..\DM_UnitT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShrinelandsASCI", "..\ShrinelandsASCI\ShrinelandsASCI.csproj", "{F8537EF9-DA6D-4884-8A6E-CCD7CEE10BDB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShrinelandsServer", "..\ShrinelandsServer\ShrinelandsServer.csproj", "{A16AC525-52D9-4EE7-ACCD-DD4903796CF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F8537EF9-DA6D-4884-8A6E-CCD7CEE10BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8537EF9-DA6D-4884-8A6E-CCD7CEE10BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8537EF9-DA6D-4884-8A6E-CCD7CEE10BDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A16AC525-52D9-4EE7-ACCD-DD4903796CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A16AC525-52D9-4EE7-ACCD-DD4903796CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A16AC525-52D9-4EE7-ACCD-DD4903796CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A16AC525-52D9-4EE7-ACCD-DD4903796CF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
