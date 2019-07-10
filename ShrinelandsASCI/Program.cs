@@ -8,6 +8,8 @@ using CommandLine;
 using YamlDotNet.RepresentationModel;
 using System.IO;
 using System.Drawing;
+using Lidgren.Network;
+using Newtonsoft.Json;
 
 namespace ShrinelandsASCI
 {
@@ -16,11 +18,30 @@ namespace ShrinelandsASCI
         static DungeonMaster DM;
         static bool gameRunning = true;
         static StringBuilder output = new StringBuilder();
+        static bool isServer;
+        static NetPeer peer;
+        static int Port = 3456;
 
         static void Main(string[] args)
         {
             Console.WriteLine("Shrinelands");
+            Console.WriteLine("Server or client");
 
+            string line = Console.ReadLine();
+
+            var result = Parser.Default.ParseArguments<
+                HostOptions, JoinOptions
+                >(line.Split(' '))
+                .WithParsed<HostOptions>(HostGame)
+                .WithParsed<JoinOptions>(JoinGame);
+
+            
+
+            GameLoop();
+        }
+
+        public static DungeonMaster LoadEncounter()
+        {
             var data = GameData.ReadDatafilesInDirectory("GameData");
 
             var yaml = new YamlStream();
@@ -50,8 +71,131 @@ namespace ShrinelandsASCI
 
 
             DM = DungeonMaster.LoadEncounter(mapping, sb.ToString(), data);
+            return DM;
+        }
 
-            GameLoop();
+        static void HostGame(HostOptions h)
+        {
+            Console.WriteLine("Hosting a new game");
+            DM = LoadEncounter();
+            Console.WriteLine("Loaded encounter");
+
+            var config = new NetPeerConfiguration("Shrinelands")
+            { Port = Program.Port };
+            peer = new NetServer(config);
+            peer.Start();
+            while (true)
+            {
+
+
+                NetIncomingMessage message;
+                while ((message = peer.ReadMessage()) != null)
+                {
+                    switch (message.MessageType)
+                    {
+                        case NetIncomingMessageType.Data:
+                            // handle custom messages
+                            var data = message.ReadString();
+                            if(data == "Send DM")
+                            {
+                                Console.WriteLine("Sending DM to client");
+                                string json = JsonConvert.SerializeObject(DM);
+                                var response = peer.CreateMessage("DM\n" + json);
+                                peer.SendMessage(response, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
+                            }
+                            break;
+
+                        case NetIncomingMessageType.StatusChanged:
+                            // handle connection status messages
+                            switch (message.SenderConnection.Status)
+                            {
+                                /* .. */
+                            }
+                            break;
+
+                        case NetIncomingMessageType.DebugMessage:
+                            // handle debug messages
+                            // (only received when compiled in DEBUG mode)
+                            Console.WriteLine(message.ReadString());
+                            break;
+
+                        /* .. */
+                        default:
+                            Console.WriteLine("unhandled message with type: "
+                                + message.MessageType);
+                            break;
+                    }
+                }
+            }
+        }
+
+        static void JoinGame(JoinOptions j)
+        {
+            Console.WriteLine("Attempting to connect to a game at " + j.IP);
+            var config = new NetPeerConfiguration("Shrinelands");
+            var client = new NetClient(config);
+            client.Start();
+            var x = client.Connect(host: j.IP, port: Program.Port);
+
+            var r = NetSendResult.FailedNotConnected;
+            while (r == NetSendResult.FailedNotConnected)
+            {
+                var message = client.CreateMessage();
+                message.Write("Send DM");
+                r = client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
+            }
+
+            while(true)
+            {
+                NetIncomingMessage message;
+                while ((message = client.ReadMessage()) != null)
+                {
+                    switch (message.MessageType)
+                    {
+                        case NetIncomingMessageType.Error:
+                            break;
+                        case NetIncomingMessageType.StatusChanged:
+                            break;
+                        case NetIncomingMessageType.UnconnectedData:
+                            break;
+                        case NetIncomingMessageType.ConnectionApproval:
+                            break;
+                        case NetIncomingMessageType.Data:
+                            StringReader sr = new StringReader(message.ReadString());
+                            var toDo = sr.ReadLine();
+                            switch (toDo)
+                            {
+                                case "DM":
+                                    DM = JsonConvert.DeserializeObject<DungeonMaster>(sr.ReadToEnd());
+                                    Console.WriteLine("Loaded level from server");
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case NetIncomingMessageType.Receipt:
+                            break;
+                        case NetIncomingMessageType.DiscoveryRequest:
+                            break;
+                        case NetIncomingMessageType.DiscoveryResponse:
+                            break;
+                        case NetIncomingMessageType.VerboseDebugMessage:
+                            break;
+                        case NetIncomingMessageType.DebugMessage:
+                            break;
+                        case NetIncomingMessageType.WarningMessage:
+                            break;
+                        case NetIncomingMessageType.ErrorMessage:
+                            break;
+                        case NetIncomingMessageType.NatIntroductionSuccess:
+                            break;
+                        case NetIncomingMessageType.ConnectionLatencyUpdated:
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
 
         static void GameLoop()
@@ -179,5 +323,18 @@ namespace ShrinelandsASCI
     class QuitOptions
     {
 
+    }
+
+    [Verb("host", HelpText = "begin hosting a server")]
+    class HostOptions
+    {
+
+    }
+
+    [Verb("join", HelpText = "join a server")]
+    class JoinOptions
+    {
+        [Value(0)]
+        public string IP { get; set; }
     }
 }
