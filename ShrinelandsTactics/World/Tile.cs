@@ -85,10 +85,27 @@ namespace ShrinelandsTactics.World
             return tile.Clone() as Tile;
         }
 
-        internal void AddSituationalModifiers(Deck deck, Mechanics.Action action, Character user, Position posTarget, Character charTarget, bool v)
+        public void AddSituationalModifiers(Deck deck, Mechanics.Action action, Character user, Position posTarget, Character charTarget, bool v)
         {
             return; //TODO: pass to files
             throw new NotImplementedException();
+        }
+
+        public int GetGamestateHash()
+        {
+            unchecked // Overflow is fine, just wrap
+            {
+                int hash = (int)2166136261;
+                // Suitable nullity checks etc, of course :)
+                hash = (hash * 16777619) ^ Name.GetHashCode();
+                hash = (hash * 16777619) ^ Passable.GetHashCode();
+                hash = (hash * 16777619) ^ MoveCost.GetHashCode();
+                foreach (var prop in Properties)
+                {
+                    hash = (hash * 16777619) ^ prop.GetHashCode();
+                }
+                return hash;
+            }
         }
     }
 }

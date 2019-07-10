@@ -84,5 +84,19 @@ namespace DM_UnitTests
             Assert.IsTrue(robby.HasBeenActivated);
             Assert.AreEqual(robby.Move.Max, robby.Move.Value);
         }
+
+        [TestMethod]
+        public void DMSynrchronizationTest()
+        {
+            var DM1 = DungeonMaster.GetDebugDM(data);
+            var DM2 = DM1.Clone() as DungeonMaster;
+            DM2.data = DM1.data;
+
+            Assert.AreEqual(DM1.map.GetGamestateHash(), DM2.map.GetGamestateHash());
+            Assert.AreEqual(DM1.Sides[0].ID.GetHashCode(), DM2.Sides[0].ID.GetHashCode());
+            Assert.AreEqual(DM1.Sides[0].Name.GetHashCode(), DM2.Sides[0].Name.GetHashCode());
+
+            Assert.AreEqual(DM1.GetGamestateHash(), DM2.GetGamestateHash());
+        }
     }
 }

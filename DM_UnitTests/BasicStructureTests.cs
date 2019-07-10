@@ -56,8 +56,15 @@ namespace DM_UnitTests
             Assert.AreEqual(numHits, deck.Cards.Count);
             Assert.AreEqual(numHits, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Armor));
             Assert.AreEqual(0, deck.Cards.Count(c => c.TypeOfCard == Card.CardType.Hit));
+        }
 
-
+        [TestMethod]
+        public void TestPositionSerialization()
+        {
+            var pos = new Position(6, 9);
+            string json = JsonConvert.SerializeObject(pos);
+            var pos2 = JsonConvert.DeserializeObject<Position>(json);
+            Assert.AreEqual(pos, pos2);
         }
 
     }

@@ -6,14 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ShrinelandsTactics.World
 {
     public class Map
     {
+        [JsonProperty]
         public string Name { get; private set; }
+        [JsonProperty]
         public readonly int Width;
+        [JsonProperty]
         public readonly int Height;
+        [JsonProperty]
         private Dictionary<Position,Tile> tiles = new Dictionary<Position, Tile>();
 
         public Map(string name, int width, int height)
@@ -172,6 +177,24 @@ namespace ShrinelandsTactics.World
         public void NewTurn()
         {
             //TODO: update tiles
+        }
+
+        public int GetGamestateHash()
+        {
+            unchecked // Overflow is fine, just wrap
+            {
+                int hash = (int)2166136261;
+                // Suitable nullity checks etc, of course :)
+                hash = (hash * 16777619) ^ Name.GetHashCode();
+                hash = (hash * 16777619) ^ Width;
+                hash = (hash * 16777619) ^ Height;
+                foreach (var kvp in tiles)
+                {
+                    hash = (hash * 16777619) ^ kvp.Key.GetHashCode();
+                    hash = (hash * 16777619) ^ kvp.Value.GetGamestateHash();
+                }
+                return hash;
+            }
         }
     }
 }

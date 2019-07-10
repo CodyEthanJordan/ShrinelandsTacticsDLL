@@ -9,18 +9,25 @@ using ShrinelandsTactics.Mechanics;
 using System.Drawing;
 using YamlDotNet.RepresentationModel;
 using ShrinelandsTactics.BasicStructures.Events;
+using Newtonsoft.Json;
 
 namespace ShrinelandsTactics
 {
-    public class DungeonMaster
+    public class DungeonMaster : ICloneable
     {
+        [JsonProperty]
         public Map map;
+        [JsonProperty]
         public List<Side> Sides = new List<Side>();
+        [JsonProperty]
         public List<Character> Characters = new List<Character>();
+        [JsonProperty]
         public int TurnCount = 0;
-
-        private GameData data;
+        [JsonIgnore]
+        public GameData data;
+        [JsonProperty]
         public Side currentSide { get; private set; }
+        [JsonProperty]
         public Character activatedCharacter = null;
 
         public event CharacterMovedEventHandler OnCharacterMoved;
@@ -561,6 +568,32 @@ namespace ShrinelandsTactics
             return map.IsPassable(pos);
         }
 
+        public int GetGamestateHash()
+        {
+            unchecked // Overflow is fine, just wrap
+            {
+                int hash = (int)2166136261;
+                // Suitable nullity checks etc, of course :)
+                hash = (hash * 16777619) ^ map.GetGamestateHash();
+                foreach (var side in Sides)
+                {
+                    hash = (hash * 16777619) ^ side.GetGamestateHash();
+                }
+                //foreach (var guy in Characters)
+                //{
+                //    hash = (hash * 16777619) ^ guy.GetHashCode();
+                //}
+                //hash = (hash * 16777619) ^ TurnCount.GetHashCode();
+                //hash = (hash * 16777619) ^ currentSide.GetGamestateHash();
+                //if(activatedCharacter != null)
+                //{
+                //    hash = (hash * 16777619) ^ activatedCharacter.GetHashCode();
+                //}
+
+                return hash;
+            }
+        }
+
         public static DungeonMaster GetDebugDM(GameData data)
         {
             var DM = new DungeonMaster(data);
@@ -580,6 +613,12 @@ namespace ShrinelandsTactics
             DM.Characters.Add(zach);
 
             return DM;
+        }
+
+        public object Clone()
+        {
+            string json = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<DungeonMaster>(json);
         }
 
         public static Random rand = new Random();

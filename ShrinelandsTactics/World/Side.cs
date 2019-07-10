@@ -26,5 +26,17 @@ namespace ShrinelandsTactics.World
         {
             this.Name = name;
         }
+
+        public int GetGamestateHash()
+        {
+            unchecked // Overflow is fine, just wrap
+            {
+                int hash = (int)2166136261;
+                // Suitable nullity checks etc, of course :)
+                hash = (hash * 16777619) ^ ID.GetHashCode();
+                hash = (hash * 16777619) ^ Name.GetHashCode();
+                return hash;
+            }
+        }
     }
 }

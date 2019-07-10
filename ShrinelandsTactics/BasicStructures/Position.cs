@@ -1,14 +1,20 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace ShrinelandsTactics.BasicStructures
 {
+    [TypeConverter(typeof(PositionTypeConverter))]
     public class Position : IEquatable<Position>
     {
+        [JsonProperty]
         public readonly int x;
+        [JsonProperty]
         public readonly int y;
 
         public Position(int x, int y)
@@ -46,10 +52,10 @@ namespace ShrinelandsTactics.BasicStructures
         public override int GetHashCode()
         {
             //use Cantor's pairing function to create unique hash
-            return (x+y)*(x+y+1)/2 + x;
+            return (x + y) * (x + y + 1) / 2 + x;
         }
 
-        public static Position operator + (Position a, Position b)
+        public static Position operator +(Position a, Position b)
         {
             return new Position(a.x + b.x,
                                 a.y + b.y);
@@ -84,6 +90,35 @@ namespace ShrinelandsTactics.BasicStructures
             int y = int.Parse(parts[1]);
 
             return new Position(x, y);
+        }
+    }
+
+    public class PositionTypeConverter : TypeConverter
+    {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, System.Type sourceType)
+        {
+            if (sourceType == typeof(string))
+            {
+                return true;
+            }
+            return base.CanConvertFrom(context, sourceType);
+        }
+
+        public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+        {
+            if (value is string)
+            {
+                string text = value as string;
+                string pattern = @"\((\d+),(\d+)\)";
+                Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
+                Match m = r.Match(text);
+                int x = int.Parse(m.Groups[1].Value);
+                int y = int.Parse(m.Groups[2].Value);
+
+                //Foo f = JsonConvert.DeserializeObject<Foo>(s);
+                return new Position(x,y);
+            }
+            return base.ConvertFrom(context, culture, value);
         }
     }
 }
