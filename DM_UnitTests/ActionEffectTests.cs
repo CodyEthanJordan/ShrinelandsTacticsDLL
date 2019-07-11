@@ -82,7 +82,7 @@ namespace DM_UnitTests
             var outcome = new Outcome();
             drain.ResolveAction(DM, robby, null, zach, "", outcome);
 
-            Assert.AreEqual("Drain", outcome.ActionTaken);
+            Assert.AreEqual("Drain Vitality", outcome.ActionTaken);
             Assert.IsTrue(outcome.CardsDrawn.Count == 1);
             Assert.IsTrue(outcome.CardsDrawn.Any(c => c.Name == "Drain"));
 
@@ -136,7 +136,7 @@ namespace DM_UnitTests
 
             zach.Pos = robby.Pos + Map.DirectionToPosition[Map.Direction.E];
             Assert.IsTrue(attack.GetValidTargets(DM, robby).Contains(zach.Pos));
-            Deck.SetFate(new List<string>() { "Hit", "Miss" });
+            Deck.SetFate(new List<string>() { "Hit", "Defense" });
             attack.ResolveAction(DM, robby, null, zach, "", outcome);
             Assert.IsTrue(zach.Vitality.Value < zach.Vitality.Max);
             Assert.AreEqual(zach.Vitality.Max - robby.Strength.Value - robby.WeaponDamage, zach.Vitality.Value);

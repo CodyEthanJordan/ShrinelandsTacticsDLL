@@ -128,6 +128,15 @@ namespace ShrinelandsTactics
                 var guy = Characters.First(c => c.ID == outcome.UserID);
                 Activate(guy);
             }
+            else if(outcome.ActionTaken == "Deactivate")
+            {
+                var guy = Characters.First(c => c.ID == outcome.UserID);
+                Deactivate(guy);
+            }
+            else if(outcome.ActionTaken == "End Turn")
+            {
+                EndTurn();
+            }
             else if(outcome.ActionTaken == null || outcome.ActionTaken == "")
             {
                 //TODO: log error? do nothing for now
@@ -149,6 +158,7 @@ namespace ShrinelandsTactics
         public Outcome EndTurn()
         {
             var outcome = new Outcome();
+            outcome.ActionTaken = "End Turn";
             // TODO: validate this 
             //need to quickly activate and de-activate remaining units
 

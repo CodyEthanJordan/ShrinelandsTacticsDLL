@@ -116,12 +116,16 @@ namespace ShrinelandsTactics.World
                 if (Traits.Contains("Split"))
                 {
                     var emptySpaces = DM.GetEmptyAdjacentSquares(Pos);
-                    int i = DungeonMaster.rand.Next(emptySpaces.Count);
-                    var emptySpace = emptySpaces[i];
-                    Vitality.Value = Vitality.Value / 2;
-                    var cloneCharacter = this.Clone() as Character;
-                    cloneCharacter.InitializeIndividual("Copy of " + Name, emptySpace, SideID);
-                    DM.CreateCharacter(cloneCharacter);
+                    if(emptySpaces.Count != 0 )
+                    {
+                        //int i = DungeonMaster.rand.Next(emptySpaces.Count);
+                        int i = 0; //TODO: derandomized for now for networking reasons
+                        var emptySpace = emptySpaces[i];
+                        Vitality.Value = Vitality.Value / 2;
+                        var cloneCharacter = this.Clone() as Character;
+                        cloneCharacter.InitializeIndividual("Copy of " + Name, emptySpace, SideID);
+                        DM.CreateCharacter(cloneCharacter);
+                    }
                 }
 
                 //reduce damage
