@@ -65,6 +65,10 @@
       <Project>{e91390eb-987f-4305-8465-4acf9953b11e}</Project>
       <Name>ShrinelandsTactics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ShrineMind\ShrineMind.csproj">
+      <Project>{0dd8a9a0-a8f1-441f-9cc2-3ed9c5636be9}</Project>
+      <Name>ShrineMind</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

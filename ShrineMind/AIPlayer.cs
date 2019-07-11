@@ -26,15 +26,18 @@ namespace ShrineMind
                 throw new ArgumentException("Its not my turn, I am" + PlayingAs);
             }
 
-            var randomGuy = DM.Characters.First(c => c.SideID == PlayingAs);
+            var randomGuy = DM.Characters.First(c => c.SideID == PlayingAs && !c.HasBeenActivated);
             var outcome = DM.Activate(randomGuy);
             outcomes.Add(outcome);
 
-            while (randomGuy.Move.Value > 0)
-            {
-                outcome = DM.MoveCharacter(randomGuy, Map.Direction.S);
-                outcomes.Add(outcome);
-            }
+            outcome = DM.MoveCharacter(randomGuy, Map.Direction.S);
+            outcomes.Add(outcome);
+            outcome = DM.MoveCharacter(randomGuy, Map.Direction.S);
+            outcomes.Add(outcome);
+            outcome = DM.MoveCharacter(randomGuy, Map.Direction.S);
+            outcomes.Add(outcome);
+            outcome = DM.MoveCharacter(randomGuy, Map.Direction.S);
+            outcomes.Add(outcome);
 
             outcome = DM.EndTurn();
             outcomes.Add(outcome);

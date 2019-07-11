@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using ShrinelandsTactics;
 using ShrinelandsTactics.BasicStructures;
+using ShrineMind;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -19,6 +20,8 @@ namespace ShrinelandsServer
         public static int Port = 6356;
         public static NetServer Server;
         public static List<NetConnection> Connections = new List<NetConnection>();
+        public static Dictionary<Guid, PlayerType> SideControlledBy = new Dictionary<Guid, PlayerType>();
+        public static Dictionary<Guid, AIPlayer> AIControllers = new Dictionary<Guid, AIPlayer>();
 
         static void Main(string[] args)
         {
@@ -59,11 +62,26 @@ namespace ShrinelandsServer
             return DM;
         }
 
+        public static void SetupAI()
+        {
+            foreach (var side in SideControlledBy.Where(kvp => kvp.Value == PlayerType.AI)
+                                                    .Select(kvp => kvp.Key))
+            {
+                var AI = new AIPlayer(side);
+                AIControllers.Add(side, AI);
+            }
+        }
+
         public static void HostGame()
         {
             Console.WriteLine("Hosting a new game");
             DM = LoadEncounter();
+            DM.OnTurnPassed += TurnPassed;
             Console.WriteLine("Loaded encounter");
+
+            SideControlledBy.Add(DM.Sides.First(s => s.Name == "Heros").ID, PlayerType.Player);
+            SideControlledBy.Add(DM.Sides.First(s => s.Name == "The Foe").ID, PlayerType.AI);
+            SetupAI();
 
             var config = new NetPeerConfiguration("Shrinelands")
             { Port = Program.Port };
@@ -71,8 +89,6 @@ namespace ShrinelandsServer
             Server.Start();
             while (true)
             {
-
-
                 NetIncomingMessage message;
                 while ((message = Server.ReadMessage()) != null)
                 {
@@ -132,6 +148,45 @@ namespace ShrinelandsServer
                     }
                 }
             }
+        }
+
+        private static void TurnPassed(object sender, Guid e)
+        {
+            if(SideControlledBy[e] == PlayerType.Player)
+            {
+                return; //don't need to do anything
+            }
+
+            var AI = AIControllers[e];
+
+            var outcomes = AI.TakeTurn(DM);
+
+            InformPlayers(outcomes);
+        }
+
+        private static void InformPlayers(List<Outcome> outcomes)
+        {
+            foreach (var outcome in outcomes)
+            {
+                string json = JsonConvert.SerializeObject(outcome);
+                foreach (var connection in Connections)
+                {
+                    
+                    var response = Server.CreateMessage("Take action\n" + json);
+                    Server.SendMessage(response, connection, NetDeliveryMethod.ReliableOrdered);
+                }
+            }
+        }
+
+        private static void DM_OnTurnPassed(object sender, Guid e)
+        {
+            throw new NotImplementedException();
+        }
+
+        public enum PlayerType
+        {
+            Player,
+            AI
         }
     }
 }

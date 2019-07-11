@@ -26,12 +26,28 @@ namespace ShrinelandsTactics
         [JsonIgnore]
         public GameData data;
         [JsonProperty]
-        public Side currentSide { get; private set; }
+        public Guid currentSideID { get; private set; }
         [JsonProperty]
-        public Character activatedCharacter = null;
+        public Guid activatedCharacterID;
+
+        [JsonIgnore]
+        public Character activatedCharacter { get
+            {
+                return Characters.FirstOrDefault(c => c.ID == activatedCharacterID);
+            } }
+
+        [JsonIgnore]
+        public Side currentSide
+        {
+            get
+            {
+                return Sides.FirstOrDefault(s => s.ID == currentSideID);
+            }
+        }
 
         public event CharacterMovedEventHandler OnCharacterMoved;
         public event EventHandler<Character> OnCharacterCreated;
+        public event EventHandler<Guid> OnTurnPassed;
         public event CardDrawnEventHandler OnCardDrawn;
 
         public DungeonMaster(GameData data)
@@ -167,7 +183,6 @@ namespace ShrinelandsTactics
         public Outcome EndTurn()
         {
             var outcome = new Outcome();
-            outcome.ActionTaken = "End Turn";
             // TODO: validate this 
             //need to quickly activate and de-activate remaining units
 
@@ -193,14 +208,22 @@ namespace ShrinelandsTactics
 
             //pass control to next side
             int i = Sides.IndexOf(currentSide);
+            outcome.Message.AppendLine(i.ToString());
             i = (i + 1) % Sides.Count;
-            currentSide = Sides[i];
+            currentSideID = Sides[i].ID;
 
             foreach (var guy in Characters.FindAll(c => c.SideID == currentSide.ID))
             {
                 guy.NewTurn();
             }
 
+            if(OnTurnPassed != null)
+            {
+                OnTurnPassed(this, currentSide.ID);
+            }
+
+            outcome.Message.AppendLine(i.ToString());
+            outcome.ActionTaken = "End Turn";
             return outcome;
         }
 
@@ -215,7 +238,7 @@ namespace ShrinelandsTactics
                 var name = (side as YamlScalarNode).Value;
                 DM.Sides.Add(new Side(name));
             }
-            DM.currentSide = DM.Sides[0];
+            DM.currentSideID = DM.Sides[0].ID;
 
             var characters = (YamlSequenceNode)yaml.Children[new YamlScalarNode("characters")];
             foreach (var node in characters)
@@ -292,7 +315,7 @@ namespace ShrinelandsTactics
             }
 
             guy.Activate();
-            activatedCharacter = guy;
+            activatedCharacterID = guy.ID;
             outcome.Message.AppendLine("Starting activation for " + guy.Name);
             return outcome;
         }
@@ -319,7 +342,7 @@ namespace ShrinelandsTactics
             }
 
             guy.EndActivation(); //TODO: add to outcome?
-            activatedCharacter = null;
+            activatedCharacterID = Guid.Empty;
             return outcome;
         }
 
@@ -673,7 +696,7 @@ namespace ShrinelandsTactics
 
             DM.Sides.Add(new Side("Heros"));
             DM.Sides.Add(new Side("The Foe"));
-            DM.currentSide = DM.Sides[0];
+            DM.currentSideID = DM.Sides[0].ID;
 
             var robby = DebugData.GetDebugCharacter();
             robby.InitializeIndividual("Robby", new Position(1, 1), DM.Sides[0].ID);

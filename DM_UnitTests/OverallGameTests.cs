@@ -78,6 +78,7 @@ namespace DM_UnitTests
             Assert.IsTrue(robby.HasActed);
             Assert.IsFalse(robby.HasBeenActivated);
             Assert.IsTrue(robby.Move.Value < robby.Move.Max);
+            Assert.AreEqual(robby.SideID, DM.currentSide.ID);
             Assert.AreEqual(1, DM.TurnCount);
 
             DM.Activate(robby);
