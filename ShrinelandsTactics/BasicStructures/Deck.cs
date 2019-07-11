@@ -7,11 +7,12 @@ using Newtonsoft.Json;
 
 namespace ShrinelandsTactics.BasicStructures
 {
-    public class Deck
+    public class Deck : ICloneable
     {
+        [JsonProperty]
         public List<Card> Cards = new List<Card>();
 
-
+        public event DungeonMaster.CardDrawnEventHandler OnCardDrawn;
 
         public void AddCards(Card card, int number)
         {
@@ -24,6 +25,7 @@ namespace ShrinelandsTactics.BasicStructures
         public Card Draw()
         {
             int i = rand.Next(Cards.Count);
+            var originalDeck = Clone() as Deck;
 
             if(FatedDraws != null && FatedDraws.Count > 0)
             {
@@ -38,6 +40,10 @@ namespace ShrinelandsTactics.BasicStructures
             Card card = Cards[i];
             Cards.RemoveAt(i);
             DrawnCards.Add(card);
+            if(OnCardDrawn != null)
+            {
+                OnCardDrawn(this, new Events.CardDrawnEventArgs(originalDeck, card));
+            }
             return card;
         }
 
@@ -90,6 +96,12 @@ namespace ShrinelandsTactics.BasicStructures
         internal static void ClearTracking()
         {
             DrawnCards.Clear();
+        }
+
+        public object Clone()
+        {
+            string json = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<Deck>(json);
         }
     }
 }

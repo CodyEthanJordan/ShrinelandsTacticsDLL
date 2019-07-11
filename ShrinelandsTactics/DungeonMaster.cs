@@ -32,6 +32,7 @@ namespace ShrinelandsTactics
 
         public event CharacterMovedEventHandler OnCharacterMoved;
         public event EventHandler<Character> OnCharacterCreated;
+        public event CardDrawnEventHandler OnCardDrawn;
 
         public DungeonMaster(GameData data)
         {
@@ -73,6 +74,14 @@ namespace ShrinelandsTactics
             }
 
             return sb.ToString();
+        }
+
+        public void CardDrawn(object sender, CardDrawnEventArgs e)
+        {
+            if(OnCardDrawn != null)
+            {
+                OnCardDrawn(this, e);
+            }
         }
 
         public Outcome ImplicitActivation(string unitName)
@@ -686,5 +695,6 @@ namespace ShrinelandsTactics
         public static Random rand = new Random();
 
         public delegate void CharacterMovedEventHandler(object sender, CharacterMovedEventArgs a);
+        public delegate void CardDrawnEventHandler(object sender, CardDrawnEventArgs a);
     }
 }

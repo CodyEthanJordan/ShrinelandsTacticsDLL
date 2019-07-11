@@ -171,6 +171,7 @@ namespace ShrinelandsTactics.Mechanics
 
             //draw card
             //special drawing rules?
+            deck.OnCardDrawn += DM.CardDrawn;
             Card card = deck.Draw();
             outcome.Message.AppendLine("Drawn:" + card.ToString());
 

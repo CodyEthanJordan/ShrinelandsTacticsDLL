@@ -28,6 +28,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
             Character charTarget, Deck deck, Card cardDrawn, string optionalFeatures = null)
         {
             var outcome = new Outcome();
+            deck.OnCardDrawn += DM.CardDrawn;
             Card card = deck.Draw();
             outcome.Message.AppendLine("Drawn:" + card.ToString());
             //inform user and target what card was drawn, possibly for temporary dodge or breaking shields

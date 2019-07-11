@@ -51,6 +51,7 @@
     <Compile Include="AI\BoardStateEvaluator.cs" />
     <Compile Include="BasicStructures\Card.cs" />
     <Compile Include="BasicStructures\Deck.cs" />
+    <Compile Include="BasicStructures\Events\CardDrawnEventArgs.cs" />
     <Compile Include="BasicStructures\Events\CharacterMovedEventArgs.cs" />
     <Compile Include="BasicStructures\Outcome.cs" />
     <Compile Include="BasicStructures\Stat.cs" />
