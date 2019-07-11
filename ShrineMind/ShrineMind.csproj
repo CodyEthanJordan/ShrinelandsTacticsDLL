@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>95666c60-10cd-492e-94d9-71e6283ce567</ProjectGuid>
+    <ProjectGuid>0dd8a9a0-a8f1-441f-9cc2-3ed9c5636be9</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ShrineMind</RootNamespace>
