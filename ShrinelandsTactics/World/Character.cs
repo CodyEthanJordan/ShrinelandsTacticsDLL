@@ -316,6 +316,12 @@ namespace ShrinelandsTactics.World
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return GetInfo(0);
+        }
+
         public void PayMovement(int moveCost, int staminaCost=0)
         {
             Stamina.Value -= staminaCost;

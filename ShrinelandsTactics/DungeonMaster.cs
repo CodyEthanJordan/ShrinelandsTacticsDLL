@@ -128,6 +128,10 @@ namespace ShrinelandsTactics
                 var guy = Characters.First(c => c.ID == outcome.UserID);
                 Activate(guy);
             }
+            else if(outcome.ActionTaken == null || outcome.ActionTaken == "")
+            {
+                //TODO: log error? do nothing for now
+            }
             else
             {
                 Deck.SetFate(outcome.CardsDrawn.Select(c => c.Name)); //TODO: terrible hack
