@@ -108,7 +108,6 @@ namespace ShrinelandsServer
                             }
                             else if(toDo == "Take action")
                             {
-                                Console.WriteLine("Client has taken an action");
                                 var outcome = JsonConvert.DeserializeObject<Outcome>(data.ReadToEnd());
                                 DM.ApplyOutcome(outcome);
                                 //TODO: make function

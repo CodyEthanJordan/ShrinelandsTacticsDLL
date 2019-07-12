@@ -24,12 +24,22 @@ namespace DM_UnitTests
             data = GameData.ReadDatafilesInDirectory("GameData");
         }
 
+      
         [TestMethod]
-        public void BreadthFirstTest()
+        public void ShortestPathTest()
         {
-            var DM = DungeonMaster.GetDebugDM(data);
-            var robby = DM.Characters.First(c => c.Name == "Robby");
-            var moves = DM.GetPossibleMoves(robby);
+            string mapString = @"Debug Arena
+8 8
+########
+#..#...#
+#..#...#
+#..#...#
+#......#
+#......#
+#......#
+########
+";
+            DungeonMaster DM = new DungeonMaster()
         }
 
     }
