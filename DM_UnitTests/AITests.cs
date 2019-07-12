@@ -39,7 +39,6 @@ namespace DM_UnitTests
 #......#
 ########
 ";
-            DungeonMaster DM = new DungeonMaster()
         }
 
     }

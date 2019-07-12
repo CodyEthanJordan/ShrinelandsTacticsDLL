@@ -37,6 +37,7 @@ namespace DM_UnitTests
         public void TileSerializationTest()
         {
             var tile = DebugData.GetEmptyTile();
+            tile.Color = new System.Collections.Generic.List<byte>() { 0, 0, 0 };
 
             string json = JsonConvert.SerializeObject(tile);
 

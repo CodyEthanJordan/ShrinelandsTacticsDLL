@@ -21,6 +21,8 @@ namespace ShrinelandsTactics.World
         [JsonProperty]
         public char Icon { get; private set; }
         [JsonProperty]
+        public List<byte> Color = new List<byte>();
+        [JsonProperty]
         public readonly List<TileProperties> Properties = new List<TileProperties>();
 
         //TODO: add OnEnter and OnExit methods, as well as OnTurn
