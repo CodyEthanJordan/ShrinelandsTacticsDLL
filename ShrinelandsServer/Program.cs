@@ -80,7 +80,7 @@ namespace ShrinelandsServer
             Console.WriteLine("Loaded encounter");
 
             SideControlledBy.Add(DM.Sides.First(s => s.Name == "Heros").ID, PlayerType.Player);
-            SideControlledBy.Add(DM.Sides.First(s => s.Name == "The Foe").ID, PlayerType.AI);
+            SideControlledBy.Add(DM.Sides.First(s => s.Name == "The Foe").ID, PlayerType.Player);
             SetupAI();
 
             var config = new NetPeerConfiguration("Shrinelands")

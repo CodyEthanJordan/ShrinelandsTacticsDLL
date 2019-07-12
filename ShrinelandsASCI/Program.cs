@@ -106,10 +106,6 @@ namespace ShrinelandsASCI
 
                         case NetIncomingMessageType.StatusChanged:
                             // handle connection status messages
-                            switch (message.SenderConnection.Status)
-                            {
-                                /* .. */
-                            }
                             break;
 
                         case NetIncomingMessageType.DebugMessage:

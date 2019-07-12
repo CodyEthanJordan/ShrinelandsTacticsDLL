@@ -9,10 +9,41 @@ namespace ShrinelandsTactics.BasicStructures
 {
     public class Stat
     {
+        [JsonIgnore]
+        private int _value;
+        [JsonIgnore]
+        private int _max;
+
         [JsonProperty]
-        public int Value { get; set; }
+        public int Value
+        {
+            get { return _value; }
+            set
+            {
+                _value = value;
+                if(OnStatChanged != null)
+                {
+                    OnStatChanged(this, new Events.StatChangedEventArgs(Guid.Empty, World.Character.StatType.Mana, this));
+                }
+            }
+        }
+
+
         [JsonProperty]
-        public int Max { get; set; }
+        public int Max
+        {
+            get { return _max; } 
+            set
+            {
+                _max = value;
+                if (OnStatChanged != null)
+                {
+                    OnStatChanged(this, new Events.StatChangedEventArgs(Guid.Empty, World.Character.StatType.Mana, this));
+                }
+            }
+        }
+
+        public event DungeonMaster.StatChnagedEventHandler OnStatChanged;
 
         public Stat()
         {

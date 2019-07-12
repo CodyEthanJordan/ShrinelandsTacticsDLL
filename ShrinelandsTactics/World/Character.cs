@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using ShrinelandsTactics.BasicStructures;
+using ShrinelandsTactics.BasicStructures.Events;
 using ShrinelandsTactics.Mechanics;
 using ShrinelandsTactics.Mechanics.Effects;
 using Action = ShrinelandsTactics.Mechanics.Action;
@@ -56,6 +57,8 @@ namespace ShrinelandsTactics.World
         [JsonIgnore]
         public Stat Mana { get { return Stats[StatType.Mana]; } }
 
+        public event DungeonMaster.StatChnagedEventHandler OnStatChanged;
+
         public bool Incapacitated
         {
             get { return Vitality.Value <= 0; }
@@ -68,6 +71,25 @@ namespace ShrinelandsTactics.World
             Stats = new Dictionary<StatType, Stat>();
             Conditions = new List<Condition>();
             Actions = new List<Mechanics.Action>();
+
+            foreach (var stat in Stats.Select(s => s.Value))
+            {
+                stat.OnStatChanged += StatChanged;
+            }
+        }
+
+        private void StatChanged(object sender, StatChangedEventArgs a)
+        {
+            if(OnStatChanged != null)
+            {
+                StatType type = Stats.First(s => s.Value.Equals(a.NewStat)).Key;
+                OnStatChanged(this, new StatChangedEventArgs(ID, type, a.NewStat));
+            }
+        }
+
+        private void Stat_OnStatChanged(object sender, BasicStructures.Events.StatChangedEventArgs a)
+        {
+            throw new NotImplementedException();
         }
 
         public Character(string name, int vitality, int move, int stamina, int profeciency, int strength, int mana) : this()
@@ -79,6 +101,7 @@ namespace ShrinelandsTactics.World
             Stats.Add(StatType.Profeciency, new Stat(profeciency));
             Stats.Add(StatType.Strength, new Stat(strength));
             Stats.Add(StatType.Mana, new Stat(mana));
+            SetupEvents();
         }
 
         public void NewTurn()
@@ -123,7 +146,7 @@ namespace ShrinelandsTactics.World
                         var emptySpace = emptySpaces[i];
                         Vitality.Value = Vitality.Value / 2;
                         var cloneCharacter = this.Clone() as Character;
-                        cloneCharacter.InitializeIndividual("Copy of " + Name, emptySpace, SideID);
+                        cloneCharacter.InitializeIndividual("Copy of " + Name, emptySpace, SideID, DM.GuidsInWaiting.Dequeue());
                         DM.CreateCharacter(cloneCharacter);
                     }
                 }
@@ -216,12 +239,13 @@ namespace ShrinelandsTactics.World
             }
         }
 
-        public void InitializeIndividual(string name, Position pos, Guid SideID)
+        public void InitializeIndividual(string name, Position pos, Guid SideID, Guid ID)
         {
-            this.ID = Guid.NewGuid();
+            this.ID = ID;
             this.SideID = SideID;
             this.Name = name;
             this.Pos = pos;
+            SetupEvents();
         }
 
         public void AddArmorCards(Deck deck, DungeonMaster DM, Character attacker, Action action)
@@ -229,6 +253,14 @@ namespace ShrinelandsTactics.World
             var hit = new Card("Hit", Card.CardType.Hit);
             var armor = Card.CreateReplacementCard("Glancing Blow", Card.CardType.Armor, hit);
             deck.AddCards(armor, ArmorCoverage); //armor card causes hit to be redirected to character for resolution?
+        }
+
+        internal void SetupEvents()
+        {
+            foreach (var stat in Stats.Select(s => s.Value))
+            {
+                stat.OnStatChanged += StatChanged;
+            }
         }
 
         public void AddDodgeCards(Deck deck, DungeonMaster DM, Character attacker, Action action)

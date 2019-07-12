@@ -29,6 +29,8 @@ namespace ShrinelandsTactics
         public Guid currentSideID { get; private set; }
         [JsonProperty]
         public Guid activatedCharacterID;
+        [JsonProperty]
+        public Queue<Guid> GuidsInWaiting = new Queue<Guid>();
 
         [JsonIgnore]
         public Character activatedCharacter { get
@@ -49,6 +51,7 @@ namespace ShrinelandsTactics
         public event EventHandler<Character> OnCharacterCreated;
         public event EventHandler<Guid> OnTurnPassed;
         public event CardDrawnEventHandler OnCardDrawn;
+        public event StatChnagedEventHandler OnStatChanged;
 
         public DungeonMaster(GameData data)
         {
@@ -257,20 +260,43 @@ namespace ShrinelandsTactics
                 var side = DM.Sides.FirstOrDefault(s => s.Name.Equals(sideName, StringComparison.OrdinalIgnoreCase));
 
                 Character newCharacter = data.LoadCharacterByClass(characterClass);
-                newCharacter.InitializeIndividual(name, pos, side.ID);
+                newCharacter.InitializeIndividual(name, pos, side.ID, Guid.NewGuid());
 
-                DM.Characters.Add(newCharacter);
+                DM.CreateCharacter(newCharacter);
+            }
+
+            for (int i = 0; i < 100; i++)
+            {
+                DM.GuidsInWaiting.Enqueue(Guid.NewGuid());
             }
 
             return DM;
         }
 
+        public void SetupEvents()
+        {
+            foreach (var guy in Characters)
+            {
+                guy.OnStatChanged += StatChanged;
+                guy.SetupEvents();
+            }
+        }
+
         public void CreateCharacter(Character cloneCharacter)
         {
+            cloneCharacter.OnStatChanged += StatChanged;
             Characters.Add(cloneCharacter);
             if(OnCharacterCreated != null)
             {
                 OnCharacterCreated(this, cloneCharacter);
+            }
+        }
+
+        private void StatChanged(object sender, StatChangedEventArgs a)
+        {
+            if(OnStatChanged != null)
+            {
+                OnStatChanged(this, a);
             }
         }
 
@@ -705,11 +731,11 @@ namespace ShrinelandsTactics
             DM.currentSideID = DM.Sides[0].ID;
 
             var robby = DebugData.GetDebugCharacter();
-            robby.InitializeIndividual("Robby", new Position(1, 1), DM.Sides[0].ID);
+            robby.InitializeIndividual("Robby", new Position(1, 1), DM.Sides[0].ID, Guid.NewGuid());
             DM.Characters.Add(robby);
 
             var zach = DebugData.GetDebugCharacter();
-            zach.InitializeIndividual("Zach", new Position(1, 3), DM.Sides[1].ID);
+            zach.InitializeIndividual("Zach", new Position(1, 3), DM.Sides[1].ID, Guid.NewGuid());
             DM.Characters.Add(zach);
 
             return DM;
@@ -725,5 +751,6 @@ namespace ShrinelandsTactics
 
         public delegate void CharacterMovedEventHandler(object sender, CharacterMovedEventArgs a);
         public delegate void CardDrawnEventHandler(object sender, CardDrawnEventArgs a);
+        public delegate void StatChnagedEventHandler(object sender, StatChangedEventArgs a);
     }
 }
