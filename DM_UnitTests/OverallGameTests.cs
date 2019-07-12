@@ -64,7 +64,7 @@ namespace DM_UnitTests
             DM.Activate(robby);
             DM.MoveCharacter(robby, Map.Direction.S);
             robby.HasActed = true;
-            DM.EndTurn();
+            DM.EndTurn(robby.SideID);
 
             Assert.IsTrue(DM.currentSide.ID == zach.SideID);
             Assert.AreEqual(0, DM.TurnCount);
@@ -72,7 +72,7 @@ namespace DM_UnitTests
             Assert.IsFalse(zach.HasActed);
             Assert.IsTrue(robby.HasActed);
 
-            DM.EndTurn();
+            DM.EndTurn(zach.SideID);
 
             Assert.IsTrue(zach.HasBeenActivated);
             Assert.IsTrue(robby.HasActed);

@@ -18,7 +18,6 @@ namespace ShrinelandsASCI
         static DungeonMaster DM;
         static bool gameRunning = true;
         static StringBuilder output = new StringBuilder();
-        static bool isServer;
         static NetPeer peer;
         static int Port = 3456;
 
@@ -213,7 +212,7 @@ namespace ShrinelandsASCI
                     .WithParsed<UseOptions>(Use)
                     .WithParsed<QuitOptions>(opts => Environment.Exit(0))
                     .WithParsed<StatusOptions>(ShowStatus)
-                    .WithParsed<EndTurnOptions>(opts => DM.EndTurn());
+                    .WithParsed<EndTurnOptions>(opts => DM.EndTurn(DM.currentSideID));
                 Console.WriteLine(DM.VisualizeWorld());
                 if(DM.activatedCharacter != null)
                 {

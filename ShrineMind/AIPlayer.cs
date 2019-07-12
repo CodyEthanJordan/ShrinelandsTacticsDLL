@@ -39,7 +39,7 @@ namespace ShrineMind
             outcome = DM.MoveCharacter(randomGuy, Map.Direction.S);
             outcomes.Add(outcome);
 
-            outcome = DM.EndTurn();
+            outcome = DM.EndTurn(PlayingAs);
             outcomes.Add(outcome);
 
             return outcomes;

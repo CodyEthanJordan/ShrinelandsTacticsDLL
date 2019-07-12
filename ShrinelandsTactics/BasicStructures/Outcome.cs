@@ -14,8 +14,10 @@ namespace ShrinelandsTactics.BasicStructures
         public string ActionTaken;
         public Guid UserID;
         public Guid TargetID = Guid.Empty;
+        public Guid SideID = Guid.Empty;
         public Position PosTarget;
         public List<Card> CardsDrawn = new List<Card>();
+        public bool Illegal = false;
 
         public Outcome()
         {

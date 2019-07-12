@@ -160,7 +160,7 @@ namespace ShrinelandsTactics
             }
             else if(outcome.ActionTaken == "End Turn")
             {
-                EndTurn();
+                EndTurn(outcome.SideID);
             }
             else if(outcome.ActionTaken == null || outcome.ActionTaken == "")
             {
@@ -180,17 +180,24 @@ namespace ShrinelandsTactics
             MoveCharacter(guy, dir);
         }
 
-        public Outcome EndTurn()
+        public Outcome EndTurn(Guid SideId)
         {
             var outcome = new Outcome();
-            // TODO: validate this 
-            //need to quickly activate and de-activate remaining units
+            outcome.SideID = SideId;
 
+            if(SideId != currentSideID)
+            {
+                outcome.Message.AppendLine("Not currently your turn, so cannot end");
+                outcome.Illegal = true;
+                return outcome;
+
+            }
+
+            //need to quickly activate and de-activate remaining units
             if(activatedCharacter != null)
             {
                 Deactivate(activatedCharacter);
             }
-
             foreach (var leftoverGuy in Characters.FindAll(c => c.SideID == currentSide.ID && 
                                                             c.HasBeenActivated == false))
             {
@@ -208,7 +215,6 @@ namespace ShrinelandsTactics
 
             //pass control to next side
             int i = Sides.IndexOf(currentSide);
-            outcome.Message.AppendLine(i.ToString());
             i = (i + 1) % Sides.Count;
             currentSideID = Sides[i].ID;
 
@@ -222,7 +228,6 @@ namespace ShrinelandsTactics
                 OnTurnPassed(this, currentSide.ID);
             }
 
-            outcome.Message.AppendLine(i.ToString());
             outcome.ActionTaken = "End Turn";
             return outcome;
         }
@@ -515,6 +520,7 @@ namespace ShrinelandsTactics
         public Outcome MoveCharacter(Character guy, Map.Direction dir)
         {
             var outcome = new Outcome();
+            outcome.SideID = guy.SideID;
 
             if(!IsActiveAndControllable(guy))
             {
