@@ -19,3 +19,5 @@ characters:
    class: Knight
    pos: 14 23
    side: Heros
+- name: Ryan
+  class: 
