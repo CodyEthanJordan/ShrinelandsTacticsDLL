@@ -34,6 +34,10 @@ namespace ShrinelandsTactics.Mechanics.Effects
         {
             var outcome = new Outcome();
             var affected = AffectCaster ? user: charTarget;
+            if(affected == null)
+            {
+                return outcome;
+            }
             affected.Stats[StatAffected].Regain(Amount);
             outcome.Message.Append(affected.Name + " regins " + Amount + " "
                 + StatAffected.ToString());
