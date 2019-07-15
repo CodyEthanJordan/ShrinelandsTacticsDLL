@@ -83,6 +83,9 @@
     <None Include="GameData\actionData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="GameData\Shrineheim.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="GameData\FireTemple.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

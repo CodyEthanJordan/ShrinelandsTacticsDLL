@@ -1,6 +1,64 @@
 {
   "actionData": [
     {
+      "Name": "Pour Out",
+      "Cost": { "Mana": 1 },
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "RegainStat",
+            "StatAffected": "Vitality",
+            "Amount": 5
+          }
+        ]
+      },
+      "TypeOfAction": "Major",
+      "Repeatable": false,
+      "TypeOfRange":  "Melee",
+      "Tags": [ "Uncontested" ]
+    },
+    {
+      "Name": "Become Stone",
+      "Cost": { "Move": 3, "Stamina" :  1 },
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "ModifyCondition",
+            "Condition": "Statue",
+            "Duration": 1,
+            "Amount": 1,
+            "AffectCaster": true
+          }
+        ]
+      },
+      "TypeOfAction": "Minor",
+      "Repeatable": false,
+      "TypeOfRange":  "Self",
+      "Tags": [ "Uncontested" ]
+    },
+    {
+      "Name": "Inspire",
+      "Cost": { "Mana": 1 },
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "RegainStat",
+            "Condition": "Vitality",
+            "Amount": 1
+          },
+          {
+            "TypeOfEffect": "RegainStat",
+            "Condition": "Stamina",
+            "Amount": 3
+          }
+        ]
+      },
+      "Range": 7,
+      "TypeOfRange": "Ranged",
+      "TypeOfAction": "Major",
+      "Tags": ["Uncontested"]
+    },
+    {
       "Name": "Drain Vitality",
       "Cost": { "Stamina": 1 },
       "DeckRecipe": {

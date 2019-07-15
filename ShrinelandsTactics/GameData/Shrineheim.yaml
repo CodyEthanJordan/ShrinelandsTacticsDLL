@@ -1,0 +1,23 @@
+# Test level file for game
+encounter_name: Shrineheim
+map_file: ShrineheimMap.png
+
+sides:
+ - Heros
+ - The Foe
+
+characters:
+ - name: 
+   class: Knight
+   pos: 13 25
+   side: Heros
+ - name: Charlie
+   class: Knight
+   pos: 15 25
+   side: Heros
+ - name: JJ
+   class: Knight
+   pos: 14 23
+   side: Heros
+- name: Ryan
+  class: 

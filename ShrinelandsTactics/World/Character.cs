@@ -43,6 +43,8 @@ namespace ShrinelandsTactics.World
         public int WeaponDamage = 3;
         [JsonProperty]
         public List<string> Traits = new List<string>();
+        [JsonProperty]
+        public List<string> Gear = new List<string>();
 
         [JsonIgnore]
         public Stat Vitality { get { return Stats[StatType.Vitality]; } }
@@ -168,7 +170,18 @@ namespace ShrinelandsTactics.World
 
         public void TakeDamage(DamageEffect.DamageType typeOfDamage, int amount)
         {
-            Stats[StatType.Vitality].Value -= amount; //TODO: check for 0?
+            Vitality.Value -= amount; //TODO: check for 0?
+
+            //TODO: trait system?
+            if(HasTrait("Fragile Chalice"))
+            {
+                Mana.Value -= 1;
+            }
+        }
+
+        public bool HasTrait(string trait)
+        {
+            return Traits.Contains(trait);
         }
 
         public void PayCost(Action action)
