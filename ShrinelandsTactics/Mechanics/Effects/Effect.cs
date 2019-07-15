@@ -34,6 +34,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
             RegainStat,
             Redraw,
             ResolveByTarget,
+            ChangeTile,
         }
     }
 

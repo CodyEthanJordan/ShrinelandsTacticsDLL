@@ -19,20 +19,7 @@ namespace DM_UnitTests
             data = GameData.ReadDatafilesInDirectory("GameData");
         }
 
-        [TestMethod]
-        public void GameDataTileDeserializationTest()
-        {
-            Assert.IsTrue(data.Tiles.Count > 0);
-            Assert.IsTrue(data.Tiles.Values.Any(t => t.Name == "DebugWall"));
-            var debugWall = data.Tiles["DebugWall"];
-
-            Assert.AreEqual(1, debugWall.MoveCost);
-            Assert.AreEqual(false, debugWall.Passable);
-            Assert.IsTrue(debugWall.Properties.Count == 1);
-            Assert.IsTrue(debugWall.Properties.Contains(Tile.TileProperties.DebugProperty));
-            Assert.AreEqual('D', debugWall.Icon);
-        }
-
+        
         [TestMethod]
         public void TileSerializationTest()
         {

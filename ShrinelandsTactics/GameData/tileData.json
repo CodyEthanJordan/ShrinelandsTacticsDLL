@@ -1,13 +1,6 @@
 {
   "tileData": [
     {
-      "Name": "DebugWall",
-      "MoveCost": 1,
-      "Passable": false,
-      "Icon": "D",
-      "Properties": [ "DebugProperty" ]
-    },
-    {
       "Name": "Wall",
       "MoveCost": 1,
       "Passable": false,

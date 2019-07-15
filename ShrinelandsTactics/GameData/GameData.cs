@@ -25,6 +25,11 @@ public class GameData
         return charTemplate.Clone() as Character;
     }
 
+    public Tile GetTileByName(string name)
+    {
+        return Tiles.Values.First(t => t.Name == name);
+    }
+
     public static GameData CreateFromJson(string tileJson, string characterJson,
         string actionJson)
     {

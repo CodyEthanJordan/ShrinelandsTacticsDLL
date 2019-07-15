@@ -61,6 +61,7 @@
     <Compile Include="GameData\GameData.cs" />
     <Compile Include="Mechanics\Condition.cs" />
     <Compile Include="Mechanics\Action.cs" />
+    <Compile Include="Mechanics\Effects\ChangeTileEffect.cs" />
     <Compile Include="Mechanics\Effects\DamageEffect.cs" />
     <Compile Include="Mechanics\Effects\ModifyConditionEffect.cs" />
     <Compile Include="Mechanics\Effects\ResolveByTarget.cs" />

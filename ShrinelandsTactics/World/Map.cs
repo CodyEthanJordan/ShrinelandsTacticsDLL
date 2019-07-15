@@ -37,6 +37,20 @@ namespace ShrinelandsTactics.World
             }
         }
 
+        public void MakeTile(Tile replacingTile, Position posTarget, GameData data)
+        {
+            var current = GetTile(posTarget);
+            if(current.Name == "Shallow Pool" && replacingTile.Name == "Fire" ||
+                replacingTile.Name == "Shallow Pool" && current.Name == "Fire") //TODO: make more elegant
+            {
+                var floor = data.GetTileByName("Floor");
+                tiles[posTarget] = floor;
+                return;
+            }
+
+            tiles[posTarget] = replacingTile;
+        }
+
         public static Map CreateFromBitmap(Bitmap bitmap, GameData data)
         {
             var pal = bitmap.Palette;

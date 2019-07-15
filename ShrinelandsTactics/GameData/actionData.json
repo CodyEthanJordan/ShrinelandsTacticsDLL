@@ -9,13 +9,18 @@
             "TypeOfEffect": "RegainStat",
             "StatAffected": "Vitality",
             "Amount": 5
+          },
+          {
+            "TypeOfEffect": "ChangeTile",
+            "ReplacingTile": "Shallow Pool"
           }
         ]
       },
       "TypeOfAction": "Major",
       "Repeatable": false,
       "TypeOfRange":  "Melee",
-      "Tags": [ "Uncontested" ]
+      "Tags": [ "Uncontested" ],
+      "TargetRequirements" :  ["Open"]
     },
     {
       "Name": "Become Stone",

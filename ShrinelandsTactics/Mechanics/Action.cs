@@ -33,6 +33,8 @@ namespace ShrinelandsTactics.Mechanics
         public bool Repeatable = false;
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<AbilityType> Tags = new List<AbilityType>();
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
+        public List<TargetRequirement> TargetRequirements = new List<TargetRequirement>();
 
         private int timesUsed = 0;
 
@@ -87,7 +89,7 @@ namespace ShrinelandsTactics.Mechanics
 
             if(TypeOfRange == RangeType.Melee)
             {
-                if(Map.GetAdjacent(user.Pos).Contains(charTarget.Pos))
+                if(Map.GetAdjacent(user.Pos).Contains(target))
                 {
                     return true;
                 }
@@ -115,11 +117,10 @@ namespace ShrinelandsTactics.Mechanics
             switch (TypeOfRange)
             {
                 case RangeType.Melee:
-                    var adjacentCharacters = Map.GetAdjacent(user.Pos).Where(p =>
-                        DM.Characters.Select(c => c.Pos).Contains(p));
+                    var adjacentCharacters = Map.GetAdjacent(user.Pos);
                     valid.AddRange(adjacentCharacters);
                     break;
-                case RangeType.Ranged:
+                case RangeType.Ranged: //TODO: don't require character?
                     var inRange = DM.Characters.Where(c => c != user &&
                         c.Pos.Distance(user.Pos) <= this.Range).Select(c => c.Pos);
                     valid.AddRange(inRange);
@@ -130,6 +131,16 @@ namespace ShrinelandsTactics.Mechanics
                 default:
                     throw new NotImplementedException();
                     break;
+            }
+
+            if(TargetRequirements.Contains(TargetRequirement.Open))
+            {
+                valid.RemoveAll(p => !DM.map.IsPassable(p));
+            }
+
+            if(TargetRequirements.Contains(TargetRequirement.CharactersOnly))
+            {
+                //TODO: implement
             }
 
             return valid;
@@ -269,6 +280,12 @@ namespace ShrinelandsTactics.Mechanics
             Melee,
             Ranged,
             Self,
+        }
+
+        public enum TargetRequirement
+        {
+            Open,
+            CharactersOnly,
         }
 
         public enum ActionType

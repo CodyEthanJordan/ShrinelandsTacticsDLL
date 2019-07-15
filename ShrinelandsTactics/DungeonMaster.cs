@@ -26,7 +26,7 @@ namespace ShrinelandsTactics
         [JsonIgnore]
         public GameData data;
         [JsonProperty]
-        public Guid currentSideID { get; private set; }
+        public Guid currentSideID { get;  set; }
         [JsonProperty]
         public Guid activatedCharacterID;
         [JsonProperty]
@@ -235,10 +235,16 @@ namespace ShrinelandsTactics
             return outcome;
         }
 
-        public static DungeonMaster LoadEncounter(YamlMappingNode yaml, string level, GameData data)
+        public static DungeonMaster CreateFromMap(string level, GameData data)
         {
             var DM = new DungeonMaster(data);
             DM.map = Map.CreateFromText(level, data);
+            return DM;
+        }
+
+        public static DungeonMaster LoadEncounter(YamlMappingNode yaml, string level, GameData data)
+        {
+            var DM = DungeonMaster.CreateFromMap(level, data);
 
             var sides = (YamlSequenceNode)yaml.Children[new YamlScalarNode("sides")];
             foreach (var side in sides)
