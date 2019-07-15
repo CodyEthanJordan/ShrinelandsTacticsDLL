@@ -34,5 +34,27 @@ namespace DM_UnitTests.DataDependentTests
             guy.TakeDamage(DamageEffect.DamageType.True, 1);
             Assert.IsTrue(guy.Mana.Value < guy.Mana.Max);
         }
+
+        [TestMethod]
+        public void FiredanceTest()
+        {
+            string testMap = @"Testmap
+5 5
+#####
+#...#
+#...#
+#.**#
+#####
+";
+            var DM = DungeonMaster.CreateFromMap(testMap, data);
+            DM.Sides.Add(new Side("Test"));
+            DM.currentSideID = DM.Sides[0].ID;
+            var firedancer = new Character("Firedancer", 10, 10, 10, 10, 10, 10);
+            var pleblord = new Character("Pleblord", 10, 10, 10, 10, 10, 10);
+            firedancer.AddTrait("Firedance", data);
+            firedancer.Pos = new Position(2, 2);
+            pleblord.Pos = new Position(3, 2);
+            DM.MoveCharacter(firedancer, Map.Direction.S);
+        }
     }
 }

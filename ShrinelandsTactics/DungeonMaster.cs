@@ -605,6 +605,10 @@ namespace ShrinelandsTactics
             {
                 OnCharacterMoved(this, new CharacterMovedEventArgs(guy.Name, guy.ID, oldPos, destination));
             }
+
+            var steppedOn = map.GetTile(destination);
+            steppedOn.CharacterEntered(this, guy); //TODO: better?
+
             outcome.Message.AppendLine(guy.Name + " moved to " + destination);
             outcome.UserID = guy.ID;
             outcome.ActionTaken = "Move";

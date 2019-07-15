@@ -109,5 +109,13 @@ namespace ShrinelandsTactics.World
                 return hash;
             }
         }
+
+        public void CharacterEntered(DungeonMaster dungeonMaster, Character guy)
+        {
+            if(Properties.Contains(TileProperties.OnFire) && !guy.HasTrait("Firedance"))
+            {
+                guy.TakeDamage(Mechanics.Effects.DamageEffect.DamageType.Fire, 1);
+            }
+        }
     }
 }

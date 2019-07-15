@@ -69,7 +69,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
                     amount += Action.ResolveSource(s, DM, user, posTarget, charTarget);
                 }
             }
-
+            
             affected.TakeDamage(TypeOfDamage, amount);
             outcome.Message.AppendLine(affected.Name + " takes " + amount + " " + TypeOfDamage);
             return outcome;

@@ -33,7 +33,7 @@ namespace ShrinelandsServer
             var data = GameData.ReadDatafilesInDirectory("GameData");
 
             var yaml = new YamlStream();
-            using (StreamReader r = new StreamReader("GameData/SlimeCave.yaml"))
+            using (StreamReader r = new StreamReader("GameData/Shrineheim.yaml"))
             {
                 yaml.Load(r);
             }

@@ -66,7 +66,75 @@
       },
       "Actions": [
       ],
-      "Gear" : ["Longsword", "Breastplate", "Shield"],
+    "Traits" :  ["Combat Trained"],
+      "Gear" : ["Longsword", "Breastplate", "Shield"]
+    },
+    {
+      "Class": "Grandmaster",
+      "Stats": {
+        "Vitality": {
+          "Value": 14,
+          "Max": 14
+        },
+        "Move": {
+          "Value": 5,
+          "Max": 5
+        },
+        "Stamina": {
+          "Value": 3,
+          "Max": 3
+        },
+        "Profeciency": {
+          "Value": 8,
+          "Max": 8
+        },
+        "Strength": {
+          "Value": 2,
+          "Max": 2
+        },
+        "Mana": {
+          "Value": 1,
+          "Max": 1
+        }
+      },
+      "Actions": [
+      ],
+      "Traits" :  ["Combat Trained"],
+      "Gear" : ["Longsword", "Breastplate"]
+    },
+    {
+      "Class": "Firedancer",
+      "Stats": {
+        "Vitality": {
+          "Value": 13,
+          "Max": 13
+        },
+        "Move": {
+          "Value": 5,
+          "Max": 5
+        },
+        "Stamina": {
+          "Value": 5,
+          "Max": 5
+        },
+        "Profeciency": {
+          "Value": 5,
+          "Max": 5
+        },
+        "Strength": {
+          "Value": 3,
+          "Max": 3
+        },
+        "Mana": {
+          "Value": 0,
+          "Max": 0
+        }
+      },
+      "Actions": [
+        { "Name": "Flameleap" }
+      ],
+      "Traits": [ "Firedance", "Combat Trained" ],
+      "Gear": ["Shortspear", "Light Vest"]
     },
     {
       "Class": "Slimelord",

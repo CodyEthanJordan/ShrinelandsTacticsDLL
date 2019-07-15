@@ -47,18 +47,7 @@ namespace DM_UnitTests.DataDependentTests
 #####
 ";
 
-            string encounterYaml = @"encounter_name: Test
-
-sides:
- - Heros
- - The Foe
-
-characters:
- - name: Zach
-   class: Knight
-   pos: 13 25
-   side: Heros";
-
+           
             var DM = DungeonMaster.CreateFromMap(testMap, data);
             DM.Sides.Add(new Side("Test"));
             DM.currentSideID = DM.Sides[0].ID;
