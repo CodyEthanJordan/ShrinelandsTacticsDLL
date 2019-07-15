@@ -11,10 +11,10 @@ using System.Collections.Generic;
 using ShrinelandsTactics.Mechanics.Effects;
 using Action = ShrinelandsTactics.Mechanics.Action;
 
-namespace DM_UnitTests
+namespace DM_UnitTests.DataDependentTests
 {
     [TestClass]
-    public class AITests
+    public class TraitTests
     {
         private static GameData data = null;
 
@@ -26,20 +26,13 @@ namespace DM_UnitTests
 
       
         [TestMethod]
-        public void ShortestPathTest()
+        public void FragileChaliceTest()
         {
-            string mapString = @"Debug Arena
-8 8
-########
-#..#...#
-#..#...#
-#..#...#
-#......#
-#......#
-#......#
-########
-";
+            var guy = DebugData.GetDebugCharacter();
+            guy.AddTrait("Fragile Chalice", data);
+            Assert.AreEqual(guy.Mana.Max, guy.Mana.Value);
+            guy.TakeDamage(DamageEffect.DamageType.True, 1);
+            Assert.IsTrue(guy.Mana.Value < guy.Mana.Max);
         }
-
     }
 }

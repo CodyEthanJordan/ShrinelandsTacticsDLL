@@ -27,16 +27,14 @@ namespace ShrinelandsTactics.World
 
         [JsonProperty]
         public Dictionary<StatType, Stat> Stats { get; private set; }
+
+
         [JsonProperty]
         public List<Condition> Conditions { get; private set; }
         [JsonProperty]
         public List<Action> Actions { get; private set; }
         public bool HasBeenActivated = false;
         public bool HasActed = false;
-        [JsonProperty]
-        public int ArmorProtection = 0;
-        [JsonProperty]
-        public int ArmorCoverage = 0;
         [JsonProperty]
         public int WeaponAdvantage = 3;
         [JsonProperty]
@@ -58,6 +56,34 @@ namespace ShrinelandsTactics.World
         public Stat Strength { get { return Stats[StatType.Strength]; } }
         [JsonIgnore]
         public Stat Mana { get { return Stats[StatType.Mana]; } }
+        [JsonIgnore]
+        public int ArmorProtection
+        {
+            get
+            {
+                if(HasCondition("Statue"))
+                {
+                    var statue = Conditions.First(c => c.Name == "Statue");
+                    return statue.Value;
+                }
+                //TODO: look for armor
+                return 0;
+            }
+        }
+        [JsonIgnore]
+        public int ArmorCoverage
+        {
+            get
+            {
+                if(HasCondition("Statue"))
+                {
+                    var statue = Conditions.First(c => c.Name == "Statue");
+                    return statue.Value;
+                }
+                //TODO: look for armor
+                return 0;
+            }
+        }
 
         public event DungeonMaster.StatChnagedEventHandler OnStatChanged;
 
@@ -130,6 +156,11 @@ namespace ShrinelandsTactics.World
             //usually won't mean anything
         }
 
+        public void AddTrait(string trait, GameData data)
+        {
+            Traits.Add(trait);
+        }
+
         public Outcome ResolveEffect(DungeonMaster DM, Character user, Position posTarget, Deck deck, Card cardDrawn,
             List<Effect> typicalEffects)
         {
@@ -182,6 +213,11 @@ namespace ShrinelandsTactics.World
         public bool HasTrait(string trait)
         {
             return Traits.Contains(trait);
+        }
+
+        public bool HasCondition(string condition)
+        {
+            return Conditions.Any(c => c.Name == condition);
         }
 
         public void PayCost(Action action)

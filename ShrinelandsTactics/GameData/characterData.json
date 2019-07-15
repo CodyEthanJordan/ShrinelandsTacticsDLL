@@ -134,8 +134,6 @@
       "Actions": [
         { "Name": "Attack" }
       ],
-      "ArmorCoverage": 1,
-      "ArmorProtection":  999,
       "WeaponAdvantage": 2,
       "WeaponDamage": 2,
       "Traits": ["Split"]

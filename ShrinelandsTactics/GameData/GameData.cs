@@ -129,6 +129,13 @@ public class GameData
         }
     }
 
+    public Action GiveAction(string actionName, Character guy)
+    {
+        var action = GetActionByName(actionName);
+        guy.Actions.Add(action);
+        return action;
+    }
+
     private Action GetActionByName(string name)
     {
         var action = Actions.FirstOrDefault(a => a.Name.Equals(name, StringComparison.OrdinalIgnoreCase));

@@ -82,6 +82,7 @@ namespace ShrinelandsTactics.Mechanics.Effects
             Bludgeoning,
             Fire,
             Magic,
+            True,
         }
     }
 }
