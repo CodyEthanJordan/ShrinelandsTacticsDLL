@@ -108,8 +108,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="GameData\ShrineheimMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)..\..\ShrinelandsPrototype1\ShrinelandsPrototype\Assets\Plugins</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)..\..\ShrinelandsPrototype1\ShrinelandsPrototype\Assets\Plugins
+
+copy $(TargetDir)GameData\* $(SolutionDir)..\..\ShrinelandsPrototype1\ShrinelandsPrototype\Assets\GameData\</PostBuildEvent>
   </PropertyGroup>
 </Project>
