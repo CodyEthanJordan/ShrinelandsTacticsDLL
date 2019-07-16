@@ -235,7 +235,7 @@
         { "Name": "Attack" }
       ],
       "Gear" : [ "Pseudopod" ],
-      "Traits": [ "Split", "One with Filth" ]
+      "Traits": [ "Split", "One with Filth", "Mindless", "Oozeglide" ]
     },
     {
       "Class": "Slimelord",

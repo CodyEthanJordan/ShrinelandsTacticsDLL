@@ -114,7 +114,7 @@ namespace ShrinelandsTactics.World
             }
         }
 
-        public void CharacterEntered(DungeonMaster dungeonMaster, Character guy)
+        public void CharacterEntered(DungeonMaster DM, Character guy)
         {
             if(Properties.Contains(TileProperties.OnFire) && !guy.HasTrait("Firedance"))
             {
@@ -132,6 +132,15 @@ namespace ShrinelandsTactics.World
                 guy.TakeDamage(Mechanics.Effects.DamageEffect.DamageType.Magic, 1);
                 guy.Stamina.Value -= 1;
             }
+
+            if(Properties.Contains(TileProperties.Treasure) && !guy.HasTrait("Mindless") && 
+                guy.Stamina.Value > 0)
+            {
+                guy.Stamina.Value -= 1;
+                guy.AddCondition("Treasure", 1);
+                var floor = DM.data.GetTileByName("Floor");
+                DM.map.MakeTile(floor, guy.Pos, DM.data);
+            }
         }
 
         internal void CharacterActivated(DungeonMaster dungeonMaster, Character guy)
@@ -139,6 +148,11 @@ namespace ShrinelandsTactics.World
             if(guy.HasTrait("Gather Power") && Properties.Contains(TileProperties.OnFire))
             {
                 guy.Mana.Regain(1); //TODO: rename gather power?
+            }
+
+            if(guy.HasTrait("Oozeglide") && Properties.Contains(TileProperties.Ooze))
+            {
+                guy.Move.Value += 2; //TODO: magic number
             }
         }
 
@@ -149,9 +163,16 @@ namespace ShrinelandsTactics.World
                 return 1;
             }
 
-            if(guy.HasTrait("One with Filth") && Properties.Contains(TileProperties.Ooze))
+            if(Properties.Contains(TileProperties.Ooze))
             {
-                return 1;
+                if (guy.HasTrait("Oozeglide"))
+                {
+                    return 0;
+                }
+                else if (guy.HasTrait("One with Filth"))
+                {
+                    return 1;
+                }
             }
 
             return MoveCost;

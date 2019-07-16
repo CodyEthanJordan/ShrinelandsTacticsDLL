@@ -42,6 +42,7 @@
       "Passable": true,
       "Color": [ 198, 220, 18 ],
       "Icon": "$",
+      "Description": "Walk over to pick up, cost 1 stamina",
       "Properties": [ "Treasure" ]
     },
     {
@@ -50,6 +51,7 @@
       "Passable": true,
       "Color": [ 12, 12, 12 ],
       "Icon": "&",
+      "Description": "Move cost:2\nTake 1 damage and loose 1 stamina when entering",
       "Properties": [ "Ooze" ]
     }
 
