@@ -169,7 +169,7 @@ namespace ShrinelandsTactics.World
             if (cardDrawn.TypeOfCard == Card.CardType.Armor)
             {
                 //TODO: more elegant method
-                if (Traits.Contains("Split"))
+                if (cardDrawn.Name == "Split")
                 {
                     var emptySpaces = DM.GetEmptyAdjacentSquares(Pos);
                     if(emptySpaces.Count != 0 )
@@ -181,6 +181,14 @@ namespace ShrinelandsTactics.World
                         var cloneCharacter = this.Clone() as Character;
                         cloneCharacter.InitializeIndividual("Copy of " + Name, emptySpace, SideID, DM.GuidsInWaiting.Dequeue());
                         DM.CreateCharacter(cloneCharacter);
+                    }
+                }
+
+                if(cardDrawn.Name == "Burn")
+                {
+                    if(user != null)
+                    {
+                        user.TakeDamage(DamageEffect.DamageType.Fire, 1);
                     }
                 }
 
@@ -201,6 +209,11 @@ namespace ShrinelandsTactics.World
 
         public void TakeDamage(DamageEffect.DamageType typeOfDamage, int amount)
         {
+            if(typeOfDamage == DamageEffect.DamageType.Fire && HasTrait("Born of Flame"))
+            {
+                return;
+            }
+
             Vitality.Value -= amount; //TODO: check for 0?
 
             //TODO: trait system?
@@ -302,6 +315,18 @@ namespace ShrinelandsTactics.World
             var hit = new Card("Hit", Card.CardType.Hit);
             var armor = Card.CreateReplacementCard("Glancing Blow", Card.CardType.Armor, hit);
             deck.AddCards(armor, ArmorCoverage); //armor card causes hit to be redirected to character for resolution?
+
+            if(HasTrait("Split"))
+            {
+                var split = Card.CreateReplacementCard("Split", Card.CardType.Armor, hit);
+                deck.AddCards(split, 1); //TODO: magic number
+            }
+
+            if(HasTrait("Made of Flame"))
+            {
+                var burn = Card.CreateReplacementCard("Burn", Card.CardType.Armor, hit);
+                deck.AddCards(burn, 3); //TODO: magic number
+            }
         }
 
         internal void SetupEvents()

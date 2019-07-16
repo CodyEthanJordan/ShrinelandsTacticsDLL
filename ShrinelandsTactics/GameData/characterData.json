@@ -137,6 +137,40 @@
       "Gear": ["Shortspear", "Light Vest"]
     },
     {
+      "Class": "Living Pyre",
+      "Stats": {
+        "Vitality": {
+          "Value": 20,
+          "Max": 20
+        },
+        "Move": {
+          "Value": 5,
+          "Max": 5
+        },
+        "Stamina": {
+          "Value": 2,
+          "Max": 2
+        },
+        "Profeciency": {
+          "Value": 5,
+          "Max": 5
+        },
+        "Strength": {
+          "Value": 4,
+          "Max": 4
+        },
+        "Mana": {
+          "Value": 1,
+          "Max": 1
+        }
+      },
+      "Actions": [
+        { "Name": "Gather Power" },
+        { "Name": "Create Fire" },
+      ],
+      "Traits": [ "Born of Flame", "Made of Flame", "Weakness to Water", "Creature" ],
+    },
+    {
       "Class": "Slimelord",
       "Stats": {
         "Vitality": {

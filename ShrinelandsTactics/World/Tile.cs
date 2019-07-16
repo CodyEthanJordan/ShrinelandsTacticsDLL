@@ -60,6 +60,7 @@ namespace ShrinelandsTactics.World
             OnFire,
             Liquid,
             DebugProperty,
+            Treasure,
         }
 
         public override bool Equals(object obj)
