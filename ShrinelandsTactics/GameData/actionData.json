@@ -237,7 +237,7 @@
           {
             "TypeOfEffect": "ModifyCondition",
             "Condition": "Slime Armor",
-            "Amount": 5,
+            "Amount": 4,
             "Duration": -1,
             "AffectCaster": true
           },

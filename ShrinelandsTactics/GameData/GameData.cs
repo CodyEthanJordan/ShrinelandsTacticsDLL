@@ -128,6 +128,18 @@ public class GameData
             Action action = GetActionByName(newChar.Actions[i].Name);
             newChar.Actions[i] = action;
         }
+
+        if(newChar.HasTrait("Combat Trained"))
+        {
+            GiveAction("Dodge", newChar);
+            GiveAction("Attack", newChar);
+        }
+
+        //TODO: can always attack
+        if(!newChar.Actions.Any(c => c.Name == "Attack"))
+        {
+            GiveAction("Attack", newChar);
+        }
     }
 
     public Action GiveAction(string actionName, Character guy)

@@ -29,6 +29,10 @@ namespace ShrinelandsTactics.Mechanics.Effects
             Character charTarget, Deck deck, Card cardDrawn, string optionalFeatures = null)
         {
             var outcome = new Outcome();
+            if(posTarget == null)
+            {
+                throw new ArgumentException("Target cannot be null for changing tile");
+            }
             var tile = DM.data.GetTileByName(ReplacingTile);
             DM.map.MakeTile(tile, posTarget, DM.data);
             return outcome;

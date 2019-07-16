@@ -121,8 +121,7 @@ namespace ShrinelandsTactics.Mechanics
                     valid.AddRange(adjacentCharacters);
                     break;
                 case RangeType.Ranged: //TODO: don't require character?
-                    var inRange = DM.Characters.Where(c => c != user &&
-                        c.Pos.Distance(user.Pos) <= this.Range).Select(c => c.Pos);
+                    var inRange = DM.map.tiles.Where(c => c.Key.Distance(user.Pos) <= this.Range).Select(c => c.Key);
                     valid.AddRange(inRange);
                     break;
                 case RangeType.Self:
@@ -138,8 +137,14 @@ namespace ShrinelandsTactics.Mechanics
                 valid.RemoveAll(p => !DM.map.IsPassable(p));
             }
 
+            if(TargetRequirements.Contains(TargetRequirement.Fire))
+            {
+                valid.RemoveAll(p => !DM.map.GetTile(p).Properties.Contains(Tile.TileProperties.OnFire));
+            }
+
             if(TargetRequirements.Contains(TargetRequirement.CharactersOnly))
             {
+                throw new NotImplementedException();
                 //TODO: implement
             }
 

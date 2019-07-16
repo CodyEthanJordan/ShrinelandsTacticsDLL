@@ -36,10 +36,6 @@ namespace ShrinelandsTactics.World
         public bool HasBeenActivated = false;
         public bool HasActed = false;
         [JsonProperty]
-        public int WeaponAdvantage = 3;
-        [JsonProperty]
-        public int WeaponDamage = 3;
-        [JsonProperty]
         public List<string> Traits = new List<string>();
         [JsonProperty]
         public List<string> Gear = new List<string>();
@@ -66,7 +62,22 @@ namespace ShrinelandsTactics.World
                     var statue = Conditions.First(c => c.Name == "Statue");
                     return statue.Value;
                 }
-                //TODO: look for armor
+                else if(HasCondition("Slime Armor"))
+                {
+                    var slimeArmor = Conditions.First(c => c.Name == "Slime Armor");
+                    return slimeArmor.Value;
+                }
+
+                //TODO: use real gear
+                if(Gear.Contains("Breastplate"))
+                {
+                    return 2;
+                }
+                else if(Gear.Contains("Light Vest"))
+                {
+                    return 1;
+                }
+
                 return 0;
             }
         }
@@ -80,7 +91,96 @@ namespace ShrinelandsTactics.World
                     var statue = Conditions.First(c => c.Name == "Statue");
                     return statue.Value;
                 }
-                //TODO: look for armor
+                else if (HasCondition("Slime Armor"))
+                {
+                    var slimeArmor = Conditions.First(c => c.Name == "Slime Armor");
+                    return slimeArmor.Value;
+                }
+
+                if (Gear.Contains("Breastplate"))
+                {
+                    return 2;
+                }
+                else if (Gear.Contains("Light Vest"))
+                {
+                    return 1;
+                }
+
+                return 0;
+            }
+        }
+        [JsonIgnore]
+        public int WeaponAdvantage
+        {
+            get
+            {
+                if (Gear.Contains("Longsword"))
+                {
+                    return 3;
+                }
+                else if (Gear.Contains("Shortsword"))
+                {
+                    return 2;
+                }
+                else if (Gear.Contains("Shortspear"))
+                {
+                    return 3;
+                }
+                else if (Gear.Contains("Engulf"))
+                {
+                    return 1;
+                }
+                else if (Gear.Contains("Cruel Knife"))
+                {
+                    return 1;
+                }
+                else if (Gear.Contains("Pseudopod"))
+                {
+                    return 2;
+                }
+                else if (Gear.Contains("Stinger"))
+                {
+                    return 2;
+                }
+
+                return 0;
+            }
+        }
+
+        [JsonIgnore]
+        public int WeaponDamage
+        {
+            get
+            {
+                if (Gear.Contains("Longsword"))
+                {
+                    return 3;
+                }
+                else if (Gear.Contains("Shortsword"))
+                {
+                    return 3;
+                }
+                else if (Gear.Contains("Shortspear"))
+                {
+                    return 2;
+                }
+                else if (Gear.Contains("Engulf"))
+                {
+                    return 5;
+                }
+                else if (Gear.Contains("Cruel Knife"))
+                {
+                    return 2;
+                }
+                else if (Gear.Contains("Pseudopod"))
+                {
+                    return 2;
+                }
+                else if (Gear.Contains("Stinger"))
+                {
+                    return 2;
+                }
+
                 return 0;
             }
         }
@@ -201,6 +301,16 @@ namespace ShrinelandsTactics.World
                     var reducedDamage = new DamageEffect(damage.TypeOfDamage, x);
                     reducedDamage.Apply(DM, user, posTarget, this, deck, cardDrawn);
                     outcome.Message.AppendLine("Damage reduced to " + x + " by armor");
+                }
+
+                var slimeArmor = Conditions.FirstOrDefault(c => c.Name == "Slime Armor");
+                if(slimeArmor != null)
+                {
+                    slimeArmor.Value -= 1;
+                    if(slimeArmor.Value <= 0)
+                    {
+                        Conditions.Remove(slimeArmor); //TODO: auto remove if goes below 0?
+                    }
                 }
             }
 

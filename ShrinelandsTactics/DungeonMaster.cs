@@ -52,6 +52,7 @@ namespace ShrinelandsTactics
         public event EventHandler<Guid> OnTurnPassed;
         public event CardDrawnEventHandler OnCardDrawn;
         public event StatChnagedEventHandler OnStatChanged;
+        public event EventHandler<Position> OnTileChanged;
 
         public DungeonMaster(GameData data)
         {
@@ -239,6 +240,7 @@ namespace ShrinelandsTactics
         {
             var DM = new DungeonMaster(data);
             DM.map = Map.CreateFromText(level, data);
+            DM.SetupEvents();
             return DM;
         }
 
@@ -285,6 +287,15 @@ namespace ShrinelandsTactics
             {
                 guy.OnStatChanged += StatChanged;
                 guy.SetupEvents();
+            }
+            map.OnTileChanged += TileChanged;
+        }
+
+        private void TileChanged(object sender, Position e)
+        {
+            if(OnTileChanged != null)
+            {
+                OnTileChanged(this, e);
             }
         }
 
@@ -430,7 +441,7 @@ namespace ShrinelandsTactics
             var user = Characters.First(c => c.ID == UserID);
             var ability = user.Actions.First(a => a.Name == abilityName);
             var targetCharacter = Characters.FirstOrDefault(c => c.ID == TargetID);
-            ability.ResolveAction(this, user, null, targetCharacter, "", outcome);
+            ability.ResolveAction(this, user, PosTarget, targetCharacter, "", outcome);
             return outcome;
         }
 

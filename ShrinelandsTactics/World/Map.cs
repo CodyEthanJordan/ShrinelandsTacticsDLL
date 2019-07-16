@@ -19,7 +19,9 @@ namespace ShrinelandsTactics.World
         [JsonProperty]
         public readonly int Height;
         [JsonProperty]
-        private Dictionary<Position,Tile> tiles = new Dictionary<Position, Tile>();
+        public Dictionary<Position,Tile> tiles = new Dictionary<Position, Tile>();
+
+        public event EventHandler<Position> OnTileChanged;
 
         public Map(string name, int width, int height)
         {
@@ -40,6 +42,12 @@ namespace ShrinelandsTactics.World
         public void MakeTile(Tile replacingTile, Position posTarget, GameData data)
         {
             var current = GetTile(posTarget);
+
+            if(OnTileChanged != null)
+            {
+                OnTileChanged(this, posTarget);
+            }
+
             if(current.Name == "Shallow Pool" && replacingTile.Name == "Fire" ||
                 replacingTile.Name == "Shallow Pool" && current.Name == "Fire") //TODO: make more elegant
             {

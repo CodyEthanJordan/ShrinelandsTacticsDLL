@@ -234,8 +234,7 @@
       "Actions": [
         { "Name": "Attack" }
       ],
-      "WeaponAdvantage": 2,
-      "WeaponDamage": 2,
+      "Gear" : [ "Pseudopod" ],
       "Traits": ["Split"]
     },
     {
@@ -308,8 +307,6 @@
       "Actions": [
         { "Name": "Attack" }
       ],
-      "WeaponAdvantage": 2,
-      "WeaponDamage": 2,
       "Traits": [ "Thirst for Magic", "Mindless", "Flying", "Creature", "Natural Armor" ],
       "Gear": [ "Stinger"]
     }
