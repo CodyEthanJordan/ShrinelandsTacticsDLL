@@ -103,20 +103,22 @@
         "Hit": [
           {
             "TypeOfEffect": "RegainStat",
-            "Condition": "Vitality",
+            "StatAffected": "Vitality",
             "Amount": 1
           },
           {
             "TypeOfEffect": "RegainStat",
-            "Condition": "Stamina",
+            "StatAffected": "Stamina",
             "Amount": 3
           }
         ]
       },
       "Range": 7,
       "TypeOfRange": "Ranged",
-      "TypeOfAction": "Major",
-      "Tags": ["Uncontested"]
+      "TypeOfAction": "Minor",
+      "Repeatable": true,
+      "Tags": [ "Uncontested" ],
+      "TargetingRequirements":  ["CharactersOnly"]
     },
     {
       "Name": "Drain Vitality",
@@ -239,7 +241,7 @@
           {
             "TypeOfEffect": "ModifyCondition",
             "Condition": "Slime Armor",
-            "Amount": 4,
+            "Amount": 2,
             "Duration": -1,
             "AffectCaster": true
           },

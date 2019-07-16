@@ -7,41 +7,50 @@ sides:
  - The Foe
 
 characters:
- - name: Moelinda
-   class: Chalice Bearer
-   pos: 4 25
-   side: Heros
-   gear: Teleportal Scroll
- - name: Zach
-   class: Knight
-   pos: 4 26
-   side: Heros
- - name: Charlie
-   class: Grandmaster
-   pos: 4 24
-   side: Heros
- - name: Cody
-   class: Firedancer
-   pos: 5 25
-   side: Heros
  - name: JJ
    class: Living Pyre
    pos: 5 24
    side: Heros
-   gear: Healing Potion
- - name: Dan
-   class: Goblin
-   pos: 5 26
+   gear: Teleportal Scroll
+ - name: Cody1
+   class: Firedancer
+   pos: 4 24
    side: Heros
- - name: Koda
-   class: Slime
-   pos: 3 24
+   gear: Teleportal Scroll
+ - name: Cody2
+   class: Firedancer
+   pos: 5 25
    side: Heros
+   gear: Teleportal Scroll
+ - name: Moelinda
+   class: Chalice Bearer
+   pos: 27 6
+   side: The Foe
  - name: Robby
    class: Slimelord
-   pos: 3 25
-   side: Heros
+   pos: 26 7
+   side: The Foe
  - name: Gilbert
    class: Brain Wasp
-   pos: 3 26
+   pos: 27 7
+   side: The Foe
+ - name: Koda1
+   class: Slime
+   pos: 26 6
+   side: The Foe
+ - name: Koda2
+   class: Slime
+   pos: 26 5
+   side: The Foe
+ - name: Koda3
+   class: Slime
+   pos: 27 5
+   side: The Foe
+ - name: Koda4
+   class: Slime
+   pos: 28 5
+   side: The Foe
+ - name: Koda5
+   class: Slime
+   pos: 28 6
    side: The Foe

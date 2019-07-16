@@ -137,6 +137,7 @@ public class GameData
         {
             GiveAction("Dodge", newChar);
             GiveAction("Attack", newChar);
+            GiveAction("Exert", newChar);
         }
 
         //TODO: can always attack

@@ -467,8 +467,8 @@ namespace ShrinelandsTactics
                         targetOn.AddSituationalModifiers(deck, action, user, posTarget, charTarget, true);
 
                         //cramped fighting
-                        var occupiedSquares = GetEmptyAdjacentSquares(user.Pos).Count;
-                        if(occupiedSquares >= 4 && !user.Gear.Contains("Cruel Knife") )
+                        var freeSquares = GetEmptyAdjacentSquares(user.Pos).Count;
+                        if(freeSquares < 4 && !user.Gear.Contains("Cruel Knife") )
                         {
                             //TODO: better gear system
                             var cramped = new Card("Cramped", Card.CardType.Miss);
