@@ -249,6 +249,11 @@ namespace ShrinelandsTactics.World
                 condition.StartingActivation();
             }
             Conditions.RemoveAll(c => c.Duration == 0);
+
+            foreach (var action in Actions)
+            {
+                action.StartingActivation();
+            }
         }
 
         public void EndActivation()

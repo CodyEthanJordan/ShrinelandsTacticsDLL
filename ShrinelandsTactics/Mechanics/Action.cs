@@ -68,6 +68,11 @@ namespace ShrinelandsTactics.Mechanics
                 return false; //already taken major action
             }
 
+            if(!Repeatable && timesUsed > 0)
+            {
+                return false;
+            }
+
             user.PayCost(this);
 
             //TODO: have DM do check
@@ -160,7 +165,7 @@ namespace ShrinelandsTactics.Mechanics
                 return;
             }
 
-            timesUsed++; //TODO: check for no re-use
+            timesUsed++; 
 
             outcome.ActionTaken = this.Name;
             outcome.UserID = user.ID;
@@ -236,6 +241,11 @@ namespace ShrinelandsTactics.Mechanics
                     break;
             }
             throw new NotImplementedException();
+        }
+
+        public void StartingActivation()
+        {
+            timesUsed = 0;
         }
 
         public Deck GetDeckFor(DungeonMaster DM, Character user, Position posTarget,

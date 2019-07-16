@@ -24,7 +24,8 @@
       "Effects": {
         "Hit": [
           {
-            "TypeOfEffect": "Move"
+            "TypeOfEffect": "Move",
+            "AffectCaster":  "True"
           }
         ]
       },

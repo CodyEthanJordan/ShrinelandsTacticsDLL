@@ -15,7 +15,11 @@ namespace ShrinelandsTactics.Mechanics.Effects
         public override Outcome Apply(DungeonMaster DM, Character user, Position posTarget, 
             Character charTarget, Deck deck, Card cardDrawn, string optionalFeatures = null)
         {
-            throw new NotImplementedException();
+            var outcome = new Outcome();
+            var affected = AffectCaster ? user: charTarget;
+            outcome.Message.Append(affected.Name + " teleporting to " + posTarget);
+            DM.TeleportTo(affected, posTarget);
+            return outcome;
         }
     }
 }

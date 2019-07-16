@@ -21,6 +21,8 @@ namespace ShrinelandsTactics
         public List<Side> Sides = new List<Side>();
         [JsonProperty]
         public List<Character> Characters = new List<Character>();
+
+
         [JsonProperty]
         public int TurnCount = 0;
         [JsonIgnore]
@@ -174,6 +176,18 @@ namespace ShrinelandsTactics
             {
                 Deck.SetFate(outcome.CardsDrawn.Select(c => c.Name)); //TODO: terrible hack
                 UseAbility(outcome.ActionTaken, outcome.UserID, outcome.TargetID, outcome.PosTarget);
+            }
+        }
+
+        public void TeleportTo(Character guy, Position posTarget)
+        {
+            var oldPos = guy.Pos;
+            guy.Pos = posTarget;
+            var steppedOn = map.GetTile(posTarget);
+            steppedOn.CharacterEntered(this, guy); //TODO: better?
+            if(OnCharacterMoved != null) //TODO: make this an event from Character like stats
+            {
+                OnCharacterMoved(this, new CharacterMovedEventArgs(guy.Name, guy.ID, oldPos, posTarget));
             }
         }
 
