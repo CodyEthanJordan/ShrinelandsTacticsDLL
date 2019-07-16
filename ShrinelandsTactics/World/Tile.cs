@@ -24,6 +24,8 @@ namespace ShrinelandsTactics.World
         public List<byte> Color = new List<byte>();
         [JsonProperty]
         public readonly List<TileProperties> Properties = new List<TileProperties>();
+        [JsonProperty]
+        public string Description;
 
         //TODO: add OnEnter and OnExit methods, as well as OnTurn
         public Tile()
@@ -153,6 +155,14 @@ namespace ShrinelandsTactics.World
             }
 
             return MoveCost;
+        }
+
+        public void CharacterDeactivated(Character guy)
+        {
+            if(Properties.Contains(TileProperties.OnFire))
+            {
+                guy.TakeDamage(Mechanics.Effects.DamageEffect.DamageType.Fire, 3); //TODO: magic number
+            }
         }
     }
 }

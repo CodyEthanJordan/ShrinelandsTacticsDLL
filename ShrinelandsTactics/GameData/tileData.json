@@ -6,6 +6,7 @@
       "Passable": false,
       "Color": [0, 0, 0],
       "Icon": "#",
+      "Description": "Impassible wall",
       "Properties": []
     },
     {
@@ -14,6 +15,7 @@
       "Passable": true,
       "Color": [255, 255, 255],
       "Icon": ".",
+      "Description": "Open area",
       "Properties": []
     },
     {
@@ -22,6 +24,7 @@
       "Passable": true,
       "Icon": "~",
       "Color": [ 79, 82, 104 ],
+      "Description": "Move cost: 2\nA pool of water",
       "Properties": []
     },
     {
@@ -30,6 +33,7 @@
       "Passable": true,
       "Color": [242, 97, 44],
       "Icon": "*",
+      "Description": "Take 1 fire damage when entering and 3 if ending activation in fire",
       "Properties": [ "OnFire" ]
     },
     {

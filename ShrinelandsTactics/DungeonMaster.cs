@@ -406,6 +406,10 @@ namespace ShrinelandsTactics
             }
 
             guy.EndActivation(); //TODO: add to outcome?
+
+            var deactivatedOn = map.GetTile(guy.Pos);
+            deactivatedOn.CharacterDeactivated(guy);
+
             activatedCharacterID = Guid.Empty;
             return outcome;
         }
