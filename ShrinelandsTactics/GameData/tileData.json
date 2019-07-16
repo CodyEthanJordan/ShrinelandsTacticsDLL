@@ -39,8 +39,15 @@
       "Color": [ 198, 220, 18 ],
       "Icon": "$",
       "Properties": [ "Treasure" ]
+    },
+    {
+      "Name": "Ooze",
+      "MoveCost": 2,
+      "Passable": true,
+      "Color": [ 12, 12, 12 ],
+      "Icon": "&",
+      "Properties": [ "Ooze" ]
     }
-   
 
   ]
 }

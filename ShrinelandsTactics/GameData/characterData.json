@@ -165,29 +165,29 @@
         }
       },
       "Actions": [
-        { "Name": "Gather Power" },
-        { "Name": "Create Fire" },
+        { "Name": "Create Fire" }
       ],
-      "Traits": [ "Born of Flame", "Made of Flame", "Weakness to Water", "Creature" ],
+      "Traits": [ "Born of Flame", "Made of Flame", "Weakness to Water", "Creature", "Gather Power" ],
+      "Gear": ["Engulf"]
     },
     {
-      "Class": "Slimelord",
+      "Class": "Goblin",
       "Stats": {
         "Vitality": {
-          "Value": 15,
-          "Max": 15
+          "Value": 10,
+          "Max": 10
         },
         "Move": {
           "Value": 5,
           "Max": 5
         },
         "Stamina": {
-          "Value": 3,
-          "Max": 3
-        },
-        "Profeciency": {
           "Value": 2,
           "Max": 2
+        },
+        "Profeciency": {
+          "Value": 4,
+          "Max": 4
         },
         "Strength": {
           "Value": 2,
@@ -195,15 +195,13 @@
         },
         "Mana": {
           "Value": 0,
-          "Max": 3
+          "Max": 0
         }
       },
       "Actions": [
-        { "Name": "Attack" },
-        { "Name": "Dodge" },
-        { "Name": "Drain Vitality" },
-        { "Name": "Empower Ally"}
-      ]
+      ],
+      "Traits": [ "Swarm Tactics", "Combat Trained" ],
+      "Gear": ["Cruel Knife", "Light Vest"]
     },
     {
       "Class": "Slime",
@@ -239,6 +237,81 @@
       "WeaponAdvantage": 2,
       "WeaponDamage": 2,
       "Traits": ["Split"]
+    },
+    {
+      "Class": "Slimelord",
+      "Stats": {
+        "Vitality": {
+          "Value": 15,
+          "Max": 15
+        },
+        "Move": {
+          "Value": 5,
+          "Max": 5
+        },
+        "Stamina": {
+          "Value": 3,
+          "Max": 3
+        },
+        "Profeciency": {
+          "Value": 2,
+          "Max": 2
+        },
+        "Strength": {
+          "Value": 2,
+          "Max": 2
+        },
+        "Mana": {
+          "Value": 0,
+          "Max": 3
+        }
+      },
+      "Actions": [
+        { "Name": "Attack" },
+        { "Name": "Dodge" },
+        { "Name": "Drain Vitality" },
+        { "Name": "Empower Ally" },
+        { "Name": "Spreading Ooze" },
+        { "Name": "Armored by Slime" }
+      ],
+      "Traits": [ "One with Filth" ],
+      "Gear": ["Cruel Knife"]
+    },
+    {
+      "Class": "Brain Wasp",
+      "Stats": {
+        "Vitality": {
+          "Value": 8,
+          "Max": 8
+        },
+        "Move": {
+          "Value": 7,
+          "Max": 7
+        },
+        "Stamina": {
+          "Value": 4,
+          "Max": 4
+        },
+        "Profeciency": {
+          "Value": 3,
+          "Max": 3
+        },
+        "Strength": {
+          "Value": 2,
+          "Max": 2
+        },
+        "Mana": {
+          "Value": 0,
+          "Max": 0
+        }
+      },
+      "Actions": [
+        { "Name": "Attack" }
+      ],
+      "WeaponAdvantage": 2,
+      "WeaponDamage": 2,
+      "Traits": [ "Thirst for Magic", "Mindless", "Flying", "Creature", "Natural Armor" ],
+      "Gear": [ "Stinger"]
     }
   ]
 }

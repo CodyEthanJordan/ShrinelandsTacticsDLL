@@ -11,3 +11,35 @@ characters:
    class: Chalice Bearer
    pos: 4 25
    side: Heros
+ - name: Zach
+   class: Knight
+   pos: 4 26
+   side: Heros
+ - name: Charlie
+   class: Grandmaster
+   pos: 4 24
+   side: Heros
+ - name: Cody
+   class: Firedancer
+   pos: 5 25
+   side: Heros
+ - name: JJ
+   class: Living Pyre
+   pos: 5 24
+   side: Heros
+ - name: Dan
+   class: Goblin
+   pos: 5 26
+   side: Heros
+ - name: Koda
+   class: Slime
+   pos: 3 24
+   side: Heros
+ - name: Robby
+   class: Slimelord
+   pos: 3 25
+   side: Heros
+ - name: Gilbert
+   class: Brain Wasp
+   pos: 3 26
+   side: The Foe

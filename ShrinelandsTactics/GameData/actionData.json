@@ -1,6 +1,59 @@
 {
   "actionData": [
     {
+      "Name": "Spreading Oze",
+      "Cost": { "Stamina": 1 },
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "ChangeTile",
+            "ReplacingTile": "Ooze"
+          }
+        ]
+      },
+      "TypeOfAction": "Minor",
+      "Repeatable": true,
+      "TypeOfRange":  "Ranged",
+      "Range": 7,
+      "Tags": [ "Uncontested" ],
+      "TargetRequirements" :  [ "Open", "AdjacentToOoze" ]
+    },
+    {
+      "Name": "Flameleap",
+      "Cost": { "Stamina": 1 },
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "Move"
+          }
+        ]
+      },
+      "TypeOfAction": "Minor",
+      "Repeatable": true,
+      "TypeOfRange":  "Ranged",
+      "Range": 7,
+      "Tags": [ "Uncontested" ],
+      "TargetRequirements" :  [ "Open", "Fire" ]
+    },
+    {
+      "Name": "Create Fire",
+      "Cost": { "Mana": 1 },
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "ChangeTile",
+            "ReplacingTile": "Fire"
+          }
+        ]
+      },
+      "TypeOfAction": "Major",
+      "Repeatable": false,
+      "TypeOfRange":  "Ranged",
+      "Range": 7,
+      "Tags": [ "Uncontested" ],
+      "TargetRequirements" :  ["Open"]
+    },
+    {
       "Name": "Pour Out",
       "Cost": { "Mana": 1 },
       "Effects": {
@@ -175,6 +228,28 @@
       "Repeatable": false,
       "Tags": [ "Attack" ],
       "Name": "Attack"
+    },
+    {
+      "Name": "Armored by Slime",
+      "Cost": { "Mana": 2 },
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "ModifyCondition",
+            "Condition": "Slime Armor",
+            "Amount": 5,
+            "Duration": -1,
+            "AffectCaster": true
+          },
+          {
+            "TypeOfEffect": "ChangeTile",
+            "ReplacingTile": "Ooze"
+          }
+        ]
+      },
+      "TypeOfAction": "Major",
+      "TypeOfRange":  "Self",
+      "Tags": [ "Uncontested" ]
     },
     {
       "Name": "Dodge",

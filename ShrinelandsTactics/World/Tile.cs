@@ -61,6 +61,7 @@ namespace ShrinelandsTactics.World
             Liquid,
             DebugProperty,
             Treasure,
+            Ooze,
         }
 
         public override bool Equals(object obj)
@@ -116,6 +117,12 @@ namespace ShrinelandsTactics.World
             if(Properties.Contains(TileProperties.OnFire) && !guy.HasTrait("Firedance"))
             {
                 guy.TakeDamage(Mechanics.Effects.DamageEffect.DamageType.Fire, 1);
+            }
+
+            //TODO: use properties?
+            if(Name == "Shallow Pool" && guy.HasTrait("Weakness to Water"))
+            {
+                guy.TakeDamage(Mechanics.Effects.DamageEffect.DamageType.True, 5); //TODO: magic number
             }
         }
     }

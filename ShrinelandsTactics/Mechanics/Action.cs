@@ -286,6 +286,8 @@ namespace ShrinelandsTactics.Mechanics
         {
             Open,
             CharactersOnly,
+            Fire,
+            AdjacentToOoze,
         }
 
         public enum ActionType
