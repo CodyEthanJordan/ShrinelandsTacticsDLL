@@ -62,6 +62,15 @@
       "Icon": "%",
       "Description": "Appear at corresponding portal",
       "Properties": [ "Teleportal" ]
+    },
+    {
+      "Name": "Entrance",
+      "MoveCost": 1,
+      "Passable": true,
+      "Color": [ 0, 255, 0 ],
+      "Icon": "@",
+      "Description": "Return treasure to score",
+      "Properties": [ "" ]
     }
 
   ]

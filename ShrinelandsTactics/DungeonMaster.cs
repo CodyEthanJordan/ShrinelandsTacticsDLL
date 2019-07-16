@@ -51,7 +51,9 @@ namespace ShrinelandsTactics
         }
 
         public event CharacterMovedEventHandler OnCharacterMoved;
+        public event EventHandler<Guid> OnPointScored;
         public event EventHandler<Character> OnCharacterCreated;
+        public event EventHandler<Character> OnCharacterDied;
         public event EventHandler<Guid> OnTurnPassed;
         public event CardDrawnEventHandler OnCardDrawn;
         public event StatChnagedEventHandler OnStatChanged;
@@ -60,6 +62,16 @@ namespace ShrinelandsTactics
         public DungeonMaster(GameData data)
         {
             this.data = data;
+        }
+
+        public void ScorePoint(Guid sideID, int amount)
+        {
+            var side = Sides.First(s => s.ID == sideID);
+            side.Score += amount;
+            if(OnPointScored != null)
+            {
+                OnPointScored(this, sideID);
+            }
         }
 
         public string VisualizeWorld()
@@ -311,9 +323,21 @@ namespace ShrinelandsTactics
             foreach (var guy in Characters)
             {
                 guy.OnStatChanged += StatChanged;
+                guy.OnDeath += CharacterDied;
                 guy.SetupEvents();
             }
             map.OnTileChanged += TileChanged;
+        }
+
+        private void CharacterDied(object sender, Character e)
+        {
+            e.OnStatChanged -= StatChanged;
+            e.OnDeath -= CharacterDied;
+            Characters.Remove(e);
+            if(OnCharacterDied != null)
+            {
+                OnCharacterDied(this, e);
+            }
         }
 
         private void TileChanged(object sender, Position e)
@@ -441,6 +465,15 @@ namespace ShrinelandsTactics
                         userOn.AddSituationalModifiers(deck, action, user, posTarget, charTarget, false);
                         var targetOn = map.GetTile(charTarget.Pos);
                         targetOn.AddSituationalModifiers(deck, action, user, posTarget, charTarget, true);
+
+                        //cramped fighting
+                        var occupiedSquares = GetEmptyAdjacentSquares(user.Pos).Count;
+                        if(occupiedSquares >= 4 && !user.Gear.Contains("Cruel Knife") )
+                        {
+                            //TODO: better gear system
+                            var cramped = new Card("Cramped", Card.CardType.Miss);
+                            deck.AddCards(cramped, 1);
+                        }
                         break;
                     default:
                         break;

@@ -109,6 +109,12 @@ namespace ShrinelandsTactics.World
 
         public void CharacterEntered(DungeonMaster DM, Character guy)
         {
+            if(Name == "Entrance" && guy.HasCondition("Treasure"))
+            {
+                guy.ReduceCondition("Treasure", 1);
+                DM.ScorePoint(guy.SideID, 1);
+            }
+
             if(Properties.Contains(TileProperties.Teleportal) && Target != null)
             {
                 if(guy.HasCondition("Teleported"))
@@ -146,7 +152,7 @@ namespace ShrinelandsTactics.World
             }
 
             if(Properties.Contains(TileProperties.Treasure) && !guy.HasTrait("Mindless") && 
-                guy.Stamina.Value > 0)
+                guy.Stamina.Value > 0 && !guy.HasCondition("Treasure"))
             {
                 guy.Stamina.Value -= 1;
                 guy.AddCondition("Treasure", 1);

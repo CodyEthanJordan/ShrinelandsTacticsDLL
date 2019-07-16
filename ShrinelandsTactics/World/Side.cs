@@ -15,6 +15,8 @@ namespace ShrinelandsTactics.World
         public Guid ID { get; private set; }
         [JsonProperty]
         public string Name { get; private set; }
+        [JsonProperty]
+        public int Score = 0;
 
         private Side()
         {

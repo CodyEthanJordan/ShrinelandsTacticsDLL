@@ -186,6 +186,7 @@ namespace ShrinelandsTactics.World
         }
 
         public event DungeonMaster.StatChnagedEventHandler OnStatChanged;
+        public event EventHandler<Character> OnDeath;
 
         public bool Incapacitated
         {
@@ -326,7 +327,6 @@ namespace ShrinelandsTactics.World
         {
             Gear.Add(gear);
             Equip(gear, data);
-            
         }
 
         public void Equip(string gear, GameData data)
@@ -334,6 +334,10 @@ namespace ShrinelandsTactics.World
             if(gear == "Teleportal Scroll")
             {
                 data.GiveAction("Teleportal", this);
+            }
+            else if(gear == "Healing Potion")
+            {
+                data.GiveAction("Healing Potion", this);
             }
         }
 
@@ -350,6 +354,14 @@ namespace ShrinelandsTactics.World
             if(HasTrait("Fragile Chalice"))
             {
                 Mana.Value -= 1;
+            }
+
+            if(Vitality.Value <= 0)
+            {
+                if(OnDeath != null)
+                {
+                    OnDeath(this, this);
+                }
             }
         }
 

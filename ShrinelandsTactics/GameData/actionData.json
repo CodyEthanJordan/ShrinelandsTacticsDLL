@@ -332,5 +332,25 @@
       "UsesRemaining": 1,
       "TargetRequirements": [ "Open", "Unoccupied" ]
     },
+    {
+      "Name": "Healing Potion",
+      "Cost": {},
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "RegainStat",
+            "StatAffected": "Vitality",
+            "Amount": 5,
+            "AffectCaster": true
+
+          }
+        ]
+      },
+      "TypeOfAction": "Minor",
+      "Repeatable": false,
+      "TypeOfRange": "Self",
+      "Tags": [ "Uncontested" ],
+      "UsesRemaining": 1
+    },
     ]
 }

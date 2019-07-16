@@ -28,6 +28,7 @@ characters:
    class: Living Pyre
    pos: 5 24
    side: Heros
+   gear: Healing Potion
  - name: Dan
    class: Goblin
    pos: 5 26
