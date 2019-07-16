@@ -69,8 +69,7 @@
       "Passable": true,
       "Color": [ 0, 255, 0 ],
       "Icon": "@",
-      "Description": "Return treasure to score",
-      "Properties": [ "" ]
+      "Description": "Return treasure to score"
     }
 
   ]

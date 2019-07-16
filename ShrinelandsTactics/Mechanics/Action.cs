@@ -221,9 +221,10 @@ namespace ShrinelandsTactics.Mechanics
             Deck deck = GetDeckFor(DM, user, posTarget, charTarget);
             outcome.Message.AppendLine(deck.ToString());
 
+            var originalDeck = deck.Clone() as Deck;
             //draw card
             //special drawing rules?
-            deck.OnCardDrawn += DM.CardDrawn;
+            //deck.OnCardDrawn += DM.CardDrawn;
             Card card = deck.Draw();
             outcome.Message.AppendLine("Drawn:" + card.ToString());
 
@@ -247,6 +248,7 @@ namespace ShrinelandsTactics.Mechanics
             }
 
             outcome.CardsDrawn.AddRange(Deck.DrawnCards);
+            DM.CardDrawn(this, new BasicStructures.Events.CardDrawnEventArgs(originalDeck, Deck.DrawnCards));
 
             return;
         }

@@ -40,9 +40,10 @@ namespace ShrinelandsTactics.BasicStructures
             Card card = Cards[i];
             Cards.RemoveAt(i);
             DrawnCards.Add(card);
+            var cardsDrawn = new List<Card>() { card };
             if(OnCardDrawn != null)
             {
-                OnCardDrawn(this, new Events.CardDrawnEventArgs(originalDeck, card));
+                OnCardDrawn(this, new Events.CardDrawnEventArgs(originalDeck, cardsDrawn));
             }
             return card;
         }
