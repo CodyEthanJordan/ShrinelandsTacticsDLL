@@ -36,6 +36,10 @@ public class GameData
         var data = new GameData();
 
         var j = JObject.Parse(tileJson);
+        if(j == null)
+        {
+            throw new ArgumentException("Bad input");
+        }
         foreach (var tileDataEntry in j["tileData"])
         {
             Tile t = tileDataEntry.ToObject<Tile>();

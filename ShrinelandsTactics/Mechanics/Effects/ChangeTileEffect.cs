@@ -35,6 +35,14 @@ namespace ShrinelandsTactics.Mechanics.Effects
             }
             var tile = DM.data.GetTileByName(ReplacingTile);
             DM.map.MakeTile(tile, posTarget, DM.data);
+
+            var charStanding = DM.Characters.FirstOrDefault(c => c.Pos == posTarget);
+            if(charStanding != null)
+            {
+                var newTile = DM.map.GetTile(posTarget);
+                newTile.CharacterEntered(DM, charStanding);
+            }
+
             return outcome;
         }
     }

@@ -125,5 +125,13 @@ namespace ShrinelandsTactics.World
                 guy.TakeDamage(Mechanics.Effects.DamageEffect.DamageType.True, 5); //TODO: magic number
             }
         }
+
+        internal void CharacterActivated(DungeonMaster dungeonMaster, Character guy)
+        {
+            if(guy.HasTrait("Gather Power") && Properties.Contains(TileProperties.OnFire))
+            {
+                guy.Mana.Regain(1); //TODO: rename gather power?
+            }
+        }
     }
 }

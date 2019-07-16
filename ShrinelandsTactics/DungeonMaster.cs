@@ -363,6 +363,8 @@ namespace ShrinelandsTactics
             }
 
             guy.Activate();
+            var tile = map.GetTile(guy.Pos);
+            tile.CharacterActivated(this, guy);
             activatedCharacterID = guy.ID;
             outcome.Message.AppendLine("Starting activation for " + guy.Name);
             return outcome;

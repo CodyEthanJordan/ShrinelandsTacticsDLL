@@ -1,7 +1,7 @@
 {
   "actionData": [
     {
-      "Name": "Spreading Oze",
+      "Name": "Spreading Ooze",
       "Cost": { "Stamina": 1 },
       "Effects": {
         "Hit": [
