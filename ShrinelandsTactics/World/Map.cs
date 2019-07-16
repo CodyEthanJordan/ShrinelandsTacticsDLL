@@ -39,10 +39,11 @@ namespace ShrinelandsTactics.World
             }
         }
 
-        public void MakeTile(Tile replacingTile, Position posTarget, GameData data)
+        public void MakeTile(DungeonMaster DM, Tile replacingTile, Position posTarget, GameData data)
         {
             var current = GetTile(posTarget);
 
+            current.OnDestroy(DM);
 
             if(current.Name == "Shallow Pool" && replacingTile.Name == "Fire" ||
                 replacingTile.Name == "Shallow Pool" && current.Name == "Fire") //TODO: make more elegant

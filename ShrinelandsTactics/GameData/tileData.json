@@ -49,10 +49,19 @@
       "Name": "Ooze",
       "MoveCost": 2,
       "Passable": true,
-      "Color": [ 12, 12, 12 ],
+      "Color": [ 102, 197, 46 ],
       "Icon": "&",
       "Description": "Move cost:2\nTake 1 damage and loose 1 stamina when entering",
       "Properties": [ "Ooze" ]
+    },
+    {
+      "Name": "Teleportal",
+      "MoveCost": 1,
+      "Passable": true,
+      "Color": [ 208, 28, 209 ],
+      "Icon": "%",
+      "Description": "Appear at corresponding portal",
+      "Properties": [ "Teleportal" ]
     }
 
   ]

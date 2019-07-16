@@ -27,7 +27,7 @@ public class GameData
 
     public Tile GetTileByName(string name)
     {
-        return Tiles.Values.First(t => t.Name == name);
+        return Tiles.Values.First(t => t.Name == name).Clone() as Tile;
     }
 
     public static GameData CreateFromJson(string tileJson, string characterJson,

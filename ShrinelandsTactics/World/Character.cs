@@ -322,6 +322,21 @@ namespace ShrinelandsTactics.World
             return outcome;
         }
 
+        public void AddGear(string gear, GameData data)
+        {
+            Gear.Add(gear);
+            Equip(gear, data);
+            
+        }
+
+        public void Equip(string gear, GameData data)
+        {
+            if(gear == "Teleportal Scroll")
+            {
+                data.GiveAction("Teleportal", this);
+            }
+        }
+
         public void TakeDamage(DamageEffect.DamageType typeOfDamage, int amount)
         {
             if(typeOfDamage == DamageEffect.DamageType.Fire && HasTrait("Born of Flame"))

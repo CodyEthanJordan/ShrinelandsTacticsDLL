@@ -25,13 +25,9 @@ namespace ShrinelandsTactics.World
         [JsonProperty]
         public readonly List<TileProperties> Properties = new List<TileProperties>();
         [JsonProperty]
+        public Position Target = null;
+        [JsonProperty]
         public string Description;
-
-        //TODO: add OnEnter and OnExit methods, as well as OnTurn
-        public Tile()
-        {
-
-        }
 
         public Tile(string Name, bool Passable, int MoveCost, char Icon, List<TileProperties> Properties)
         {
@@ -55,15 +51,6 @@ namespace ShrinelandsTactics.World
         public override string ToString()
         {
             return Icon.ToString();
-        }
-
-        public enum TileProperties
-        {
-            OnFire,
-            Liquid,
-            DebugProperty,
-            Treasure,
-            Ooze,
         }
 
         public override bool Equals(object obj)
@@ -114,8 +101,33 @@ namespace ShrinelandsTactics.World
             }
         }
 
+        public void OnDestroy(DungeonMaster DM)
+        {
+            //TODO: remove teleportal
+
+        }
+
         public void CharacterEntered(DungeonMaster DM, Character guy)
         {
+            if(Properties.Contains(TileProperties.Teleportal) && Target != null)
+            {
+                if(guy.HasCondition("Teleported"))
+                {
+                    guy.ReduceCondition("Teleported", 1);
+                }
+                else
+                {
+                    guy.AddCondition("Teleported", 1);
+                    //telefrag nerds
+                    var nerd = DM.Characters.FirstOrDefault(c => c.Pos == Target);
+                    if(nerd != null)
+                    {
+                        nerd.TakeDamage(Mechanics.Effects.DamageEffect.DamageType.True, 999);
+                    }
+                    DM.TeleportTo(guy, Target);
+                }
+            }
+
             if(Properties.Contains(TileProperties.OnFire) && !guy.HasTrait("Firedance"))
             {
                 guy.TakeDamage(Mechanics.Effects.DamageEffect.DamageType.Fire, 1);
@@ -139,7 +151,7 @@ namespace ShrinelandsTactics.World
                 guy.Stamina.Value -= 1;
                 guy.AddCondition("Treasure", 1);
                 var floor = DM.data.GetTileByName("Floor");
-                DM.map.MakeTile(floor, guy.Pos, DM.data);
+                DM.map.MakeTile(DM, floor, guy.Pos, DM.data);
             }
         }
 
@@ -184,6 +196,16 @@ namespace ShrinelandsTactics.World
             {
                 guy.TakeDamage(Mechanics.Effects.DamageEffect.DamageType.Fire, 3); //TODO: magic number
             }
+        }
+
+        public enum TileProperties
+        {
+            OnFire,
+            Liquid,
+            DebugProperty,
+            Treasure,
+            Ooze,
+            Teleportal
         }
     }
 }

@@ -14,7 +14,7 @@
       "TypeOfAction": "Minor",
       "Repeatable": true,
       "TypeOfRange":  "Ranged",
-      "Range": 7,
+      "Range": 999,
       "Tags": [ "Uncontested" ],
       "TargetRequirements" :  [ "Open", "AdjacentToOoze" ]
     },
@@ -25,16 +25,17 @@
         "Hit": [
           {
             "TypeOfEffect": "Move",
-            "AffectCaster":  "True"
+            "AffectCaster": "True"
           }
         ]
       },
       "TypeOfAction": "Minor",
       "Repeatable": true,
-      "TypeOfRange":  "Ranged",
+      "TypeOfRange": "Ranged",
       "Range": 7,
       "Tags": [ "Uncontested" ],
-      "TargetRequirements" :  [ "Open", "Fire", "Unoccupied" ]
+      "CastingRequirements": [ "OnFire" ],
+      "TargetRequirements": [ "Open", "Fire", "Unoccupied" ]
     },
     {
       "Name": "Create Fire",
@@ -312,6 +313,24 @@
       "TypeOfAction": "Minor",
       "Repeatable": true,
       "Tags": ["Uncontested"]
-    }
+    },
+    {
+      "Name": "Teleportal",
+      "Cost": {},
+      "Effects": {
+        "Hit": [
+          {
+            "TypeOfEffect": "ChangeTile",
+            "ReplacingTile": "Teleportal"
+          }
+        ]
+      },
+      "TypeOfAction": "Major",
+      "TypeOfRange": "Ranged",
+      "Range": 7,
+      "Tags": [ "Uncontested" ],
+      "UsesRemaining": 1,
+      "TargetRequirements": [ "Open", "Unoccupied" ]
+    },
     ]
 }

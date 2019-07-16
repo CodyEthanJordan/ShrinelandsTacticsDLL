@@ -29,12 +29,21 @@ namespace ShrinelandsTactics.Mechanics.Effects
             Character charTarget, Deck deck, Card cardDrawn, string optionalFeatures = null)
         {
             var outcome = new Outcome();
-            if(posTarget == null)
-            {
-                throw new ArgumentException("Target cannot be null for changing tile");
-            }
             var tile = DM.data.GetTileByName(ReplacingTile);
-            DM.map.MakeTile(tile, posTarget, DM.data);
+
+            if(tile.Properties.Contains(Tile.TileProperties.Teleportal))
+            {
+                tile.Target = user.Pos;
+            }
+
+            DM.map.MakeTile(DM, tile, posTarget, DM.data);
+
+            if(tile.Properties.Contains(Tile.TileProperties.Teleportal))
+            {
+                var tile2 = DM.data.GetTileByName(ReplacingTile);
+                tile2.Target = posTarget;
+                DM.map.MakeTile(DM, tile2, user.Pos, DM.data);
+            }
 
             var charStanding = DM.Characters.FirstOrDefault(c => c.Pos == posTarget);
             if(charStanding != null)

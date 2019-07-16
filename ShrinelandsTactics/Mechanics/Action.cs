@@ -35,8 +35,12 @@ namespace ShrinelandsTactics.Mechanics
         public List<AbilityType> Tags = new List<AbilityType>();
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<TargetRequirement> TargetRequirements = new List<TargetRequirement>();
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
+        public List<CastRequirement> CastingRequirements = new List<CastRequirement>();
+        [JsonProperty]
+        public int UsesRemaining = -1;
 
-        private int timesUsed = 0;
+        private int timesUsedThisTurn = 0;
 
 
         public Action(string Name, Dictionary<Character.StatType, int> Cost,
@@ -63,12 +67,27 @@ namespace ShrinelandsTactics.Mechanics
                 return false;
             }
 
+            if(UsesRemaining == 0)
+            {
+                return false; //out of charges
+            }
+
             if(TypeOfAction == ActionType.Major && user.HasActed)
             {
                 return false; //already taken major action
             }
 
-            if(!Repeatable && timesUsed > 0)
+            if(CastingRequirements.Contains(CastRequirement.OnFire))
+            {
+                //TODO: subclasses or something?
+                var tile = DM.map.GetTile(user.Pos);
+                if(!tile.Properties.Contains(Tile.TileProperties.OnFire))
+                {
+                    return false;
+                }
+            }
+
+            if(!Repeatable && timesUsedThisTurn > 0)
             {
                 return false;
             }
@@ -177,7 +196,7 @@ namespace ShrinelandsTactics.Mechanics
                 return;
             }
 
-            timesUsed++; 
+            timesUsedThisTurn++; 
 
             outcome.ActionTaken = this.Name;
             outcome.UserID = user.ID;
@@ -257,7 +276,7 @@ namespace ShrinelandsTactics.Mechanics
 
         public void StartingActivation()
         {
-            timesUsed = 0;
+            timesUsedThisTurn = 0;
         }
 
         public Deck GetDeckFor(DungeonMaster DM, Character user, Position posTarget,
@@ -316,6 +335,11 @@ namespace ShrinelandsTactics.Mechanics
             CharactersOnly,
             Fire,
             AdjacentToOoze,
+        }
+
+        public enum CastRequirement
+        {
+            OnFire,
         }
 
         public enum ActionType

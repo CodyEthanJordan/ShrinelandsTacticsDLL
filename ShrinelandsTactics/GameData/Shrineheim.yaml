@@ -11,6 +11,7 @@ characters:
    class: Chalice Bearer
    pos: 4 25
    side: Heros
+   gear: Teleportal Scroll
  - name: Zach
    class: Knight
    pos: 4 26

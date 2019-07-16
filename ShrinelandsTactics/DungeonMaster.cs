@@ -8,6 +8,7 @@ using ShrinelandsTactics.BasicStructures;
 using ShrinelandsTactics.Mechanics;
 using System.Drawing;
 using YamlDotNet.RepresentationModel;
+using YamlDotNet.Serialization;
 using ShrinelandsTactics.BasicStructures.Events;
 using Newtonsoft.Json;
 
@@ -283,6 +284,16 @@ namespace ShrinelandsTactics
 
                 Character newCharacter = data.LoadCharacterByClass(characterClass);
                 newCharacter.InitializeIndividual(name, pos, side.ID, Guid.NewGuid());
+
+                try
+                {
+                    var gear = (c["gear"] as YamlScalarNode).Value;
+                    newCharacter.AddGear(gear, data);
+                }
+                catch
+                {
+                    //TODO: more elegant way?
+                }
 
                 DM.CreateCharacter(newCharacter);
             }
