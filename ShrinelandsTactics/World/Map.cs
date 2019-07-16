@@ -100,6 +100,17 @@ namespace ShrinelandsTactics.World
             throw new NotImplementedException();
         }
 
+        public List<Tile> GetAdjacentTiles(Position pos)
+        {
+            var tiles = new List<Tile>();
+            foreach (var dir in DirectionToPosition)
+            {
+                tiles.Add(GetTile(pos + dir.Value));
+            }
+
+            return tiles;
+        }
+
         public Tile GetTile(Position pos)
         {
             return tiles[pos];

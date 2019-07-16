@@ -124,6 +124,12 @@ namespace ShrinelandsTactics.World
             {
                 guy.TakeDamage(Mechanics.Effects.DamageEffect.DamageType.True, 5); //TODO: magic number
             }
+
+            if(Properties.Contains(TileProperties.Ooze) && !guy.HasTrait("One with Filth"))
+            {
+                guy.TakeDamage(Mechanics.Effects.DamageEffect.DamageType.Magic, 1);
+                guy.Stamina.Value -= 1;
+            }
         }
 
         internal void CharacterActivated(DungeonMaster dungeonMaster, Character guy)
@@ -132,6 +138,21 @@ namespace ShrinelandsTactics.World
             {
                 guy.Mana.Regain(1); //TODO: rename gather power?
             }
+        }
+
+        public int MoveCostFor(Character guy)
+        {
+            if(guy.HasTrait("Flying"))
+            {
+                return 1;
+            }
+
+            if(guy.HasTrait("One with Filth") && Properties.Contains(TileProperties.Ooze))
+            {
+                return 1;
+            }
+
+            return MoveCost;
         }
     }
 }

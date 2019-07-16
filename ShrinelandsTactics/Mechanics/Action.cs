@@ -153,6 +153,18 @@ namespace ShrinelandsTactics.Mechanics
                 //TODO: implement
             }
 
+            if(TargetRequirements.Contains(TargetRequirement.AdjacentToOoze))
+            {
+                valid.RemoveAll(p => !DM.map.GetAdjacentTiles(p).
+                    Any(t => t.Properties.Contains(Tile.TileProperties.Ooze)));
+            }
+
+            if(TargetRequirements.Contains(TargetRequirement.Unoccupied))
+            {
+                valid.RemoveAll(p => DM.Characters.Any(c => c.Pos == p));
+            }
+
+
             return valid;
         }
 
@@ -262,11 +274,11 @@ namespace ShrinelandsTactics.Mechanics
                 deck.AddCards(card, num);
             }
 
-            user.AddModifiers(deck, DM, user, this, false);
+            user.AddModifiers(deck, DM, user, charTarget, this, false);
 
             if(charTarget != null)
             {
-                charTarget.AddModifiers(deck, DM, user, this, true);
+                charTarget.AddModifiers(deck, DM, user, null, this, true);
             }
             DM.AddSituationalModifiers(deck, this, user, posTarget, charTarget);
 
@@ -300,6 +312,7 @@ namespace ShrinelandsTactics.Mechanics
         public enum TargetRequirement
         {
             Open,
+            Unoccupied,
             CharactersOnly,
             Fire,
             AdjacentToOoze,

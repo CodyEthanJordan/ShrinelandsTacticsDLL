@@ -507,7 +507,7 @@ namespace ShrinelandsTactics.World
             return null;
         }
 
-        public void AddModifiers(Deck deck, DungeonMaster DM, Character user, Action action, bool isTarget)
+        public void AddModifiers(Deck deck, DungeonMaster DM, Character user, Character target, Action action, bool isTarget)
         {
             foreach (var tag in action.Tags)
             {
@@ -533,6 +533,14 @@ namespace ShrinelandsTactics.World
                             if (exertion != null)
                             {
                                 deck.AddCards(new Card("Exertion", Card.CardType.Hit), exertion.Value);
+                            }
+
+                            if(target != null)
+                            {
+                                if(HasTrait("Thirst for Magic"))
+                                {
+                                    deck.AddCards(new Card("Thirst", Card.CardType.Hit), target.Mana.Value);
+                                }
                             }
                         }
                         break;

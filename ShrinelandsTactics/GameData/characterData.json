@@ -200,7 +200,7 @@
       },
       "Actions": [
       ],
-      "Traits": [ "Swarm Tactics", "Combat Trained" ],
+      "Traits": [ "Sneaky", "Combat Trained" ],
       "Gear": ["Cruel Knife", "Light Vest"]
     },
     {
@@ -235,7 +235,7 @@
         { "Name": "Attack" }
       ],
       "Gear" : [ "Pseudopod" ],
-      "Traits": ["Split"]
+      "Traits": [ "Split", "One with Filth" ]
     },
     {
       "Class": "Slimelord",
@@ -261,8 +261,8 @@
           "Max": 2
         },
         "Mana": {
-          "Value": 0,
-          "Max": 3
+          "Value": 6,
+          "Max": 6
         }
       },
       "Actions": [

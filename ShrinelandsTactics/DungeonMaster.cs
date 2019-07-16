@@ -610,7 +610,7 @@ namespace ShrinelandsTactics
                 return outcome;
             }
 
-            var moveCost = map.GetTile(guy.Pos).MoveCost;
+            int moveCost = map.GetTile(guy.Pos).MoveCostFor(guy);
             if(adjacentToOpponent)
             {
                 moveCost++; //effective +1
@@ -622,7 +622,7 @@ namespace ShrinelandsTactics
                 return outcome; //TODO: error
             }
 
-            moveCost = map.GetTile(guy.Pos).MoveCost;
+            moveCost = map.GetTile(guy.Pos).MoveCostFor(guy);
             int staminaCost = adjacentToOpponent ? 1 : 0;
             guy.PayMovement(moveCost, staminaCost);
 
@@ -649,14 +649,22 @@ namespace ShrinelandsTactics
             var cost = new Dictionary<Character.StatType, int>();
             if(IsAdjacentToOpponent(from, guy.SideID))
             {
-                cost.Add(Character.StatType.Stamina, 1);
+                //TODO: more elegant, check for swarm tactics
+                if(guy.HasTrait("Sneaky"))
+                {
+                    cost.Add(Character.StatType.Stamina, 0);
+                }
+                else
+                {
+                    cost.Add(Character.StatType.Stamina, 1);
+                }
             }
             else
             {
                 cost.Add(Character.StatType.Stamina, 0);
             }
             var tile = map.GetTile(from);
-            cost.Add(Character.StatType.Move, tile.MoveCost);
+            cost.Add(Character.StatType.Move, tile.MoveCostFor(guy));
             return cost;
         }
 

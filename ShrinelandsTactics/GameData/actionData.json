@@ -34,7 +34,7 @@
       "TypeOfRange":  "Ranged",
       "Range": 7,
       "Tags": [ "Uncontested" ],
-      "TargetRequirements" :  [ "Open", "Fire" ]
+      "TargetRequirements" :  [ "Open", "Fire", "Unoccupied" ]
     },
     {
       "Name": "Create Fire",
