@@ -22,7 +22,7 @@ namespace ShrinelandsTactics.World
         [JsonProperty]
         public string Name { get; private set; }
         [JsonProperty]
-        public string Class { get; private set; }
+        public string Class { get;  set; }
 
 
         [JsonProperty]

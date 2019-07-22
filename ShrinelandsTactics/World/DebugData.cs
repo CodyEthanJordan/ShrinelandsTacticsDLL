@@ -51,6 +51,7 @@ namespace ShrinelandsTactics.World
         public static Character GetDebugCharacter()
         {
             var c = new Character("Debug Guy", 10, 5, 4, 3, 3, 4);
+            c.Class = "Knight";
             c.Actions.Add(GetDebugAttackAction());
             return c;
         }
