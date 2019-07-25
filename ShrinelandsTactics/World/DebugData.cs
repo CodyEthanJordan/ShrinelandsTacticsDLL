@@ -7,11 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Action = ShrinelandsTactics.Mechanics.Action;
+using YamlDotNet.Serialization;
 
 namespace ShrinelandsTactics.World
 {
     public static class DebugData
     {
+        public static string ForestClimate = @"
+- name: Clear Day
+  duration: 3
+- name: Mist
+  duration: 1";
+
+        public static List<Weather> GetClimate()
+        {
+            var deserializer = new Deserializer();
+            return deserializer.Deserialize<List<Weather>>(ForestClimate);
+        }
+
         public static Map GetFlatlandMap(GameData data)
         {
             string description =
@@ -54,6 +67,12 @@ namespace ShrinelandsTactics.World
             c.Class = "Knight";
             c.Actions.Add(GetDebugAttackAction());
             return c;
+        }
+
+        public static Item GetProvisions()
+        {
+            var item = new Item("Provisions", 5);
+            return item;
         }
 
         public static Action GetDebugAttackAction()

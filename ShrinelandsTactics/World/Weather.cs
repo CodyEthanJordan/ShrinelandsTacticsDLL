@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 
 namespace ShrinelandsTactics.World
 {
-    public class Item
+    public class Weather
     {
         public string Name;
-        public int Count;
-
-        public Item(string name, int count = 1)
-        {
-            this.Name = name;
-            this.Count = count;
-        }
+        public int Duration;
     }
 }
