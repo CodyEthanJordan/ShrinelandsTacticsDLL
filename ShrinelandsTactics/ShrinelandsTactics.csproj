@@ -79,8 +79,13 @@
     <Compile Include="World\Side.cs" />
     <Compile Include="World\Map.cs" />
     <Compile Include="World\Tile.cs" />
+    <Compile Include="World\Weather.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GameData\AcatonForest\Events.yaml" />
+    <None Include="GameData\AcatonForest\Weather.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="GameData\characterData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -116,6 +121,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy $(TargetPath) $(SolutionDir)..\..\ShrinelandsPrototype1\ShrinelandsPrototype\Assets\Plugins

@@ -1,0 +1,14 @@
+﻿events:
+ - name: Howling in the Mist
+   tags:
+    travel: travel
+	weather: mist
+   prompt: Bunch of bs
+   choices:
+     - prompt: flee
+	   outcome: check
+		deck: 
+		 - flee: condition
+		 - caught: 4
+		effect:
+		 - flee: 
