@@ -24,7 +24,7 @@ namespace ShrinelandsTactics.World
 
         private void SetupDebugData()
         {
-            this.Climate = DebugData.GetClimate();
+            //this.Climate = DebugData.GetClimate();
         }
 
         internal Weather RollWeather()

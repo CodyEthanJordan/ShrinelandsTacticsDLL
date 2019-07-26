@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Action = ShrinelandsTactics.Mechanics.Action;
 using YamlDotNet.Serialization;
+using ShrinelandsTactics.World.Time;
 
 namespace ShrinelandsTactics.World
 {
@@ -18,6 +19,39 @@ namespace ShrinelandsTactics.World
   duration: 3
 - name: Mist
   duration: 1";
+
+        public static Encounter GetMistWolfEncounter()
+        {
+            string yaml = @"
+Title: Howling in the Mist
+Prompt: |
+  The wind dies, the sounds of the forest cease, and for a moment there is silence. 
+
+  Howls of pursuing wolves cry out from somewhere in the mist, a terrible and savage sound, yet echoing with a force that no natural throat could produce. The smell of stale and rotting things assaults you as creatures seemingly made of the mist itself pursue, half-seen among the ancient trunks.
+Options:
+  - Prompt: Flee
+    Outcome: SkillCheck
+    SkillCheck:
+        Cards:
+            - Flee: Condition
+            - Pursued: 4
+        Result:
+            Flee: 
+                Prompt: |
+                 The howls fade into the distance and natural sounds resume as you push forward.
+                Effect: null
+            Pursued:
+                Prompt: |
+                    The creatures harry you for hours, always at your heels. In time they disappear back into the mist, leaving you with rotting provisions.
+                Effect: loose 1 Condition
+
+
+";
+
+            var deserializer = new Deserializer();
+            var encounter = deserializer.Deserialize<Encounter>(yaml);
+            return encounter;
+        }
 
         public static List<Weather> GetClimate()
         {

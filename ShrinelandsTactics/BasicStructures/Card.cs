@@ -59,6 +59,7 @@ namespace ShrinelandsTactics.BasicStructures
             Miss,
             Block,
             Armor,
+            Encounter,
         }
     }
 }

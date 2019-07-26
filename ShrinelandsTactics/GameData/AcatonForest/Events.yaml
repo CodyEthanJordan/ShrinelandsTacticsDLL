@@ -11,4 +11,5 @@
 		 - flee: condition
 		 - caught: 4
 		effect:
-		 - flee: 
+		 - flee: null
+		 - caught: loose 4 condition

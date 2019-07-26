@@ -43,6 +43,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tracery.Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Tracery.Net.1.0.0\lib\net452\Tracery.Net.dll</HintPath>
+    </Reference>
     <Reference Include="YamlDotNet, Version=6.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
       <HintPath>packages\YamlDotNet.6.1.1\lib\net45\YamlDotNet.dll</HintPath>
     </Reference>
@@ -79,9 +82,11 @@
     <Compile Include="World\Side.cs" />
     <Compile Include="World\Map.cs" />
     <Compile Include="World\Tile.cs" />
+    <Compile Include="World\Time\Encounter.cs" />
     <Compile Include="World\Weather.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="GameData\AcatonForest\Events.yaml" />
     <None Include="GameData\AcatonForest\Weather.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -67,8 +67,10 @@
     <Compile Include="TileTests.cs" />
     <Compile Include="BasicSetupTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Travel\EncounterTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
