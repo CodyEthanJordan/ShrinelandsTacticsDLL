@@ -72,7 +72,7 @@ namespace ShrinelandsTactics
                         OnCardDrawn(this, new CardDrawnEventArgs(originalDeck, outcome));
                     }
 
-                    ApplyEncounterEffect(result["Effect"]);
+                    ApplyEncounterEffect(result["Effect"] as string);
 
                     if(OnEncounterOutcome != null)
                     {
@@ -87,7 +87,7 @@ namespace ShrinelandsTactics
 
         private void ApplyEncounterEffect(string effect)
         {
-            if(effect.Equals("null", StringComparison.OrdinalIgnoreCase))
+            if(effect is null || effect.Equals("null", StringComparison.OrdinalIgnoreCase))
             {
                 return; //do nothing
             }
