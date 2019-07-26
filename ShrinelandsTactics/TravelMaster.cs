@@ -46,6 +46,11 @@ namespace ShrinelandsTactics
             }
         }
 
+        public Encounter DrawEncounter()
+        {
+            return DebugData.GetMistWolfEncounter(); //TODO: randomly select
+        }
+
         public void ChooseOption(Encounter encounter, int option)
         {
             var optionChosen = encounter.Options[option];
