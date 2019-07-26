@@ -33,8 +33,10 @@ Options:
     Outcome: SkillCheck
     SkillCheck:
         Cards:
-            - Flee: Condition
-            - Pursued: 4
+            - Name: Flee
+              Number: Condition
+            - Name: Pursued
+              Number: 4
         Result:
             Flee: 
                 Prompt: |

@@ -16,5 +16,11 @@ namespace ShrinelandsTactics.BasicStructures.Events
             this.deck = deck;
             this.cards = cards;
         }
+
+        public CardDrawnEventArgs(Deck deck, Card card)
+        {
+            this.deck = deck;
+            this.cards = new List<Card>() { card };
+        }
     }
 }

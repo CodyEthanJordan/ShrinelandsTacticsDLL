@@ -1,4 +1,5 @@
 ﻿using ShrinelandsTactics.BasicStructures;
+using ShrinelandsTactics.BasicStructures.Events;
 using ShrinelandsTactics.World;
 using ShrinelandsTactics.World.Time;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ShrinelandsTactics.DungeonMaster;
 
 namespace ShrinelandsTactics
 {
@@ -20,6 +22,8 @@ namespace ShrinelandsTactics
         public int Condition = 6; //TODO: have individual parties
 
         public event EventHandler<Weather> OnWeatherChanged;
+        public event CardDrawnEventHandler OnCardDrawn;
+        public event EventHandler<string> OnEncounterOutcome;
 
         public TravelMaster()
         {
@@ -50,20 +54,46 @@ namespace ShrinelandsTactics
                 case "SkillCheck":
                     var recipie = optionChosen["SkillCheck"]["Cards"];
                     Deck deck = new Deck();
+                    var originalDeck = deck.Clone() as Deck;
 
                     foreach (var ingredient in recipie)
                     {
-                        var name = ingredient.Keys[0] as string;
-                        var source = ingredient.Values[0] as string;
+                        var name = ingredient["Name"] as string;
+                        var source = ingredient["Number"] as string;
                         int number = ResolveSource(source);
                         var card = new Card(name, Card.CardType.Encounter);
                         deck.AddCards(card, number);
                     }
                     var outcome = deck.Draw();
+                    var result = optionChosen["SkillCheck"]["Result"][outcome.Name];
+
+                    if(OnCardDrawn != null)
+                    {
+                        OnCardDrawn(this, new CardDrawnEventArgs(originalDeck, outcome));
+                    }
+
+                    ApplyEncounterEffect(result["Effect"]);
+
+                    if(OnEncounterOutcome != null)
+                    {
+                        OnEncounterOutcome(this, result["Prompt"]);
+                    }
+                    //TODO: apply effects
                     break;
                 default:
                     break;
             }
+        }
+
+        private void ApplyEncounterEffect(string effect)
+        {
+            if(effect.Equals("null", StringComparison.OrdinalIgnoreCase))
+            {
+                return; //do nothing
+            }
+
+            //TODO: other effects
+
         }
 
         public void NewDay()
